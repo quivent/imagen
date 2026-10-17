@@ -18,6 +18,8 @@ import daemonsMarkup from './daemons-panel.html?raw';
 import { mountDaemons } from './daemons.js';
 import modelsMarkup from './models-panel.html?raw';
 import { mountModels } from './models.js';
+import seersMarkup from './seers-panel.html?raw';
+import { mountSeers } from './seers.js';
 'use strict';
 installImageCache();
 const $ = (id) => document.getElementById(id);
@@ -289,7 +291,7 @@ const modelNames = { 'flux1-dev': 'FLUX.1 dev', 'flux2-dev-nf4': 'FLUX.2 dev' };
 const controlFields = ['profile', 'prompt', 'width', 'height', 'steps', 'guidance_scale', 'seed', 'max_sequence_length', 'count'];
 const controls = { authorized: false, connected: false, fetching: false, posting: false, workers: [], jobs: [], pendingLanes: new Set(), gpus: [] };
 let activeTab = 'stream';
-const tabNames = ['stream', 'gallery', 'controls', 'tasks', 'performance', 'models', 'metrics', 'winners', 'agents', 'daemons', 'rules', 'protocol', 'monitor'];
+const tabNames = ['stream', 'gallery', 'controls', 'tasks', 'performance', 'models', 'seers', 'metrics', 'winners', 'agents', 'daemons', 'rules', 'protocol', 'monitor'];
 sitePerformance.registerTabs(tabNames);
 const embeddedPanels = {};
 const liveTopics = new Map();
@@ -955,6 +957,7 @@ if (!$('protocol-panel').children.length) $('protocol-panel').innerHTML = protoc
 for (const [name, markup, mount] of [
   ['performance', performanceMarkup, mountPerformance],
   ['models', modelsMarkup, mountModels],
+  ['seers', seersMarkup, mountSeers],
   ['metrics', metricsMarkup, mountMetrics],
   ['monitor', monitorMarkup, mountMonitor],
   ['agents', agentsMarkup, mountAgents],
