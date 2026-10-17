@@ -98,3 +98,5 @@ html[data-boot-tab=performance] #performance-panel{display:block!important}
 html[data-boot-tab=models] #models-panel{display:block!important}
 
 html[data-boot-tab=protocol] #protocol-panel{display:block!important}
+
+.comparison-tile-pair .image-card{position:relative}.comparison-rate{position:absolute;top:6px;right:6px;display:grid;place-items:center;width:44px;min-height:44px;padding:0;border-radius:50%;background:#141719e8;color:#ddd9d0;border-color:#5c625e}.comparison-rate:hover{background:#303531}.comparison-rate[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:#201d17}.comparison-rate[aria-pressed=true] svg{fill:currentColor}.comparison-choice-status{font-size:11px;line-height:1.5;color:var(--muted);margin:8px 0}.comparison-choice-status:empty{display:none}

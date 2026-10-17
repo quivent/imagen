@@ -1,0 +1,60 @@
+{
+  "note": "Service topology captured from loaded configuration. Templates are source; no live process state is retained.",
+  "services": [
+    {
+      "label": "giving.kinship.artwork-comparison",
+      "template": "giving.kinship.artwork-comparison.plist.in",
+      "legacyObserver": false
+    },
+    {
+      "label": "giving.kinship.artwork-ingress",
+      "template": "giving.kinship.artwork-ingress.plist.in",
+      "legacyObserver": false
+    },
+    {
+      "label": "giving.kinship.artwork-refill",
+      "template": "giving.kinship.artwork-refill.plist.in",
+      "legacyObserver": false
+    },
+    {
+      "label": "giving.kinship.artwork-agent-watch",
+      "template": "giving.kinship.artwork-agent-watch.plist.in",
+      "legacyObserver": true
+    },
+    {
+      "label": "giving.kinship.artwork-flux.flux1-dev",
+      "template": "giving.kinship.artwork-flux.flux1-dev.plist.in",
+      "legacyObserver": false
+    },
+    {
+      "label": "giving.kinship.artwork-flux.flux1-dev.pipeline",
+      "template": "giving.kinship.artwork-flux.flux1-dev.pipeline.plist.in",
+      "legacyObserver": false
+    },
+    {
+      "label": "giving.kinship.artwork-flux.flux2-dev-nf4",
+      "template": "giving.kinship.artwork-flux.flux2-dev-nf4.plist.in",
+      "legacyObserver": false
+    },
+    {
+      "label": "giving.kinship.artwork-flux.flux2-dev-nf4.pipeline",
+      "template": "giving.kinship.artwork-flux.flux2-dev-nf4.pipeline.plist.in",
+      "legacyObserver": false
+    },
+    {
+      "label": "vision.influx.artwork.task-inbox",
+      "template": "vision.influx.artwork.task-inbox.plist.in",
+      "legacyObserver": false
+    },
+    {
+      "label": "vision.influx.artwork.enforcer",
+      "template": "vision.influx.artwork.enforcer.plist.in",
+      "legacyObserver": false
+    },
+    {
+      "label": "vision.influx.artwork.performance",
+      "template": "vision.influx.artwork.performance.plist.in",
+      "legacyObserver": false
+    }
+  ]
+}

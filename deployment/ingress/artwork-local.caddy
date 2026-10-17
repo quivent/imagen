@@ -1,0 +1,13 @@
+# Source route captured from the existing Gemstone gateway; no certificates/keys.
+# Public TLS/SNI forwarding to loopback8443 and preview_headers are gateway-managed.
+http://artwork.influx.vision {
+    redir https://{host}{uri} permanent
+}
+artwork.influx.vision:8443 {
+    bind 127.0.0.1
+    import preview_headers
+    header -Alt-Svc
+    reverse_proxy 127.0.0.1:48630 {
+        flush_interval -1
+    }
+}

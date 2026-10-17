@@ -2,6 +2,7 @@ import { studioLive } from './live-store.js';
 import './daemons.css';
 
 const errorLabels = {
+  archive_backlog: 'Completed images are waiting for verified archival.',
   queue_nonzero_requires_reconciliation: 'Request notification failed; delivery needs checking.',
   queue_timeout_requires_reconciliation: 'Request notification timed out; delivery needs checking.',
   queue_executable_missing: 'The request notification command is unavailable.',
@@ -50,6 +51,20 @@ export function mountDaemons({ root, isActive = () => true }) {
     if (Number.isInteger(item.pid) && item.pid > 0 && fresh && alive) entries.push(['Process ID', String(item.pid)]);
     if (Number.isFinite(item.activityCount) && item.activityCount >= 0) entries.push([typeof item.activityLabel === 'string' ? item.activityLabel : 'Recorded events', `${item.activityCount}${fresh ? '' : ' · historical'}`]);
     if (item.heartbeatAt) entries.push(['Heartbeat', stamp(item.heartbeatAt)]);
+    if (item.id === 'archive') {
+      const heartbeat = time(item.heartbeatAt);
+      const coverageFresh = fresh && heartbeat !== null && Date.now() - heartbeat <= 30000;
+      entries.push(['Archive coverage', coverageFresh ? item.archiveStatus === 'healthy' ? 'Verified current' : 'Reconciliation in progress' : 'Unknown · archive observation stale'],
+        ['Pending uploads', coverageFresh && Number.isFinite(item.pendingJobs) ? String(item.pendingJobs) : 'Unknown'],
+        ['Verification due', coverageFresh && Number.isFinite(item.verificationDueJobs) ? String(item.verificationDueJobs) : 'Unknown']);
+      if (coverageFresh && Number.isFinite(item.oldestPendingSeconds)) entries.push(['Oldest pending', `${Math.round(item.oldestPendingSeconds)} seconds`]);
+    }
+    if (item.id === 'performance') {
+      const activities = { watching: 'Watching Performance engineer', blocked: 'Blocked · lifecycle source unavailable', unknown: 'Unknown' };
+      entries.push(['Activity', fresh && alive ? activities[item.activityState] || 'Unknown' : 'Unknown'],
+        ['Engineer', fresh ? ({ running: 'Running', done: 'Idle', available: 'Available', idle: 'Idle' }[item.agentState] || 'Unknown') : 'Unknown'],
+        ['Activation', item.wakeQueued ? 'Coordinator wake queued; agent activation uses the coordinator' : 'Watching for the engineer becoming idle']);
+    }
     for (const [label, value] of entries) {
       const pair = text('div', '');
       pair.append(text('dt', label), text('dd', value));

@@ -1,0 +1,13 @@
+{
+  "name": "artwork-controls",
+  "private": true,
+  "version": "1.0.0",
+  "engines": {
+    "node": "24.x"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "3.1152.0",
+    "ssh2": "1.17.0",
+    "ws": "8.22.0"
+  }
+}

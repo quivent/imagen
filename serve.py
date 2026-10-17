@@ -33,7 +33,9 @@ def main():
         environment_file = RUNTIME / 'service-env.json'
         if environment_file.exists():
             values = json.loads(environment_file.read_text())
-            for key in ('ARTWORK_SSH_HOST', 'ARTWORK_SSH_PORT', 'ARTWORK_MONITOR_ROOT_THREAD', 'ARTWORK_API_ORIGIN'):
+            for key in ('ARTWORK_SSH_HOST', 'ARTWORK_SSH_PORT', 'ARTWORK_MONITOR_ROOT_THREAD', 'ARTWORK_API_ORIGIN',
+                        'ARTWORK_FACTORY_ROOT', 'ARTWORK_FACTORY_STATE', 'ARTWORK_CONTROL_TOKEN_FILE',
+                        'ARTWORK_PYTHON'):
                 if isinstance(values.get(key), str):
                     os.environ[key] = values[key]
         npm = shutil.which('npm')

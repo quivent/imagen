@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>EnvironmentVariables</key>
+	<dict>
+		<key>ARTWORK_FACTORY_STATE</key>
+		<string>@FACTORY_STATE@</string>
+		<key>ARTWORK_STATE</key>
+		<string>@FACTORY_STATE@</string>
+	</dict>
+	<key>KeepAlive</key>
+	<true/>
+	<key>Label</key>
+	<string>giving.kinship.artwork-refill</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>@PYTHON@</string>
+		<string>-B</string>
+		<string>@FACTORY_ROOT@/remote/refill.py</string>
+		<string>run</string>
+	</array>
+	<key>RunAtLoad</key>
+	<true/>
+	<key>StandardErrorPath</key>
+	<string>@FACTORY_STATE@/generation-refill/refill.log</string>
+	<key>StandardOutPath</key>
+	<string>@FACTORY_STATE@/generation-refill/refill.log</string>
+	<key>ThrottleInterval</key>
+	<integer>10</integer>
+	<key>WorkingDirectory</key>
+	<string>@FACTORY_ROOT@</string>
+</dict>
+</plist>

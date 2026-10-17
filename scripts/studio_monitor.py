@@ -157,6 +157,14 @@ try:
    except ValueError:gpu[key]=None
   gpus.append(gpu)
 except Exception:pass
+archive={'ok':False,'observedAt':None,'status':'unknown'}
+try:
+ archive=json.loads(Path('/workspace/artwork/r2/status.json').read_text())
+ archive['ok']=True
+ process=subprocess.run(['supervisorctl','status','artwork-r2'],text=True,capture_output=True,timeout=2)
+ archive['alive']=process.returncode==0 and 'RUNNING' in process.stdout
+ archive['observedAt']=datetime.datetime.fromtimestamp(archive.get('heartbeatAt') or archive.get('sweptAt') or 0,datetime.timezone.utc).isoformat()
+except Exception:pass
 items=[]
 for filename,kind in [('/workspace/artwork/models/manifest.json','generation'),('/workspace/artwork/judges/download-receipt.json','judge')]:
  try:
@@ -170,7 +178,7 @@ for filename,kind in [('/workspace/artwork/models/manifest.json','generation'),(
    precision={'flux1':'BF16','flux2':'BF16','flux2-nf4':'NF4 text encoder','pixtral':'W4A16','dinov2':'BF16'}.get(ident)
    items.append({'id':ident,'name':{'flux1':'FLUX.1 DEV','flux2':'FLUX.2 DEV','flux2-nf4':'FLUX.2 text encoder','pixtral':'Pixtral 12B','dinov2':'DINOv2 Giant'}.get(ident,ident),'repo':entry.get('repo'),'revision':entry.get('revision'),'precision':precision,'bytes':entry.get('bytes'),'downloaded':verified,'loaded':loaded,'phase':worker.get('phase'),'gpuIndex':lane,'problem':None if lane is not None else 'GPU residency has not been verified by this monitor.'})
  except Exception:pass
-print(json.dumps({'workers':workers,'gpus':gpus,'models':{'observedAt':observed,'items':items},'observedAt':observed}))
+print(json.dumps({'workers':workers,'gpus':gpus,'models':{'observedAt':observed,'items':items},'archive':archive,'observedAt':observed}))
 """
     try:
         host = os.environ.get('ARTWORK_SSH_HOST', '')
@@ -180,7 +188,7 @@ print(json.dumps({'workers':workers,'gpus':gpus,'models':{'observedAt':observed,
         data = json.loads(process.stdout)
         if len(data['workers']) != 2:
             return result
-        result.update(ok=True, workers=data['workers'], gpus=data.get('gpus',[]), models=data.get('models'), observedAt=data['observedAt'])
+        result.update(ok=True, workers=data['workers'], gpus=data.get('gpus',[]), models=data.get('models'), archive=data.get('archive'), observedAt=data['observedAt'])
     except Exception:
         pass
     return result
@@ -204,13 +212,38 @@ def tasks():
     return result
 
 
-def daemons():
+def performance_daemon():
+    result = {'ok': False, 'alive': False, 'state': 'unknown', 'observedAt': None}
+    try:
+        path = REPO / '.runtime/performance/status.json'
+        if path.is_symlink() or path.stat().st_size > 256 * 1024:
+            return result
+        state = json.loads(path.read_text())
+        process = subprocess.run(['launchctl', 'print', f'gui/{os.getuid()}/vision.influx.artwork.performance'], capture_output=True, text=True, timeout=2)
+        pid = state.get('pid')
+        alive = isinstance(pid, int) and process.returncode == 0 and 'state = running' in process.stdout and any(line.strip() == f'pid = {pid}' for line in process.stdout.splitlines())
+        observed = datetime.datetime.fromisoformat(state['heartbeatAt'].replace('Z', '+00:00')).timestamp()
+        fresh = -1 <= time.time() - observed <= 20
+        # Publish bounded measurements and fixed event codes only. Inbox IDs,
+        # coordinator details, runtime paths and raw process logs stay private.
+        result.update({key: state.get(key) for key in ['pid', 'startedAt', 'heartbeatAt', 'lastActivityAt', 'activityCount', 'agentState', 'mandateActive', 'collectorPid', 'collectorRestarts']})
+        result.update(ok=alive and fresh, alive=alive, observedAt=state['heartbeatAt'], state=state.get('state') if alive and fresh else 'unknown')
+        result['events'] = [{key: event.get(key) for key in ('at', 'event')} for event in state.get('events', [])[-10:]]
+        result['wakeState'] = state.get('wakeState')
+        result['wakeQueued'] = state.get('wakeState') in ('pending', 'sending', 'notified')
+    except Exception:
+        pass
+    return result
+
+
+def daemons(performance=None):
     descriptions = [
         ('studio', 'Studio and live monitor', 'Serves the app, collects current observations and pushes shared WebSocket updates.', 'giving.kinship.artwork-comparison'),
         ('ingress', 'Public connection', 'Keeps the encrypted reverse tunnel to the HTTPS gateway connected.', 'giving.kinship.artwork-ingress'),
         ('refiller', 'Generation queue', 'Keeps a bounded queue of ordinary scene jobs available to both model lanes.', 'giving.kinship.artwork-refill'),
         ('inbox', 'Task inbox', 'Durably stores incoming requests and notifies the coordinator for Task Keeper.', 'vision.influx.artwork.task-inbox'),
         ('enforcer', 'Enforcer', 'Checks ready work against observed assignments, records penalties and escalates dispatch gaps.', 'vision.influx.artwork.enforcer'),
+        ('performance', 'Performance', 'Watches the Performance engineer lifecycle and asks the coordinator to reactivate the engineer after a newly observed idle episode.', 'vision.influx.artwork.performance'),
     ]
     items = []
     for ident, name, description, label in descriptions:
@@ -228,6 +261,13 @@ def daemons():
                 item['lastActivityAt']=state.get('observedAt')
                 item['activityLabel']='Latest monitor observation'
             except Exception:pass
+        elif ident == 'performance':
+            state = performance or performance_daemon()
+            item.update(observedAt=state.get('observedAt'), staleAfterSeconds=20,
+                        heartbeatAt=state.get('heartbeatAt'), lastActivityAt=state.get('lastActivityAt'),
+                        activityCount=state.get('activityCount'), activityLabel='Engineer lifecycle observations',
+                        activityState=state.get('state', 'unknown'), agentState=state.get('agentState', 'unknown'),
+                        wakeQueued=state.get('wakeQueued', False))
         elif ident == 'enforcer':
             try:
                 state = json.loads((REPO / '.runtime/task-inbox/enforcement.json').read_text())
@@ -281,6 +321,17 @@ if __name__ == '__main__':
             active_ids.add(assignments.get('/root', {}).get('taskId'))
         task_data['working'] = [row for row in task_data.get('working', []) if row['id'] in active_ids]
         task_data['source'] = 'Current-session running agents matched to recorded active task assignments'
-        result = {'ok': True, 'generation': generation_result.result(), 'agents': agent_data, 'tasks': task_data, 'daemons': daemons(), 'enforcement': enforcement(), 'observedAt': now()}
+        performance = performance_daemon()
+        result = {'ok': True, 'generation': generation_result.result(), 'agents': agent_data, 'tasks': task_data, 'daemons': daemons(performance), 'performanceDaemon': performance, 'enforcement': enforcement(), 'observedAt': now()}
     result['models'] = result['generation'].get('models', {'observedAt': None, 'items': []})
+    result['archive'] = result['generation'].get('archive', {'ok': False, 'observedAt': None, 'status': 'unknown'})
+    archive = result['archive']
+    result['daemons']['items'].append({'id': 'archive', 'name': 'R2 archive reconciler',
+        'description': 'Verifies completed images and receipts against R2, retries missing uploads and repairs index gaps.',
+        'alive': archive.get('alive'), 'observedAt': result['generation'].get('observedAt'),
+        'lastActivityAt': archive.get('observedAt'), 'heartbeatAt': archive.get('observedAt'),
+        'activityCount': archive.get('confirmedJobs'), 'activityLabel': 'Verified archived jobs',
+        'pendingJobs': archive.get('pendingJobs'), 'verificationDueJobs': archive.get('verificationDueJobs'),
+        'oldestPendingSeconds': archive.get('oldestPendingSeconds'), 'archiveStatus': archive.get('status'),
+        'errorCode': 'archive_backlog' if archive.get('pendingJobs', 0) else None})
     print(json.dumps(result))

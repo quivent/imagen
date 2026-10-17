@@ -1,0 +1,11 @@
+# Gemstone gateway snippet required by artwork-local.caddy. Certificates remain private.
+(preview_headers) {
+    tls {
+        issuer acme {
+            disable_tlsalpn_challenge
+        }
+    }
+    header X-Robots-Tag "noindex, nofollow, noarchive"
+    header X-Content-Type-Options nosniff
+    header Referrer-Policy same-origin
+}

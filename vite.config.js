@@ -4,8 +4,8 @@ import { installNativeLive } from './server/native-live.mjs';
 import { defineConfig } from 'vite';
 import { installStudioMonitor } from './server/studio-monitor.mjs';
 import { installStudioEvents } from './server/studio-events.mjs';
-import { installCorrections } from '../kinship-of-cancer/tools/artwork/control/corrections.mjs';
-import { installWinners } from '../kinship-of-cancer/tools/artwork/control/winners.mjs';
+import { installCorrections } from './server/corrections.mjs';
+import { installWinners } from './server/winners.mjs';
 import { readFileSync, realpathSync, statSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
@@ -31,6 +31,11 @@ function runtimeFiles(server) {
     let pathname;
     try { pathname = decodeURIComponent(new URL(req.url, 'http://localhost').pathname); }
     catch { res.writeHead(400).end(); return; }
+    // Deployment sources may have ignored private state beside them after redeploy.
+    if (['/deployment/', '/server/', '/scripts/'].some(prefix => pathname.startsWith(prefix)) ||
+        pathname.split('/').some(part => ['.state', '.runtime', '.git', '.venv', '.download-venv'].includes(part))) {
+      res.writeHead(404).end(); return;
+    }
     if (pathname.startsWith('/api/') && req.method === 'POST') {
       const origin = req.headers.origin;
       if (!origin || ![publicOrigin, 'http://127.0.0.1:' + server.config.server.port, 'http://localhost:' + server.config.server.port, 'http://127.0.0.1:' + server.config.preview.port, 'http://localhost:' + server.config.preview.port].includes(origin)) { res.writeHead(403).end(); return; }

@@ -1,0 +1,5 @@
+{
+  "mode": "wrap-up",
+  "excludedWorkIds": [],
+  "instruction": "Review current authorized ready tasks; preserve lifecycle truth. Requires explicit session and tracker configuration before activation."
+}

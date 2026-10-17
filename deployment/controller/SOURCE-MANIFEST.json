@@ -1,0 +1,142 @@
+{
+  "scope": "Whitelisted controller source only; no runtime records or credentials",
+  "files": [
+    {
+      "source": "tools/artwork/artwork.py",
+      "destination": "tools/artwork/artwork.py",
+      "sourceSha256": "2aa4a2e1cdbbfe442b1d01f6da8f0cc3f9e1ccc9a6281eb21a50f1dcf91d899c",
+      "sha256": "9679bc26fdae7d0428560735558298a6a7d879dbc3478bb63315ec57622da218",
+      "sanitized": true,
+      "transformation": "Portable factory-state configuration and explicit SSH endpoint; no generation behavior changed."
+    },
+    {
+      "source": "tools/artwork/store.py",
+      "destination": "tools/artwork/store.py",
+      "sourceSha256": "e9a362c14c371492313ac38abfbebe841ce0fdfbd53364413c999d1c0767fab6",
+      "sha256": "e9a362c14c371492313ac38abfbebe841ce0fdfbd53364413c999d1c0767fab6",
+      "sanitized": false
+    },
+    {
+      "source": "tools/artwork/workers.py",
+      "destination": "tools/artwork/workers.py",
+      "sourceSha256": "5af958493d8a1cd5da38dd056ae983df3dde51a5bf6c866a4645b4572c77739a",
+      "sha256": "5af958493d8a1cd5da38dd056ae983df3dde51a5bf6c866a4645b4572c77739a",
+      "sanitized": false
+    },
+    {
+      "source": "tools/artwork/images.py",
+      "destination": "tools/artwork/images.py",
+      "sourceSha256": "39e01cd263161353019d032a8ba108effe4b694301ffec10b1a991e5d6cc8a2b",
+      "sha256": "39e01cd263161353019d032a8ba108effe4b694301ffec10b1a991e5d6cc8a2b",
+      "sanitized": false
+    },
+    {
+      "source": "tools/artwork/service.py",
+      "destination": "tools/artwork/service.py",
+      "sourceSha256": "1965ab16eab6be4e4f88da2291661e144bc4e49efae5b7ffd64db08ec73d89fb",
+      "sha256": "1965ab16eab6be4e4f88da2291661e144bc4e49efae5b7ffd64db08ec73d89fb",
+      "sanitized": false
+    },
+    {
+      "source": "tools/artwork/service_control.py",
+      "destination": "tools/artwork/service_control.py",
+      "sourceSha256": "8e56d6362390c5f67ab869d67db0ef76761d8ed14e692a57c2d6b92546761d3b",
+      "sha256": "8e56d6362390c5f67ab869d67db0ef76761d8ed14e692a57c2d6b92546761d3b",
+      "sanitized": false
+    },
+    {
+      "source": "tools/artwork/desk.html",
+      "destination": "tools/artwork/desk.html",
+      "sourceSha256": "d2da00aaab2e53102b0befd67bdf8fc87f0d768e25595badf121bb06974c2389",
+      "sha256": "d2da00aaab2e53102b0befd67bdf8fc87f0d768e25595badf121bb06974c2389",
+      "sanitized": false
+    },
+    {
+      "source": "tools/artwork/desk.js",
+      "destination": "tools/artwork/desk.js",
+      "sourceSha256": "a76ba0ce80bbab39fd6f9ce3fb1d50aafd927fb1146f6198c25bfedb42f390d4",
+      "sha256": "a76ba0ce80bbab39fd6f9ce3fb1d50aafd927fb1146f6198c25bfedb42f390d4",
+      "sanitized": false
+    },
+    {
+      "source": "tools/artwork/desk.css",
+      "destination": "tools/artwork/desk.css",
+      "sourceSha256": "2272fdc02223a7ba66500f937e2e86f71d7d218e63bd3bb2f795dc722a69a4bd",
+      "sha256": "2272fdc02223a7ba66500f937e2e86f71d7d218e63bd3bb2f795dc722a69a4bd",
+      "sanitized": false
+    },
+    {
+      "source": "tools/artwork/remote/adapter.py",
+      "destination": "tools/artwork/remote/adapter.py",
+      "sourceSha256": "365a097aded2f983660bbf40f409f7ed66c1f42022667f5eb14bc11067694a77",
+      "sha256": "8dd6e14189d6c4bed50cf4b787c63a540398f0ffb76a9a2d2ad8e2fe74746d29",
+      "sanitized": true,
+      "transformation": "Latest completion-event/SSH-reuse adapter; explicit deployment endpoint required."
+    },
+    {
+      "source": "tools/artwork/remote/factory_worker.py",
+      "destination": "tools/artwork/remote/factory_worker.py",
+      "sourceSha256": "47ea01dc35457612ca8297517cf99b48646d66f46141de0aa920abf0d4413962",
+      "sha256": "162bd2c2476bb40d0f7c5d9fcd95a318f9b31c67cebcc44a8abb0f5f2fc19bae",
+      "sanitized": true,
+      "transformation": "Portable factory-state configuration and explicit SSH endpoint; no generation behavior changed."
+    },
+    {
+      "source": "tools/artwork/remote/refill.py",
+      "destination": "tools/artwork/remote/refill.py",
+      "sourceSha256": "3d951bad7befbad078c610e3771c6b86e43259cf66ceb4a131db97fa9ac28864",
+      "sha256": "ae39849ba9e7240ea72e21dfc37ac69e342b29a013a9a304e2724bb50e9ebc8e",
+      "sanitized": true,
+      "transformation": "Portable factory-state configuration and explicit SSH endpoint; no generation behavior changed."
+    },
+    {
+      "source": "tools/artwork/ingress/manage.py",
+      "destination": "tools/artwork/ingress/manage.py",
+      "sourceSha256": "a830cdf62f0bd13395640f18567bae3ce709b8a2bc21fe9ac50aacefb2aa48ea",
+      "sha256": "a830cdf62f0bd13395640f18567bae3ce709b8a2bc21fe9ac50aacefb2aa48ea",
+      "sanitized": false
+    },
+    {
+      "source": "tools/artwork/ingress/README.md",
+      "destination": "tools/artwork/ingress/README.md",
+      "sourceSha256": "400a1064f14d7db3789a636c20105c4680b565b5b5241dc0c4d60ff7e416cebb",
+      "sha256": "400a1064f14d7db3789a636c20105c4680b565b5b5241dc0c4d60ff7e416cebb",
+      "sanitized": false
+    },
+    {
+      "source": "tools/artwork/agent-watch/manage.py",
+      "destination": "tools/artwork/agent-watch/manage.py",
+      "sourceSha256": "8bfc893b3636c5756b8d6f5bece8c448bcd22114b26116b13cddd6a51089aa42",
+      "sha256": "03b2906862ab46d77cc3949d3bda68f2ec4612541315e9c55c7a1222797ad570",
+      "sanitized": true
+    },
+    {
+      "source": "tools/artwork/agent-watch/README.md",
+      "destination": "tools/artwork/agent-watch/README.md",
+      "sourceSha256": "8b69efa731bc130f0c241665efbbce707ecb5d8264d69faaa7d3f25504fe041f",
+      "sha256": "8b69efa731bc130f0c241665efbbce707ecb5d8264d69faaa7d3f25504fe041f",
+      "sanitized": false
+    },
+    {
+      "source": "tools/artwork/control/studio_monitor.py",
+      "destination": "tools/artwork/control/studio_monitor.py",
+      "sourceSha256": "99345e0e243c78c7fce4d4271e6a74a6b13e0362e7565113aac6846d7dbc7047",
+      "sha256": "894ef140e1362d51ff41948e1270004d88fe24dc4c5dfec2521259d6ba4789f6",
+      "sanitized": true
+    },
+    {
+      "source": "docs/artwork/geographic-scenes.json",
+      "destination": "docs/artwork/geographic-scenes.json",
+      "sourceSha256": "8c18975220792208713c3037779dd43fc62244a7c797593aaaeafb1efb5cbb3b",
+      "sha256": "7aaf0edeedcf3c1b562314b1b651010d845e98d173a5d46219fae37c5c672ade",
+      "sanitized": true
+    },
+    {
+      "source": "docs/artwork/PIPELINE.md",
+      "destination": "docs/artwork/PIPELINE.md",
+      "sourceSha256": "05ea4470fc2c594c189515ab75860561cf4b4f8706154b0e94c3b2b3863b9dae",
+      "sha256": "05ea4470fc2c594c189515ab75860561cf4b4f8706154b0e94c3b2b3863b9dae",
+      "sanitized": false
+    }
+  ]
+}

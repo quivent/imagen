@@ -11,7 +11,7 @@ async function remember(cache, request, response) {
     try { await cache.put(request, response.clone()); } catch { /* Quota/storage trouble must not hide a usable image. */ }
   }
 }
-async function image(request) {
+async function image(request, lifetime) {
   let cache;
   try { cache = await caches.open(CACHE); } catch { return fetch(request); }
   let cached;
@@ -27,7 +27,9 @@ async function image(request) {
     const response = await fetch(request, { headers });
     if (response.status === 304 && cached) return cached;
     if (!response.ok && cached) return cached;
-    await remember(cache, request, response);
+    // Return usable pixels immediately; durable disk caching follows under
+    // the fetch event lifetime instead of delaying image loading/decoding.
+    lifetime(remember(cache, request, response));
     return response;
   } catch (problem) {
     if (cached) return cached;
@@ -40,5 +42,10 @@ self.addEventListener('activate', event => event.waitUntil((async () => {
   await self.clients.claim();
 })()));
 self.addEventListener('fetch', event => {
-  if (event.request.method === 'GET' && artwork(new URL(event.request.url))) event.respondWith(image(event.request));
+  if (event.request.method === 'GET' && artwork(new URL(event.request.url))) {
+    const pending = [];
+    const response = image(event.request, promise => pending.push(promise));
+    event.respondWith(response);
+    event.waitUntil(response.then(() => Promise.all(pending)).catch(() => {}));
+  }
 });

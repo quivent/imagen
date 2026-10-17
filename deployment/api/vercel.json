@@ -1,0 +1,33 @@
+{
+  "framework": null,
+  "buildCommand": "",
+  "installCommand": "npm ci --omit=dev --omit=optional --ignore-scripts",
+  "outputDirectory": "public",
+  "functions": {
+    "api/control.js": {
+      "maxDuration": 30
+    },
+    "api/gallery.js": {
+      "maxDuration": 30
+    },
+    "api/studio-monitor.js": {
+      "maxDuration": 30
+    },
+    "api/studio-corrections.js": {
+      "maxDuration": 60
+    },
+    "api/studio-winners.js": {
+      "maxDuration": 30
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/control/:action",
+      "destination": "/api/control?action=:action"
+    },
+    {
+      "source": "/api/gallery/image",
+      "destination": "/api/gallery?image=1"
+    }
+  ]
+}

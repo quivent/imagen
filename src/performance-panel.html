@@ -1,6 +1,12 @@
 <div class="performance-view">
   <h1>Performance</h1>
   <p class="performance-source">This site’s load times, tab response, live connection and slowdowns in this browser session, alongside generation and GPU performance.</p>
+  <section aria-labelledby="performance-daemon-heading">
+    <h2 id="performance-daemon-heading">Always-on Performance engineer watchdog</h2>
+    <p id="performance-daemon-status" class="performance-source" role="status">Waiting for a current daemon observation.</p>
+    <p id="performance-daemon-events" class="performance-source"></p>
+    <p class="performance-source">A supervised daemon watches the Performance engineer’s fresh canonical lifecycle through local file events, even when this browser closes. When the engineer becomes idle, it queues one durable wake request for the coordinator to reactivate that existing engineer. Unknown or stale lifecycle evidence never proves idle. The daemon does not probe the site, open public sockets or measure network latency. Site measurements below come from this browser and the engineer’s explicit bounded tests.</p>
+  </section>
   <section aria-labelledby="performance-site-heading">
     <h2 id="performance-site-heading">Site performance</h2>
     <div id="performance-site-overview" class="performance-site-overview"></div>

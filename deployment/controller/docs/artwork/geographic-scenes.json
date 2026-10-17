@@ -1,0 +1,1056 @@
+{
+  "schema": 1,
+  "kind": "source-scene-prompts",
+  "scenes": [
+    {
+      "id": "scene-001",
+      "name": "Sahara dunes at dusk",
+      "region": "Morocco and the Sahara",
+      "originalBrief": "Wind-cut ochre dune crests, blue-violet troughs and a tiny distant ridge beneath the last amber light.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Wind-cut ochre dune crests in the Moroccan Sahara at dusk, sweeping unbroken sand ridges, blue-violet troughs and a tiny distant ridge under the last amber light. Low viewpoint with rippled sand foreground and layered dunes diminishing into open sky. No plants, buildings or camels. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-002",
+      "name": "Goat trees near Essaouira",
+      "region": "Morocco and the Sahara",
+      "originalBrief": "A spreading argan tree with goats balanced on its crooked branches, dry ground and Atlantic haze; the goats are the defining subject.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. A spreading mature argan tree near Essaouira with five clearly recognizable goats naturally standing on its broad crooked branches at different heights and two goats on dry ground below. Full tree silhouette, sparse small green leaves, textured twisting branches, hazy Atlantic horizon. The goats are the primary defining subject, detailed believable anatomy, distinct legs and hooves visibly resting on branches. Soft late afternoon light. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-003",
+      "name": "Marrakesh spice markets",
+      "region": "Morocco and the Sahara",
+      "originalBrief": "A narrow market passage lined with pyramids of spices, woven baskets and brass lamps; warm shafts of light fall through a slatted canopy.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. A narrow Marrakesh souk passage with modest pyramids of ochre turmeric, rust paprika and cinnamon-colored spices in wide bowls, woven baskets, suspended pierced brass lamps and worn plaster shopfronts. Warm shafts of sunlight cross a slatted reed canopy, tactile shaded corridor recedes around a bend. No legible signs, no people. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-004",
+      "name": "The blue lanes of Chefchaouen",
+      "region": "Morocco and the Sahara",
+      "originalBrief": "Bluewashed stepped lanes with uneven walls, shadowed doorways and clay pots catching a strip of sunlight.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Chefchaouen's bluewashed stepped lane, uneven cobalt and powder-blue plaster walls, worn stone steps, intimate shadowed rectangular and arched doorways, a few terracotta pots catching one strip of late sunlight. Looking upward around a gentle bend, regional masonry and scale recognizable, not a generic garden. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-005",
+      "name": "Atlas mountain terraces",
+      "region": "Morocco and the Sahara",
+      "originalBrief": "Give the scene a clear near, middle and far distance.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Moroccan High Atlas agricultural terraces: near foreground rough dry-stone retaining wall and small barley plot, middle distance irregular stepped fields and a modest earth-built Amazigh village, distant rugged gray ochre mountain ridges with lingering high snow. Clear near/middle/far depth, restrained green plots in dry terrain, early evening light. No generic pine forest. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-006",
+      "name": "Aït Benhaddou in evening light",
+      "region": "Morocco and the Sahara",
+      "originalBrief": "Stacked earthen towers and stepped walls rise above a dry riverbed, their warm faces contrasting with cool narrow shadows.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Aït Benhaddou in Morocco viewed across its broad mostly dry stony riverbed: a recognizable compact fortified ksar of stacked earthen houses, square corner towers with simple crenellations, stepped walls climbing a low hill. Warm terracotta faces against cool narrow shadows in evening light; no European stone castle or domes. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-007",
+      "name": "Fès courtyard fountains",
+      "region": "Morocco and the Sahara",
+      "originalBrief": "A tiled courtyard surrounds a shallow fountain; repeating arches, patterned water reflections and a patch of open sky organize the scene.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. An intimate Fès courtyard with intricate restrained geometric zellij tilework, a shallow central fountain, repeating carved plaster arches and cedar wood detail. Patterned water reflections, open patch of blue evening sky overhead, quiet symmetrical architecture shown at human height. No text, calligraphy or people. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-008",
+      "name": "An oasis in the Draa Valley",
+      "region": "Morocco and the Sahara",
+      "originalBrief": "Explore the meeting of land and water.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. A Draa Valley oasis in southern Morocco: a narrow calm irrigation channel in the foreground bordered by mud banks and date palms, irregular small cultivated plots in the middle distance, dry ochre foothills and earth-built settlement beyond. Emphasize precious shallow water meeting arid earth, dappled evening shade, no tropical lake. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-009",
+      "name": "Atlantic surf at Essaouira",
+      "region": "Morocco and the Sahara",
+      "originalBrief": "Preserve the character of the place without decorative clichés.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Essaouira's Atlantic shoreline at blue hour with broad foamy surf folding over a low rocky shelf, distant recognizable ochre coastal ramparts and white low-rise medina, wind-shaped sea and hazy open horizon. Restrained gray-blue water, wet foreground stones, no decorative camels, no generic tropical palms. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-010",
+      "name": "Todra Gorge after rain",
+      "region": "Morocco and the Sahara",
+      "originalBrief": "Find an unexpected viewpoint within the setting.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Todra Gorge in Morocco after rain from a low viewpoint beside a shallow clear stream: immense near-vertical orange limestone walls rise closely on either side, wet dark cobbles foreground, reflected slit of pale sky in water, mist softening the far bend. Rain-washed texture and towering scale, no fabricated buildings. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-011",
+      "name": "Buckingham Palace in London",
+      "region": "Britain and Ireland",
+      "originalBrief": "The long pale stone palace façade, its central balcony and forecourt seen in soft London light, with restrained detail and recognizable symmetry.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Buckingham Palace London, recognizable frontal east façade: long symmetrical pale stone neoclassical frontage, central balcony and pediment, repeated sash windows, balustraded roofline and broad forecourt behind black iron railings. Soft overcast London evening, slightly off-center pedestrian viewpoint, restrained architectural detail. No invented towers or domes, no people or readable signage. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-012",
+      "name": "The Irish Atlantic coast",
+      "region": "Britain and Ireland",
+      "originalBrief": "Grass-covered headlands break into dark rock shelves above Atlantic surf; fleeting sunshine crosses distant cliffs.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Irish Atlantic coast: grass-covered irregular headlands break into dark layered rock shelves over white surf, short wind-combed coastal grass close foreground, receding distant cliffs touched by a fleeting patch of sunlight through slate cloud. Rugged natural shape, restrained deep green and blue-gray, no castles or cottages. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-013",
+      "name": "Giant’s Causeway under storm clouds",
+      "region": "Britain and Ireland",
+      "originalBrief": "Study reflected light and soft transitions.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Giant's Causeway Northern Ireland, unmistakable interlocking polygonal hexagonal basalt columns stepping from close foreground into the Atlantic, wet flat column tops reflecting soft light beneath heavy blue-gray storm clouds. Distinct geometric basalt forms and varied heights, gentle sea at their edges, no lightning or threatening waves. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-014",
+      "name": "Scottish Highlands in mist",
+      "region": "Britain and Ireland",
+      "originalBrief": "Balance a strong silhouette with open space.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Scottish Highlands in soft mist, a strong rugged mountain shoulder forms one dark silhouette against broad open cloud-filled glen, tawny moor grasses foreground, layered heath slopes and a distant narrow burn. Quiet scale, no trees dominating, soft dawn gray and muted russet. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-015",
+      "name": "A Welsh mountain lake",
+      "region": "Britain and Ireland",
+      "originalBrief": "Give the scene a clear near, middle and far distance.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. A Welsh mountain lake in a glacial mountain hollow: close slate pebbles and tufted grass at the water's edge, middle-distance still dark lake, far craggy rounded Snowdonia-like ridges with low cloud. Distinct near/middle/far layers, soft cool early light, no Alps-like giant peaks or decorative cottages. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-016",
+      "name": "Cornwall sea cliffs",
+      "region": "Britain and Ireland",
+      "originalBrief": "Make small details support the larger forms.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Cornwall's rugged granite sea cliffs with low coastal thrift flowers and fine grass along the foreground path, angular weathered headlands extending into Atlantic blue-green water, tiny foam lines emphasizing rock scale. Restrained late afternoon silver light, no tropical palms or oversized fantasy cliffs. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-017",
+      "name": "A Cotswold village garden",
+      "region": "Britain and Ireland",
+      "originalBrief": "Use restrained colour and believable light.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. An intimate Cotswold village garden beside a modest honey-colored limestone cottage with steep weathered stone roof, small mullioned windows, low dry-stone wall, climbing roses and mixed cottage perennials. A simple bench beside a narrow garden path, gentle overcast late-day light, muted greens and cream stone, no ornate manor. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-018",
+      "name": "The Lake District at dawn",
+      "region": "Britain and Ireland",
+      "originalBrief": "Explore the meeting of land and water.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. English Lake District at dawn: still lake edge with submerged rounded pebbles and fine reeds foreground, a low dry-stone shoreline wall, rolling green and russet fells reflected through thin lake mist. A restrained pale apricot dawn low in cool blue sky, no alpine needles or fantastical buildings. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-019",
+      "name": "Skellig islands in Atlantic light",
+      "region": "Britain and Ireland",
+      "originalBrief": "Preserve the character of the place without decorative clichés.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. The two Skellig islands off Ireland: steep jagged dark pyramidal rock islands rising from open Atlantic, larger Skellig Michael at middle distance and smaller Little Skellig offset farther away. View from low sea level with restrained rolling blue-gray waves, brief silvery sun through cloud. Emphasize wild rock silhouettes, no invented coastal village. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-020",
+      "name": "London along the Thames at night",
+      "region": "Britain and Ireland",
+      "originalBrief": "Find an unexpected viewpoint within the setting.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. London Thames at night viewed from a low riverside stone stair near the South Bank: wet worn steps foreground, broad dark river reflecting amber lights, recognizable Westminster Palace roofline and Elizabeth Tower across the water at an oblique angle. Deep navy sky, real restrained city scale, no giant moon or fantastical skyline. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-021",
+      "name": "Rhine river castles",
+      "region": "Continental Europe",
+      "originalBrief": "A broad bend of the Rhine below a hilltop castle, steep vineyards and a small riverside settlement in layered autumn haze.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. A broad bend of the Middle Rhine below a recognizable regional medieval hilltop stone castle with compact keep and curtain walls, steep terraced vineyards and a small riverside village below. Autumn ochre vines foreground, receding blue river valley haze, evening light, no fantasy castle spires. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-022",
+      "name": "Rhine vineyards in autumn",
+      "region": "Continental Europe",
+      "originalBrief": "Let irregular natural rhythms carry the composition.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Steep Rhine valley vineyards in autumn, irregular contour-following rows of gold and russet vines supported by weathered posts, narrow stone terraces and footpath, the river glimpsed far below between hills. Intimate close vines to expansive valley, diffuse late sunlight, no dominant castle. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-023",
+      "name": "Venice canals after rain",
+      "region": "Continental Europe",
+      "originalBrief": "Study reflected light and soft transitions.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. An intimate Venice canal after evening rain, weathered ochre and rose plaster palazzi with real Venetian arched windows and dark green shutters, one small stone pedestrian bridge, waterline algae and mooring posts. Wet stone edge foreground, soft blue and amber reflections in canal, believable old city proportions. No cars or invented skyline. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-024",
+      "name": "The lavender fields of Provence",
+      "region": "Continental Europe",
+      "originalBrief": "Balance a strong silhouette with open space.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Provence lavender fields in late dusk, restrained violet rows curving gently with the land, one mature asymmetrical olive tree as strong foreground silhouette, open pale rose and blue sky, distant low limestone hills. Spacious agrarian landscape, natural muted flowers, no mountain lake or added villa. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-025",
+      "name": "The Swiss Alps above a lake",
+      "region": "Continental Europe",
+      "originalBrief": "Give the scene a clear near, middle and far distance.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Swiss Alps above a clear mountain lake: near rounded shoreline stones and low alpine grass, middle-distance dark turquoise still water and forested lower slopes, far distinctly snow-lined sharp Alpine ridges. Soft blue evening, small warm alpenglow on high rock, believable scale and water reflections. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-026",
+      "name": "The Norwegian fjords",
+      "region": "Continental Europe",
+      "originalBrief": "Make small details support the larger forms.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. A Norwegian fjord viewed from a low shore: long deep blue water enclosed by very steep glacial rock walls with sparse birch and pine patches, a slender distant waterfall providing scale, small mossy boulders foreground. Cool cloudy evening with layered atmospheric distance, no fantasy buildings or giant sun. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-027",
+      "name": "A Greek island harbour",
+      "region": "Continental Europe",
+      "originalBrief": "Use restrained colour and believable light.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. A modest Greek island fishing harbour at blue hour, whitewashed cube-shaped waterfront houses with restrained blue shutters, small wooden fishing boats with ropes and nets, weathered stone quay, calm Aegean reflections and a dry low hillside. A few warm windows, authentic human scale, no oversized domes or resort glamour. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-028",
+      "name": "The Dolomites at sunrise",
+      "region": "Continental Europe",
+      "originalBrief": "Explore the meeting of land and water.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. The Dolomites at sunrise: unmistakable pale dolomitic limestone towers and serrated vertical faces catching faint rose-gold light, a small still alpine tarn in the foreground reflecting the peaks, low dark conifers at mid distance. Craggy tower geology, cool shadow detail, no rounded generic mountains. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-029",
+      "name": "A Black Forest stream",
+      "region": "Continental Europe",
+      "originalBrief": "Preserve the character of the place without decorative clichés.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. A Black Forest stream in Germany at soft dusk, shallow clear water winding between rounded mossy granite boulders, dense tall dark fir and spruce trunks, ferns and fallen needles on the near bank. Soft filtered silver light and nuanced forest shadow, no cottages, clocks, gnomes or fantasy glow. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-030",
+      "name": "An Icelandic volcanic coast",
+      "region": "Continental Europe",
+      "originalBrief": "Find an unexpected viewpoint within the setting.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Icelandic volcanic coast from a low viewpoint within a shallow basalt rock alcove, black sand and wet volcanic pebbles foreground, surf withdrawing over the dark beach, jagged offshore sea stacks and distant columnar basalt headland. Cool overcast twilight, restrained white foam, no erupting volcano or tropical foliage. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-031",
+      "name": "Kyoto in peak cherry blossom",
+      "region": "Japan",
+      "originalBrief": "Peak cherry blossom arches above a quiet Kyoto path; pale pink clusters, dark branching limbs and scattered petals remain distinct from the soft distance.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Kyoto at peak cherry blossom, pale pink sakura clusters arching above a quiet narrow footpath, distinct dark branching limbs, scattered petals on worn stone, a small traditional timber fence at one edge and soft receding distance. Cool early morning light, natural restrained blossom color and fine petal detail, no generic flowering trees or festival crowds. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-032",
+      "name": "Mount Fuji across a still lake",
+      "region": "Japan",
+      "originalBrief": "Let irregular natural rhythms carry the composition.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Mount Fuji across a still Japanese lake at blue dawn, unmistakable single broad symmetrical volcanic cone with a snow cap, distant low shore, irregular reeds and rounded volcanic stones foreground, broken gentle reflection. Quiet negative space and natural asymmetry around the mountain, no extra giant peaks or decorative torii. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-033",
+      "name": "A bamboo grove in Arashiyama",
+      "region": "Japan",
+      "originalBrief": "Study reflected light and soft transitions.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Arashiyama bamboo grove in Kyoto, tall closely spaced green bamboo culms with visible nodes and fine leafy canopy, narrow sandy walking path between low woven twig fences. Soft green reflected light through vertical trunks, pale blue morning distance, distinct bamboo not generic trees, no people. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-034",
+      "name": "A Kyoto garden after rain",
+      "region": "Japan",
+      "originalBrief": "Balance a strong silhouette with open space.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. A Kyoto garden after rain, carefully pruned low pine silhouette beside an open still pond, moss-covered stones, a few maples and simple stepping stones, a modest timber veranda at the frame edge. Wet surfaces with muted reflections, broad open water balanced against the tree, cool twilight, no decorative clichés. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-035",
+      "name": "Nara deer beneath trees",
+      "region": "Japan",
+      "originalBrief": "Deer stand beneath widely spaced trees; overlapping silhouettes, dappled ground and an unhurried sense of scale carry the composition.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Nara Japan, four clearly recognizable sika deer beneath widely spaced mature trees in an open park. One close deer and three at staggered mid-distance, modest natural antlers on one stag, warm brown coats with subtle pale spotting, believable slender legs and hooves, dappled grass and soft woodland depth. Gentle late afternoon light. Deer are the defining subject, not tiny background decoration, no people. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-036",
+      "name": "A snowy street in Shirakawa-go",
+      "region": "Japan",
+      "originalBrief": "Make small details support the larger forms.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Shirakawa-go Japan in a snowy blue evening, recognizable gassho-zukuri farmhouses with extremely steep thick thatched triangular roofs under snow, exposed dark timber and pale walls, a narrow snow-packed village lane, warm small windows. Detailed snow on eaves and fence posts, distant wooded hill, no European chalet substitution. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-037",
+      "name": "Torii gates at Fushimi Inari",
+      "region": "Japan",
+      "originalBrief": "Use restrained colour and believable light.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Fushimi Inari Kyoto, a long receding passage of closely spaced vermilion torii gates with black bases, recognizable twin-post and double-crossbeam structure, gently ascending stone path through dark forest. Restrained red-orange paint in natural soft forest light, weathered wood detail, no invented legible inscriptions, no people. Preserve the actual sacred gate architecture; do not omit the gates. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-038",
+      "name": "The sea cliffs of Okinawa",
+      "region": "Japan",
+      "originalBrief": "Explore the meeting of land and water.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Okinawa coastal limestone cliffs above clear turquoise water, low rugged coral-limestone shelves meeting the sea, subtropical coastal shrubs and wind-shaped grasses on the near rim, distant pale reef line. Restrained luminous blue-green water under soft hazy late-afternoon sky, no generic granite European coast. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-039",
+      "name": "Autumn leaves beside a Japanese stream",
+      "region": "Japan",
+      "originalBrief": "Preserve the character of the place without decorative clichés.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. A Japanese woodland stream in autumn, delicate Japanese maple branches in muted red and copper arch above shallow water and dark rounded mossy stones, individual fallen leaves collecting in a quiet eddy. Soft overcast light, close intimate framing with distant stream bend, no gates, shrines or buildings added. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-040",
+      "name": "Tokyo reflected in evening rain",
+      "region": "Japan",
+      "originalBrief": "Find an unexpected viewpoint within the setting.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Tokyo in evening rain viewed from beneath a small covered side-street awning, close shallow pavement puddle reflecting real layered narrow urban buildings, overhead utility lines, compact shop fronts and distant contemporary towers. Cool blue rain, restrained amber and muted red window light, no legible signs or exaggerated cyberpunk neon. Recognizable dense Tokyo street proportions, no people. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-041",
+      "name": "The limestone peaks of Guilin",
+      "region": "China",
+      "originalBrief": "Steep rounded limestone towers emerge from river mist, with a small low foreground and several receding bands of mountains.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Guilin China limestone karst peaks: steep rounded vegetated limestone towers emerge in multiple bands through river mist, a small low riverbank foreground with grasses, dark winding water below. Pale cool dawn light, rhythmic asymmetric karst silhouettes, no alpine pointed mountains or pagodas. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-042",
+      "name": "The Li River in morning mist",
+      "region": "China",
+      "originalBrief": "Let irregular natural rhythms carry the composition.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Li River near Guilin at misty morning, broad gently curving river with naturally irregular vegetated karst towers along both banks, one small plain bamboo raft moored near shore for scale, foreground river reeds. Soft silvery water and layered blue-green atmosphere, no fishermen or fantasy peaks. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-043",
+      "name": "The rice terraces of Longji",
+      "region": "China",
+      "originalBrief": "Study reflected light and soft transitions.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Longji rice terraces China at dusk during flooded planting season, intricate curving stepped paddies wrapping steep hills, narrow earthen rims and silver-blue mirrored water catching a pale amber horizon. Close terrace edge foreground, many overlapping contour bands into mist, no generic flat farm or lavender rows. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-044",
+      "name": "Zhangjiajie stone pillars",
+      "region": "China",
+      "originalBrief": "Balance a strong silhouette with open space.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Zhangjiajie China, towering narrow sandstone pillars with dark vegetation crowning their tops, one strong close vertical pillar on one side balanced against a broad open mist-filled gulf with slender distant columns. Cool blue-gray atmosphere, weathered vertical rock textures, no floating rocks or bridges. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-045",
+      "name": "The Forbidden City at sunrise",
+      "region": "China",
+      "originalBrief": "Crimson walls, golden roof ridges and a broad ceremonial courtyard glow in early light; preserve the layered roof silhouettes.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Forbidden City Beijing at sunrise, a broad ceremonial stone courtyard leading to elevated palace halls, unmistakable layered golden glazed hip-and-gable roof silhouettes with sweeping eaves, crimson columns and walls, white marble terrace balustrades. Gentle early amber light with cool courtyard shadows, recognizable imperial Chinese architecture and restrained details. No text or people, no generic pagoda substitution. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-046",
+      "name": "The Great Wall across autumn hills",
+      "region": "China",
+      "originalBrief": "A winding stone wall and watchtowers follow the crest of autumn-colored hills into a hazy distance.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Great Wall of China across autumn hills, recognizable stone rampart walkway with crenellated sides and square watchtowers following the ridge into hazy distance. Near viewpoint on empty wall with textured masonry, muted russet and ochre forest hills beyond, soft late-afternoon light. Preserve continuous winding wall geometry, no isolated castle substitution. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-047",
+      "name": "Jiuzhaigou turquoise lakes",
+      "region": "China",
+      "originalBrief": "Use restrained colour and believable light.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Jiuzhaigou China, clear natural turquoise lake with submerged pale fallen tree trunks visible through the water, forested shore in restrained green and autumn gold, layered mountain slopes in blue mist. Close shallow transparent water, soft cloudy light, believable mineral color not neon, no resort structures. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-048",
+      "name": "West Lake in Hangzhou",
+      "region": "China",
+      "originalBrief": "Explore the meeting of land and water.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. West Lake Hangzhou in soft evening mist, willow branches hanging over a gently curved low stone lakeside path, calm broad water, distant low arched causeway bridge and hazy green hills. Restrained gray-green and pearl-blue, intimate foreground willow detail, no towering karst or invented palace. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-049",
+      "name": "A Suzhou garden in rain",
+      "region": "China",
+      "originalBrief": "Preserve the character of the place without decorative clichés.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Classical Suzhou garden in gentle rain, white plaster walls and gray tiled roofs, a circular moon gate framing a pond, sculptural perforated Taihu limestone rock, restrained bamboo and covered timber walkway. Wet paving, soft reflections, authentic human-scale garden architecture, no bright lantern spectacle or generic forest. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-050",
+      "name": "The painted mountains of Zhangye",
+      "region": "China",
+      "originalBrief": "Find an unexpected viewpoint within the setting.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Zhangye Danxia China from within a low eroded ravine, unmistakable layered red ochre sandstone ridges with muted cream, rose and earthy green mineral bands exposed across rolling sharp folds. Near rough rock edge and broad striped hills beyond, soft oblique evening light. Natural geological color, no oversaturated rainbow or vegetation dominating. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-051",
+      "name": "The Himalayas above clouds",
+      "region": "South Asia",
+      "originalBrief": "Use a quiet foreground and a distant focal point.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Himalayan high mountains above a sea of cloud, quiet dark rocky ridge with sparse alpine grass in the close foreground, one distant immense sharply ridged snow-clad Himalayan summit catching subtle early dawn pink, surrounding high peaks partly veiled. Vast atmospheric depth, realistic mountain scale, no invented temples or giant sun. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-052",
+      "name": "The Taj Mahal at dawn",
+      "region": "South Asia",
+      "originalBrief": "A pale marble dome and four minarets reflect in a long garden pool; dawn warmth and delicate symmetry define the view.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Taj Mahal Agra at dawn, recognizable pale marble mausoleum with large central onion dome and finial, four slender minarets at the platform corners, smaller rooftop chhatris, central high pointed arch. Long formal garden reflection pool and restrained cypress rows in foreground, delicate near-symmetry, soft rose dawn haze. Preserve architecture accurately, no extra domes or minarets, no people or lettering. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-053",
+      "name": "Varanasi beside the Ganges",
+      "region": "South Asia",
+      "originalBrief": "Study reflected light and soft transitions.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Varanasi riverfront beside the Ganges in soft early morning, broad worn stone ghats descending to calm water, layered old ochre and rose masonry buildings with balconies and several modest temple spires along the upper bank, small empty wooden boats moored below. Low river-level oblique view, hazy reflected warm light. No funeral scenes, no flames or spectacle, no generic village. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-054",
+      "name": "Kerala backwaters",
+      "region": "South Asia",
+      "originalBrief": "Balance a strong silhouette with open space.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Kerala backwaters in South India at blue hour, calm broad water channel with a strong gently leaning coconut palm silhouette at one edge, distant green banks and a modest traditional kettuvallam houseboat with curved woven thatch canopy moored mid-distance. Wide open reflected sky, subtle amber light, no tropical ocean waves. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-055",
+      "name": "Tea gardens in Sri Lanka",
+      "region": "South Asia",
+      "originalBrief": "Give the scene a clear near, middle and far distance.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Sri Lankan highland tea gardens, near glossy small-leaved waist-high tea bushes clipped into irregular contour rows, middle-distance narrow footpath and sparse tall shade trees, far rolling misty mountain slopes. Soft early light and restrained rich greens, clearly tea plantations not vineyards or rice paddies, no people. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-056",
+      "name": "The pink streets of Jaipur",
+      "region": "South Asia",
+      "originalBrief": "Make small details support the larger forms.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Jaipur old city pink streets, warm terracotta-pink stucco façades with intricate jharokha projecting windows, recessed arcades and carved geometric screens; a narrow street at quiet early evening with a few simple wooden shutters and stone paving. Architecture is the subject, believable Rajasthan details and scale, no generic trees or European houses, no readable signage or people. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-057",
+      "name": "A Bhutanese mountain monastery",
+      "region": "South Asia",
+      "originalBrief": "Use restrained colour and believable light.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. A Bhutanese mountain monastery perched against a steep forested Himalayan cliff, recognizable whitewashed masonry walls, dark red ochre timber bands and layered gilded gently upturned roofs, stone terraces tightly following the rock. Pine-covered slopes and soft valley mist below, restrained natural early evening light. Architecture clearly visible and structurally coherent, no European castle or generic hut substitution, no readable text or people. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-058",
+      "name": "The Maldives above and below water",
+      "region": "South Asia",
+      "originalBrief": "A cutaway view of a shallow turquoise lagoon, pale sandbars above and scattered coral forms below the sunlit water surface.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. A coherent split-level view at the surface of a shallow Maldivian lagoon: above, pale sandbars and a low distant palm island; below, clear sunlit water reveals scattered branching and rounded corals on pale sand and several small reef fish with distinct bodies and fins. The waterline crosses the frame naturally. Reef forms are essential, not an empty blue underwater area. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-059",
+      "name": "A monsoon forest in the Western Ghats",
+      "region": "South Asia",
+      "originalBrief": "Preserve the character of the place without decorative clichés.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. A low forest trail beside a rain-swollen stream in the Western Ghats during monsoon, dense broadleaf evergreen canopy, wet buttressed trunks, lianas, ferns and dark boulders, fine rain and mist. Diffuse green daylight, no conifer forest or decorative temples. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-060",
+      "name": "Ladakh beneath a clear night sky",
+      "region": "South Asia",
+      "originalBrief": "Find an unexpected viewpoint within the setting.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Ladakh high-altitude desert at night, seen from a low sheltered gap between angular foreground rocks. Bare layered mountains and a narrow pale river valley under a naturally scaled Milky Way, cold clear starlight, dark readable terrain. No giant moon, forests or fantasy buildings. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-061",
+      "name": "Jerusalem stone streets at dawn",
+      "region": "Middle East",
+      "originalBrief": "Pale limestone alleys, worn steps, deep door recesses and a quiet early-morning shaft of light; make the masonry and tight passage legible.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. An intimate Jerusalem old-city limestone passage at dawn, worn stepped paving, deep arched door recesses, pale irregular masonry and a narrow shaft of warm light beneath an overhead stone arch. Preserve the tight passage and material detail, no invented writing or generic woodland. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-062",
+      "name": "Jerusalem’s old city rooftops",
+      "region": "Middle East",
+      "originalBrief": "Layered pale-stone rooftops, domes and towers rise above narrow shaded streets under warm morning light.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Jerusalem old-city roofscape from a modest roof terrace: layered pale limestone flat roofs, small domes, church towers and a distant recognizable golden Dome of the Rock, narrow shaded passages below, warm early light. Respect the varied religious architecture, no flags or political imagery, no invented skyline of skyscrapers. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-063",
+      "name": "Petra in warm reflected light",
+      "region": "Middle East",
+      "originalBrief": "Study reflected light and soft transitions.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. View from inside Petra's narrow sandstone Siq toward the recognizable rock-carved Treasury facade. Clearly articulated classical columns, pediments, doorway and central upper tholos carved into rose sandstone. Cool shaded foreground walls catch warm bounced light from the facade; softly luminous stone, no invented vegetation replacing architecture. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-064",
+      "name": "Wadi Rum beneath the stars",
+      "region": "Middle East",
+      "originalBrief": "Balance a strong silhouette with open space.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Wadi Rum at night: one broad massive sandstone rock silhouette with vertical erosion flutings on the left, red sand plain and sparse low rocks opening to the right beneath fine stars and a subtle Milky Way. Restrained dark blue and muted rust, readable shadow, no tents or oversized moon. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-065",
+      "name": "The Dead Sea shoreline",
+      "region": "Middle East",
+      "originalBrief": "Give the scene a clear near, middle and far distance.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Dead Sea shoreline with intricate white salt crust and salt-encrusted stones near the viewer, still pale blue mineral water in the middle distance, and dry tawny mountains beyond. Low morning light, believable salt crystal texture, no surf or lush vegetation. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-066",
+      "name": "An Istanbul courtyard",
+      "region": "Middle East",
+      "originalBrief": "Make small details support the larger forms.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. An Ottoman courtyard in Istanbul with a central marble ablution fountain beneath a small lead-grey domed canopy, repeated stone arches and slender columns around the perimeter, tiled details and domed roof forms beyond. Warm side light after a light shower, paving reflections support the strong architectural layout. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-067",
+      "name": "Cappadocia at first light",
+      "region": "Middle East",
+      "originalBrief": "Use restrained colour and believable light.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Cappadocia tuff landscape at first light: distinctive tapered fairy chimneys, eroded pale rose ridges, a few actual-looking small cave door openings carved into rock, foreground dry grasses and distant valley. Subtle peach and grey light, no hot-air balloons or fantasy castles. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-068",
+      "name": "Muscat beside the sea",
+      "region": "Middle East",
+      "originalBrief": "Explore the meeting of land and water.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Muscat's Mutrah-inspired waterfront seen from a rocky shoreline, low white and cream Omani buildings following a curved corniche, mosque dome and slender minaret, rugged bare brown mountains immediately behind, calm blue sea and a small traditional wooden dhow. Believable coastal urban form, no Dubai skyscrapers. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-069",
+      "name": "A Persian garden in Isfahan",
+      "region": "Middle East",
+      "originalBrief": "Preserve the character of the place without decorative clichés.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. An Isfahan Persian garden inspired by Chehel Sotoun: a long rectangular reflecting pool leading to an elegant timber-columned palace pavilion, tall plane trees, cypresses and ordered planted beds; restrained tile details, warm afternoon shade. Authentic spatial order and architectural forms, no random exotic ornaments. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-070",
+      "name": "The cedar forests of Lebanon",
+      "region": "Middle East",
+      "originalBrief": "Find an unexpected viewpoint within the setting.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Lebanese cedar grove viewed from beneath one ancient spreading branch, massive furrowed trunk off-center, distinctive broad horizontal tiered crowns of Cedrus libani across a rocky mountain slope, distant pale high ridges and thin morning mist. No pointed spruce substitutes. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-071",
+      "name": "The Namib dunes meet the sea",
+      "region": "Africa",
+      "originalBrief": "Use a quiet foreground and a distant focal point.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Namib coastal dunes meeting the Atlantic, quiet close foreground of fine rippled sand, immense ochre dune slopes descending directly to a narrow silver surf line, a tiny far headland as focal point, cool coastal fog against warm dune light. No buildings or generic tropical beach. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-072",
+      "name": "The Okavango Delta",
+      "region": "Africa",
+      "originalBrief": "Let irregular natural rhythms carry the composition.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Low elevated view across the Okavango Delta's branching waterways, irregular papyrus beds and grassy islands with scattered palms, shallow reflective channels weaving toward a flat hazy horizon. Early morning gold and fresh muted greens, no mountains, no generic canyon. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-073",
+      "name": "Victoria Falls through spray",
+      "region": "Africa",
+      "originalBrief": "Study reflected light and soft transitions.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Victoria Falls from a gorge-side viewpoint: a broad continuous waterfall curtain drops from a level forested basalt plateau into a narrow deep chasm; thick spray rises and partly veils the opposite wall, a faint natural rainbow in soft daylight. Wet foreground rock and rainforest edge; avoid terraced cascade substitutes. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-074",
+      "name": "Kilimanjaro above the savanna",
+      "region": "Africa",
+      "originalBrief": "Balance a strong silhouette with open space.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Kilimanjaro's recognizable broad volcanic summit with a restrained snow cap above a wide East African savanna, one flat-topped acacia silhouette on the left, low dry grasses and open plain, cool distant mountain through morning haze. No jagged Alpine peak substitute. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-075",
+      "name": "Baobabs in Madagascar",
+      "region": "Africa",
+      "originalBrief": "Great swollen baobab trunks and sparse branching crowns stand against a glowing horizon; their unusual proportions define the place.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Madagascar baobabs at dusk, enormous swollen smooth reddish-grey columnar trunks and sparse high rootlike branching crowns, several trees at different distances beside a simple dusty track, low grass and glowing amber horizon. Authentic extreme trunk-to-crown proportions are essential; no ordinary spreading oak substitutes. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-076",
+      "name": "A Serengeti waterhole",
+      "region": "Africa",
+      "originalBrief": "Make small details support the larger forms.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. A Serengeti waterhole at soft late afternoon light with three clearly recognizable zebras at the bank, one drinking with muzzle at the water and two standing; distinct legs, hooves and natural stripe patterns. Broad grassland and distant flat-topped acacias provide context. Reflections and muddy tracks support the main animal forms. No fused bodies or decorative animal silhouettes. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-077",
+      "name": "The Ethiopian highlands",
+      "region": "Africa",
+      "originalBrief": "Use restrained colour and believable light.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Ethiopian Simien-inspired highlands with vast layered basalt escarpments and deep green-brown valleys, small foreground tussocks and giant lobelia plants, distant high plateau in soft overcast light. Clear geological scale, restrained greens and ochre, no Alpine chalet or snow cap. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-078",
+      "name": "The rainforests of the Congo",
+      "region": "Africa",
+      "originalBrief": "Explore the meeting of land and water.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Congo Basin rainforest river margin from close to water level: broad dark slow river curves past exposed tree roots, dense layered broadleaf canopy, tall buttressed trunks and lianas, humid morning mist, reflected green light. Preserve lowland rainforest structure, no conifers, mountains or invented wildlife. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-079",
+      "name": "Cape Town below Table Mountain",
+      "region": "Africa",
+      "originalBrief": "Preserve the character of the place without decorative clichés.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Cape Town from a modest waterfront quay: recognizable flat-topped Table Mountain with a thin tablecloth cloud, actual city-scale low and mid-rise buildings beneath it, working harbour and small boats in the foreground, late afternoon clear light. The mountain and coastal city are both defining subjects, no fantasy skyline. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-080",
+      "name": "A Zanzibar shore at low tide",
+      "region": "Africa",
+      "originalBrief": "Find an unexpected viewpoint within the setting.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Zanzibar at low tide from a very low viewpoint beside a shallow tidal pool, pale coral sand with ripple patterns and scattered seagrass, a grounded traditional wooden dhow in middle distance, far turquoise water and low island horizon. Soft morning light, believable tidal flats, no huge cliffs. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-081",
+      "name": "The Grand Canyon at sunrise",
+      "region": "North America",
+      "originalBrief": "Layer after layer of eroded red and ochre canyon walls descends into cool shadow, with a sunlit rim and a distant winding river.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Grand Canyon at sunrise, layered red and ochre sedimentary canyon walls and eroded mesas receding into cool violet shadows, a sunlit near rim with small sparse shrubs, distant winding Colorado River barely visible deep below. Immense believable depth, no generic isolated mountain. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-082",
+      "name": "Joshua Tree under starlight",
+      "region": "North America",
+      "originalBrief": "Forked Joshua tree silhouettes and rounded granite boulders anchor a wide desert beneath a star-filled sky.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Joshua Tree desert under natural starlight, distinctive forked yucca trunks and spiky terminal leaf clusters silhouetted among rounded granite boulder piles, broad open desert and fine stars. Muted silver-blue night with readable stone detail, no generic deciduous tree or saguaro substitution. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-083",
+      "name": "Yosemite Valley in spring",
+      "region": "North America",
+      "originalBrief": "Study reflected light and soft transitions.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Yosemite Valley in spring from the Merced River edge, clear reflected granite walls including an El Capitan-like sheer monolith and a distant waterfall, fresh meadow grass and mixed pines, melting-snow water and soft morning haze. Preserve glacial valley shape and granite scale. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-084",
+      "name": "A redwood forest in fog",
+      "region": "North America",
+      "originalBrief": "Balance a strong silhouette with open space.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Northern California coastal redwood forest in fog, immense straight reddish-brown furrowed trunks rising out of frame, one strong near trunk with visible buttress, sword ferns and an open path receding into pale mist between trees. Vertical monumental scale, no ordinary mixed woodland. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-085",
+      "name": "Antelope Canyon light shafts",
+      "region": "North America",
+      "originalBrief": "Give the scene a clear near, middle and far distance.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Antelope Canyon interior, sinuous close sandstone walls with layered flowing erosion bands, a narrow sunbeam from a slot high above illuminates suspended dust and sandy floor, passages recede around a bend into cool shadow. Warm restrained ochre and violet, no generic open canyon. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-086",
+      "name": "Monument Valley before a storm",
+      "region": "North America",
+      "originalBrief": "Make small details support the larger forms.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Monument Valley before a storm, unmistakable isolated red sandstone mitten-shaped buttes and broad mesas above a dry open valley, small foreground scrub and stones, deep blue-grey storm clouds with a brief warm break across one butte. Preserve iconic geological silhouettes, no forest. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-087",
+      "name": "Yellowstone hot springs",
+      "region": "North America",
+      "originalBrief": "Use restrained colour and believable light.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Yellowstone geothermal spring from a low safe-looking rocky rim viewpoint, a clear deep turquoise pool bordered by irregular cream mineral crust and restrained ochre-orange microbial bands, soft steam, distant lodgepole pines. Natural mineral colors, no oversaturated rainbow or bathers. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-088",
+      "name": "Lake Louise beneath mountain peaks",
+      "region": "North America",
+      "originalBrief": "Explore the meeting of land and water.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Lake Louise from a quiet rocky shoreline, glacial turquoise water with submerged pale stones, dark spruce edges framing the lake, a distant Victoria Glacier-like snow tongue between high rocky Canadian mountain walls. Soft cool morning light, no castle or boats. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-089",
+      "name": "The Louisiana bayou",
+      "region": "North America",
+      "originalBrief": "Preserve the character of the place without decorative clichés.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Louisiana bayou from water level, wide buttressed bald cypress trunks and cypress knees emerging from still dark water, long Spanish moss hanging from branches, dense wetland green and a softly lit channel receding into humidity. No mangrove or generic northern forest substitute. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-090",
+      "name": "The Pacific coast at Big Sur",
+      "region": "North America",
+      "originalBrief": "Find an unexpected viewpoint within the setting.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Big Sur coast from a low viewpoint beside coastal bluff grasses and wind-shaped shrubs, steep rugged headlands fall into Pacific coves, turquoise nearshore surf and dark rocky points recede in coastal haze. Late afternoon side light, no tropical palms or invented giant bridge. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-091",
+      "name": "Patagonia before a storm",
+      "region": "South America",
+      "originalBrief": "Jagged mountain spires rise above a cold lake and dark wind-bent foreground; storm light opens briefly across one distant slope.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Patagonian jagged granite spires above a cold steel-blue lake, dark wind-bent tussock grasses and low shrubs in foreground, heavy storm clouds with one narrow break of light on a far mountain slope. Rugged southern landscape, no chalet or gentle rounded mountain substitution. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-092",
+      "name": "The Amazon river at dawn",
+      "region": "South America",
+      "originalBrief": "Let irregular natural rhythms carry the composition.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Amazon River at dawn, broad slow river with irregular forested banks and small partly submerged islands, close floating leaves and a tree-root edge, layered lowland rainforest canopy fading into morning mist under a pale peach sky. Immense horizontal scale, no mountains or generic lake. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-093",
+      "name": "Iguazú Falls beneath rainbows",
+      "region": "South America",
+      "originalBrief": "Study reflected light and soft transitions.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Iguazu Falls in soft daylight, numerous broad waterfall curtains over horseshoe-like basalt ledges amid dense subtropical forest, roaring white water into a deep channel, luminous spray with a faint credible rainbow, wet foreground leaves. Preserve multi-cascade breadth, distinct from a single tall narrow waterfall. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-094",
+      "name": "The Atacama Desert at night",
+      "region": "South America",
+      "originalBrief": "Balance a strong silhouette with open space.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Atacama Desert at night, a stark eroded salt-and-rock ridge silhouettes one side, open barren gravel plain and distant volcano cone beneath a naturally detailed Milky Way, cold dry transparent atmosphere. Muted earth and blue shadows, no trees or oversized celestial objects. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-095",
+      "name": "Salar de Uyuni after rain",
+      "region": "South America",
+      "originalBrief": "Give the scene a clear near, middle and far distance.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Salar de Uyuni after rain, fine hexagonal salt crust visible beneath a thin clear water layer in the near foreground, vast mirror surface reflecting soft clouds in the middle distance, tiny distant dark island and mountain horizon. Dawn pale lavender and gold, believable flatness and restrained color. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-096",
+      "name": "Machu Picchu among clouds",
+      "region": "South America",
+      "originalBrief": "Stone terraces and closely fitted ruins follow a narrow green mountain saddle, with steep cloud-filled valleys beyond.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Machu Picchu among clouds, recognizable stepped Inca agricultural terraces and roofless closely fitted grey stone buildings arranged along a narrow green saddle, distinctive steep Huayna Picchu-shaped peak beyond, deep cloud-filled valleys on both sides. Natural soft morning light, accurate defining masonry forms without claiming surveyed layout, no generic temple or tree substitution. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-097",
+      "name": "The mountains of Torres del Paine",
+      "region": "South America",
+      "originalBrief": "Use restrained colour and believable light.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Granite towers and dark-topped Cuernos rise above a cold blue lake, low tawny grasses in foreground, broken soft daylight and restrained stone colors. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-098",
+      "name": "Lençóis Maranhenses lagoons",
+      "region": "South America",
+      "originalBrief": "Explore the meeting of land and water.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Undulating ivory sand dunes enclosing curved turquoise rainwater lagoons, low viewpoint along a wet sand edge, successive dune ridges recede beneath a pale sky. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. Pure natural dune-and-lagoon landscape. No buildings, church, town, ruins, or palm grove."
+    },
+    {
+      "id": "scene-099",
+      "name": "A Galápagos shore with sea lions",
+      "region": "South America",
+      "originalBrief": "Preserve the character of the place without decorative clichés.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Several anatomically believable Galápagos sea lions resting on black volcanic shoreline, one upright head with external ear flaps, another reclining, turquoise water behind, animals clearly the subject. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-100",
+      "name": "A cloud forest in the Andes",
+      "region": "South America",
+      "originalBrief": "Find an unexpected viewpoint within the setting.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. View from beneath a moss-draped branch across steep Andean cloud forest, layered broadleaf crowns, tree ferns and epiphytes disappearing into cloud, small close leaves frame a vast living slope. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. Unbuilt forest wilderness only. No ruins, archaeological sites, terraces, temples or buildings."
+    },
+    {
+      "id": "scene-101",
+      "name": "Milford Sound in rain",
+      "region": "Oceania",
+      "originalBrief": "Use a quiet foreground and a distant focal point.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Rain-dark Milford Sound, distinctive steep triangular Mitre Peak beyond quiet foreground water, near-vertical forested rock walls with thin temporary waterfalls, low cloud, silver rain and deep green. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-102",
+      "name": "A green valley in New Zealand",
+      "region": "Oceania",
+      "originalBrief": "Let irregular natural rhythms carry the composition.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. A broad New Zealand green valley with irregular grassy folds, scattered native woodland and a winding stream, mountain foothills layered in gentle daylight, no fantasy village. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place."
+    },
+    {
+      "id": "scene-103",
+      "name": "Uluru at sunset",
+      "region": "Oceania",
+      "originalBrief": "Study reflected light and soft transitions.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Uluru's long massive rounded sandstone monolith with characteristic vertical grooves and broad sloping shoulders, low desert scrub foreground, last red light reflected softly on rock against lavender distance, no climbing people. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering."
+    },
+    {
+      "id": "scene-104",
+      "name": "The Great Barrier Reef",
+      "region": "Oceania",
+      "originalBrief": "Branching and rounded coral colonies, small reef fish and bright sandy channels lie beneath rippling shallow tropical water.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Underwater Great Barrier Reef in clear shallow tropical water: branching and rounded coral colonies, small distinct reef fish, bright sandy channels, rippling surface and natural caustic sunlight, coral and fish legible. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering."
+    },
+    {
+      "id": "scene-105",
+      "name": "The Twelve Apostles sea stacks",
+      "region": "Oceania",
+      "originalBrief": "Give the scene a clear near, middle and far distance.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Weathered limestone sea stacks off the Great Ocean Road, foreground layered coastal cliff, isolated eroded pillars in surf at middle distance and receding coastline beyond, no invented count of twelve intact stacks. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering."
+    },
+    {
+      "id": "scene-106",
+      "name": "A Tasmanian temperate rainforest",
+      "region": "Oceania",
+      "originalBrief": "Make small details support the larger forms.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Tasmanian temperate rainforest with great mossy trunks, arching tree ferns, fallen timber and damp leaf litter, soft green canopy light, close fern detail subordinate to spacious forest depth. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering."
+    },
+    {
+      "id": "scene-107",
+      "name": "Bora Bora above its lagoon",
+      "region": "Oceania",
+      "originalBrief": "Use restrained colour and believable light.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Elevated view across Bora Bora's turquoise lagoon toward the dark jagged volcanic Otemanu massif, reef rim and ocean blue beyond, subdued tropical daylight, readable volcanic island shape. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering."
+    },
+    {
+      "id": "scene-108",
+      "name": "Volcanic slopes in Vanuatu",
+      "region": "Oceania",
+      "originalBrief": "Explore the meeting of land and water.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Vanuatu volcanic island slopes of dark ash and lava descend into a sheltered ocean inlet, green vegetation returning on older slopes, distant volcanic ridge softened by humid air, natural water and rock meeting. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering."
+    },
+    {
+      "id": "scene-109",
+      "name": "A beach in the Whitsundays",
+      "region": "Oceania",
+      "originalBrief": "Preserve the character of the place without decorative clichés.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Whitsundays white silica sand curving into shallow turquoise tidal water, broad organic swirls of sandbar, green headland and distant islands, no resort props or generic tropical decorations. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering."
+    },
+    {
+      "id": "scene-110",
+      "name": "The Southern Alps beneath stars",
+      "region": "Oceania",
+      "originalBrief": "Find an unexpected viewpoint within the setting.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. New Zealand Southern Alps from low among moraine stones beside a dark tarn, serrated snowy peaks under a subtle believable star field, reflected mountain sliver and cool night detail, no giant moon. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering."
+    },
+    {
+      "id": "scene-111",
+      "name": "Antarctic icebergs in blue light",
+      "region": "Polar and Northern Worlds",
+      "originalBrief": "Use a quiet foreground and a distant focal point.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Quiet dark Antarctic water foreground, one distant sculpted tabular iceberg luminous in blue twilight, smaller floating ice leading toward it, airy open composition and real translucent ice textures. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering."
+    },
+    {
+      "id": "scene-112",
+      "name": "Penguins on an Antarctic shore",
+      "region": "Polar and Northern Worlds",
+      "originalBrief": "Let irregular natural rhythms carry the composition.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Small irregular group of anatomically convincing gentoo penguins on an Antarctic pebble shore, white eye patches and orange beaks, varied standing and walking poses, cold surf and distant ice, birds clearly readable. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering."
+    },
+    {
+      "id": "scene-113",
+      "name": "Greenland’s iceberg fjords",
+      "region": "Polar and Northern Worlds",
+      "originalBrief": "Study reflected light and soft transitions.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Greenland fjord with large angular and sculpted icebergs between bare dark rock slopes, pale low sunlight reflected through blue ice and still water, softened distant mountains. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering."
+    },
+    {
+      "id": "scene-114",
+      "name": "An Arctic tundra in summer",
+      "region": "Polar and Northern Worlds",
+      "originalBrief": "Balance a strong silhouette with open space.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Low Arctic tundra in summer, sculptural low rocky ridge against open sky, ground-hugging dwarf shrubs, mosses and tiny flowers, shallow pools, wide treeless space and gentle light. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering."
+    },
+    {
+      "id": "scene-115",
+      "name": "Northern lights over a frozen lake",
+      "region": "Polar and Northern Worlds",
+      "originalBrief": "Give the scene a clear near, middle and far distance.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Snow-edged frozen lake with foreground frost cracks, dark spruce shore in middle distance, distant hills beneath restrained green auroral curtains, readable natural night light, no exaggerated neon sky. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering."
+    },
+    {
+      "id": "scene-116",
+      "name": "A Svalbard glacier",
+      "region": "Polar and Northern Worlds",
+      "originalBrief": "Make small details support the larger forms.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Svalbard glacier flowing between bare Arctic mountains to a blue fractured ice front, fine crevasses support the great mass and scale, overcast pearl light, cold water at the terminus. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering."
+    },
+    {
+      "id": "scene-117",
+      "name": "Alaska’s mountain wilderness",
+      "region": "Polar and Northern Worlds",
+      "originalBrief": "Use restrained colour and believable light.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Alaskan mountain wilderness, immense glaciated peaks beyond spruce foothills and a braided river valley, quiet natural daylight with restrained cool colors, no cabins or invented spectacle. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering."
+    },
+    {
+      "id": "scene-118",
+      "name": "A Finnish forest in snow",
+      "region": "Polar and Northern Worlds",
+      "originalBrief": "Explore the meeting of land and water.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Snow-laden Finnish spruce and pine beside a small partly frozen forest stream, dark water reflecting frosted branches, hushed blue winter light, layered trunks and soft snow. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering."
+    },
+    {
+      "id": "scene-119",
+      "name": "Iceland’s black sand beach",
+      "region": "Polar and Northern Worlds",
+      "originalBrief": "Preserve the character of the place without decorative clichés.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Icelandic black volcanic sand shoreline with white Atlantic wash, columnar basalt cliff edge and distant jagged offshore stacks, overcast grey-blue weather, grounded scale and textures. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering."
+    },
+    {
+      "id": "scene-120",
+      "name": "The Lofoten coast in winter",
+      "region": "Polar and Northern Worlds",
+      "originalBrief": "Find an unexpected viewpoint within the setting.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Low viewpoint among tide-wet rocks on Lofoten coast, steep snow-striped granite mountains across dark turquoise inlet, thin winter sunlight, small distant red fishing houses only as scale, mountains dominant. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering."
+    },
+    {
+      "id": "scene-121",
+      "name": "An ocean reef alive with fish",
+      "region": "Ocean Life",
+      "originalBrief": "An underwater coral reef with varied coral shapes and schools of fish at multiple depths; filtered sunlight and open water keep the animals readable.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Underwater coral reef with varied branching, plate and boulder coral, distinct schools of small fish at several depths, filtered sunlight and generous open blue water keeping every school readable, believable marine anatomy. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering."
+    },
+    {
+      "id": "scene-122",
+      "name": "A kelp forest with sea otters",
+      "region": "Ocean Life",
+      "originalBrief": "Long kelp fronds rise from rocky seabed into a green-lit canopy while a sea otter crosses a clear opening.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Underwater kelp forest with long stalks anchored to rocky seabed and golden green fronds rising toward surface canopy, one anatomically convincing sea otter swimming through a clear opening, paws and thick fur visible. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering."
+    },
+    {
+      "id": "scene-123",
+      "name": "Whales beneath the open ocean",
+      "region": "Ocean Life",
+      "originalBrief": "A whale and its calf move through blue open water with suspended light and a vast empty depth below.",
+      "prompt": "Use case: stylized-concept. Original 1536x1024 landscape illustration for a beautiful travel atlas. A humpback whale and its calf swimming together entirely underwater in the open ocean, clearly separate long pectoral fins and horizontal tail flukes. Vast empty deep blue water below; soft suspended sunlight from high above. Camera several meters underwater, facing through water, no above-water view. Sophisticated painterly realism, natural tactile detail, convincing depth, readable shadows, restrained color. Single coherent scene. No buildings, architecture, churches, temples, ruins, cities, text, collage, borders, logos or watermarks. Preserve the requested subjects and setting."
+    },
+    {
+      "id": "scene-124",
+      "name": "A sea turtle over seagrass",
+      "region": "Ocean Life",
+      "originalBrief": "A sea turtle glides above swaying seagrass; its shell silhouette and flippers stand out against broken sunlight on the seabed.",
+      "prompt": "Use case: stylized-concept. Original 1536x1024 landscape illustration for a beautiful travel atlas. One sea turtle swimming entirely underwater over a broad seagrass meadow. A patterned oval shell, two long front flippers and smaller rear flippers are clearly separated. Dappled sunlight reaches seagrass and sandy seabed through clear water. Camera underwater, no above-water view. Sophisticated painterly realism, natural tactile detail, convincing depth, readable shadows, restrained color. Single coherent scene. No buildings, architecture, churches, temples, ruins, cities, text, collage, borders, logos or watermarks. Preserve the requested subjects and setting."
+    },
+    {
+      "id": "scene-125",
+      "name": "Jellyfish in dark water",
+      "region": "Ocean Life",
+      "originalBrief": "Translucent jellyfish with trailing tentacles drift at different depths in dark water, lit by restrained luminous edges.",
+      "prompt": "Use case: stylized-concept. Original 1536x1024 landscape illustration for a beautiful travel atlas. Several translucent jellyfish with delicate bells and long trailing tentacles float at different depths in dark open water. Restrained luminous edges, black-blue negative space, subtle volumetric light. The entire environment is featureless deep water. Sophisticated painterly realism, natural tactile detail, convincing depth, readable shadows, restrained color. Single coherent scene. No buildings, architecture, churches, temples, ruins, cities, text, collage, borders, logos or watermarks. Preserve the requested subjects and setting."
+    },
+    {
+      "id": "scene-126",
+      "name": "A tide pool full of small life",
+      "region": "Ocean Life",
+      "originalBrief": "A shallow tide pool reveals anemones, shells, small fish and wet rock under moving surface reflections.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Intimate shallow tide pool seen through clear rippling water, distinct anemones with radial tentacles, small shells and a few tiny fish among wet rough rocks, delicate reflections leave life visible. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering."
+    },
+    {
+      "id": "scene-127",
+      "name": "A coral wall in the Red Sea",
+      "region": "Ocean Life",
+      "originalBrief": "A steep coral wall drops from sunlit shallows into deep blue water, with distinct reef fish providing scale.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Red Sea underwater coral wall descending diagonally from sunlit shallows into deep open blue, layered hard coral and soft coral forms, distinct small reef fish providing scale, no generic bare cliff. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering."
+    },
+    {
+      "id": "scene-128",
+      "name": "An octopus among coastal rocks",
+      "region": "Ocean Life",
+      "originalBrief": "An octopus curls its arms around rough coastal rocks, its body pattern shifting between a shaded crevice and open water.",
+      "prompt": "Use case: stylized-concept. Original 1536x1024 landscape illustration for a beautiful travel atlas. One mottled octopus curls its arms around rough underwater coastal rocks beside a dark crevice. Soft mantle, visible eye, natural overlapping arms and readable suckers. Camera fully underwater at the rocky seabed; open blue water beyond. Sophisticated painterly realism, natural tactile detail, convincing depth, readable shadows, restrained color. Single coherent scene. No buildings, architecture, churches, temples, ruins, cities, text, collage, borders, logos or watermarks. Preserve the requested subjects and setting."
+    },
+    {
+      "id": "scene-129",
+      "name": "A deep ocean hydrothermal vent",
+      "region": "Ocean Life",
+      "originalBrief": "Mineral chimneys vent dark plumes above the deep seafloor; small pale organisms cluster close to the warm openings.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Deep ocean mineral chimneys emitting dark smoky plumes above rugged seafloor, pale tube worms and small pale crustaceans clustered near warm openings, restrained submersible-like illumination against black water, no sunlight or lava glow. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering."
+    },
+    {
+      "id": "scene-130",
+      "name": "A school of rays in clear water",
+      "region": "Ocean Life",
+      "originalBrief": "A school of rays crosses pale sand beneath clear water; staggered wings and soft moving shadows show their depth.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Several anatomically believable eagle rays crossing pale sandy seabed in clear blue water, distinct diamond wings and slender tails, staggered depths and soft separate shadows, natural swimming poses. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering."
+    },
+    {
+      "id": "scene-131",
+      "name": "Ha Long Bay in mist",
+      "region": "Southeast Asia",
+      "originalBrief": "Use a quiet foreground and a distant focal point.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Ha Long Bay with quiet foreground jade water and one prominent distant limestone karst island, further steep vegetated towers fading into layered mist, natural humid morning light. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering."
+    },
+    {
+      "id": "scene-132",
+      "name": "Rice terraces in Bali",
+      "region": "Southeast Asia",
+      "originalBrief": "Let irregular natural rhythms carry the composition.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Bali rice terraces following irregular hillside contours, lush stepped green paddies and narrow water channels, scattered palms and tropical valley beyond, natural human-shaped landscape rhythms. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering."
+    },
+    {
+      "id": "scene-133",
+      "name": "Angkor Wat reflected in water",
+      "region": "Southeast Asia",
+      "originalBrief": "Study reflected light and soft transitions.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Recognizable Angkor Wat five lotus-bud towers in quincunx seen from western reflection pond, low galleries and sandstone causeway, soft early light and broken reflections, preserve Khmer architecture without invented fantasy spires. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering."
+    },
+    {
+      "id": "scene-134",
+      "name": "The islands of Raja Ampat",
+      "region": "Southeast Asia",
+      "originalBrief": "Balance a strong silhouette with open space.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Raja Ampat steep rounded limestone islets densely covered in tropical green, strong foreground island silhouette against open turquoise lagoon and deep blue channels, distant archipelago softened by humid light. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering."
+    },
+    {
+      "id": "scene-135",
+      "name": "A floating market in Thailand",
+      "region": "Southeast Asia",
+      "originalBrief": "Give the scene a clear near, middle and far distance.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Thai floating market with foreground long wooden boat carrying baskets of fruit, middle-distance vendors in separate narrow boats on canal, shaded timber waterside buildings receding beyond, believable hands and boat structures, calm natural activity. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering."
+    },
+    {
+      "id": "scene-136",
+      "name": "Luang Prabang beside the Mekong",
+      "region": "Southeast Asia",
+      "originalBrief": "Make small details support the larger forms.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Luang Prabang beside broad Mekong: riverside greenery, quiet low traditional buildings and characteristic layered Lao temple roof among trees, distant forest hills, a small boat supporting grand river composition. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering."
+    },
+    {
+      "id": "scene-137",
+      "name": "A Borneo rainforest canopy",
+      "region": "Southeast Asia",
+      "originalBrief": "Use restrained colour and believable light.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Borneo rainforest canopy viewed from an elevated natural branch opening, towering emergent dipterocarp crowns above layered green forest, restrained humid daylight and mist in distant valleys, rich varied leaf structure. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering."
+    },
+    {
+      "id": "scene-138",
+      "name": "The temples of Bagan at dawn",
+      "region": "Southeast Asia",
+      "originalBrief": "Explore the meeting of land and water.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Bagan brick pagodas and temples with characteristic terraced bases and tapering spires across a dawn-misted plain, view beside a quiet seasonal water edge reflecting one nearby temple, distant Irrawaddy haze, no balloons. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering."
+    },
+    {
+      "id": "scene-139",
+      "name": "The limestone coast of Krabi",
+      "region": "Southeast Asia",
+      "originalBrief": "Preserve the character of the place without decorative clichés.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Krabi limestone coast with tall weathered overhanging karst cliffs rising from turquoise sea, small sandy cove and lush vegetation on rock ledges, believable tidal wetness and natural light. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering."
+    },
+    {
+      "id": "scene-140",
+      "name": "Komodo’s dry hills and turquoise bays",
+      "region": "Southeast Asia",
+      "originalBrief": "Find an unexpected viewpoint within the setting.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. View from a low grassy saddle on Komodo archipelago across dry ochre rolling ridges to two turquoise bays, serpentine coast and deep blue channels, warm dry-season light, no generic lush rainforest. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering."
+    },
+    {
+      "id": "scene-141",
+      "name": "The Mongolian steppe",
+      "region": "Central Asia and the Americas",
+      "originalBrief": "Use a quiet foreground and a distant focal point.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Expansive Mongolian steppe with quiet close grasses and a small distant pale ger near low hills, immense open sky with soft cloud shadows, restrained greens and tawny earth, no overcrowding. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering."
+    },
+    {
+      "id": "scene-142",
+      "name": "The mountains of Kyrgyzstan",
+      "region": "Central Asia and the Americas",
+      "originalBrief": "Let irregular natural rhythms carry the composition.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Kyrgyzstan Tian Shan mountain landscape, high alpine meadow and winding stream below irregular snow peaks, varied natural ridges and scattered stones, clear cool light and broad depth. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering."
+    },
+    {
+      "id": "scene-143",
+      "name": "The Pamir Highway valley",
+      "region": "Central Asia and the Americas",
+      "originalBrief": "Study reflected light and soft transitions.",
+      "prompt": "Use case: stylized-concept. Original 1536x1024 landscape illustration for a beautiful travel atlas. A remote Pamir Highway valley in Central Asia: a narrow road follows a pale braided river between enormous barren high mountains. Cool sky reflected in river channels, gently lit warm rock slopes, sparse low vegetation. Road, river, rocks and mountains are the entire scene. Sophisticated painterly realism, natural tactile detail, convincing depth, readable shadows, restrained color. Single coherent scene. No buildings, architecture, churches, temples, ruins, cities, text, collage, borders, logos or watermarks. Preserve the requested subjects and setting."
+    },
+    {
+      "id": "scene-144",
+      "name": "Samarkand’s tiled courtyards",
+      "region": "Central Asia and the Americas",
+      "originalBrief": "Balance a strong silhouette with open space.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Samarkand courtyard framed by monumental turquoise-tiled pointed iwan, intricate blue geometric tilework and brick arcades, strong portal silhouette with open courtyard space, restrained daylight, no invented lettering. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering."
+    },
+    {
+      "id": "scene-145",
+      "name": "A Silk Road desert caravanserai",
+      "region": "Central Asia and the Americas",
+      "originalBrief": "Give the scene a clear near, middle and far distance.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Historic desert caravanserai: close weathered brick gateway leads to open courtyard surrounded by vaulted arched lodging bays, distant desert hills beyond outer walls, three depth layers, authentic restrained earthen architecture. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering."
+    },
+    {
+      "id": "scene-146",
+      "name": "A Costa Rican cloud forest",
+      "region": "Central Asia and the Americas",
+      "originalBrief": "Make small details support the larger forms.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Costa Rican cloud forest with moss-covered broadleaf trunks, hanging epiphytes, tree ferns and fine water droplets, small leaf detail supports deep layered forest forms fading into mist, soft daylight. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering."
+    },
+    {
+      "id": "scene-147",
+      "name": "A Mexican cenote",
+      "region": "Central Asia and the Americas",
+      "originalBrief": "Use restrained colour and believable light.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Mexican cenote limestone sinkhole with clear blue-green freshwater, hanging roots from natural roof opening and rough pale limestone walls, restrained shaft of daylight, realistic submerged rocks, no fantasy temple. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering."
+    },
+    {
+      "id": "scene-148",
+      "name": "The Mayan coast at Tulum",
+      "region": "Central Asia and the Americas",
+      "originalBrief": "Explore the meeting of land and water.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Recognizable Tulum coastal Maya stone ruins, compact stepped El Castillo temple on low limestone bluff above Caribbean turquoise sea and pale beach, rough grey masonry with simple doorways, preserve architecture and coastline. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering."
+    },
+    {
+      "id": "scene-149",
+      "name": "The Canadian Rockies in autumn",
+      "region": "Central Asia and the Americas",
+      "originalBrief": "Preserve the character of the place without decorative clichés.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. Canadian Rockies autumn alpine basin with golden larches, cold clear lake and rugged pale limestone peaks, scattered fallen needles, natural crisp daylight, no exaggerated orange forest or fantasy spires. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering."
+    },
+    {
+      "id": "scene-150",
+      "name": "A Caribbean mangrove lagoon",
+      "region": "Central Asia and the Americas",
+      "originalBrief": "Find an unexpected viewpoint within the setting.",
+      "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. View from low among arching mangrove prop roots across a clear Caribbean lagoon, submerged roots visible through pale turquoise water, reflected green canopy and open distant channel, intimate unexpected perspective. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering."
+    }
+  ]
+}

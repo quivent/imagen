@@ -10,6 +10,7 @@ export function mountPerformance({ root, isActive = () => true }) {
   let archiveConnected = false;
   let generation = null;
   let telemetryConnected = false;
+  let daemon = null;
   let enabled = false;
   let disposed = false;
   let releases = [];
@@ -68,6 +69,14 @@ export function mountPerformance({ root, isActive = () => true }) {
     $('site-errors').textContent = `${data.errors.length} retained JavaScript, promise or resource load errors (up to 50). HTTP failures are shown in the requests table when the browser exposes status codes.`;
     $('site-error-list').replaceChildren(...data.errors.slice(-10).reverse().map(row => text('li', `${row.type} · ${row.path} · ${milliseconds(row.at)} since navigation`)));
   }
+  function renderDaemon() {
+    const observed = timestamp(daemon?.observedAt);
+    const fresh = telemetryConnected && daemon?.ok === true && observed !== null && Date.now() - observed <= 20000 && Date.now() - observed >= -1000;
+    const states = { watching: 'Watching Performance engineer', blocked: 'Blocked · engineer lifecycle source unavailable' };
+    const status = fresh ? states[daemon.state] || 'Unknown activity' : 'Unknown · daemon source unavailable or stale';
+    $('daemon-status').textContent = `${status} · process ${daemon?.alive === true && telemetryConnected ? 'alive' : 'unknown'} · heartbeat ${stamp(daemon?.heartbeatAt)} · ${daemon?.activityCount ?? 'Unknown'} lifecycle observations · engineer ${fresh ? daemon.agentState || 'unknown' : 'unknown'}${daemon?.wakeQueued ? ' · coordinator wake queued' : ''}`;
+    $('daemon-events').textContent = daemon?.events?.length ? 'Recent activation events: ' + daemon.events.slice(-5).map(event => `${event.event.replaceAll('_', ' ')} (${stamp(event.at)})`).join(' · ') : 'No recorded engineer activation events yet.';
+  }
   function renderArchive() {
     const now = Date.now();
     const unique = new Map();
@@ -115,13 +124,13 @@ export function mountPerformance({ root, isActive = () => true }) {
     }) : [text('p', 'GPU telemetry is not available yet.', 'performance-source')]));
     $('gpu-status').textContent = live ? `${live} GPUs with fresh telemetry. Observations older than 12 seconds become unknown.` : 'Current GPU readings are unknown until fresh telemetry arrives.';
   }
-  function render() { renderSite(); renderArchive(); renderGPUs(); }
+  function render() { renderDaemon(); renderSite(); renderArchive(); renderGPUs(); }
   function sync() {
     const active = !disposed && enabled && !document.hidden && isActive();
     if (active && !releases.length) {
       releases = [
         studioLive.subscribe('gallery', snapshot => { archiveConnected = snapshot.available === true && Array.isArray(snapshot.data?.jobs); if (archiveConnected) archive = snapshot.data; renderArchive(); }),
-        studioLive.subscribe('monitor', snapshot => { telemetryConnected = snapshot.available === true; if (telemetryConnected) generation = snapshot.data?.generation || null; renderGPUs(); }),
+        studioLive.subscribe('monitor', snapshot => { telemetryConnected = snapshot.available === true; if (telemetryConnected) { generation = snapshot.data?.generation || null; daemon = snapshot.data?.performanceDaemon || null; } renderGPUs(); renderDaemon(); }),
       ];
       timer = setInterval(render, 1000);
     } else if (!active && releases.length) {

@@ -116,11 +116,17 @@ let winnerRecord = { revisions: {}, winners: [] };
 const pendingWinnerChoices = new Map();
 function updateChoiceCard(card, id) {
   const chosen = winnerRecord.winners.find(winner => winner.comparisonId === id)?.side;
-  for (const button of card.querySelectorAll('[data-choice]')) button.setAttribute('aria-pressed', String(button.dataset.choice === chosen));
+  for (const button of card.querySelectorAll('[data-choice]')) {
+    const selected = button.dataset.choice === chosen;
+    button.setAttribute('aria-pressed', String(selected));
+    const label = `${selected ? 'Clear rating for' : 'Prefer'} ${button.dataset.ratingLabel}`;
+    button.setAttribute('aria-label', label);
+    button.title = label;
+  }
 }
 async function keepWinner(row, side, controls, note) {
-  const buttons = [...controls.querySelectorAll('button')]; buttons.forEach(button => { button.disabled = true; });
-  note.textContent = 'Keeping your choice…';
+  const buttons = [...controls.querySelectorAll('[data-choice]')]; buttons.forEach(button => { button.disabled = true; });
+  note.textContent = 'Saving rating…';
   const previous = pendingWinnerChoices.get(row.id);
   const payload = previous?.side === side ? previous : { requestId: crypto.randomUUID(), comparisonId: row.id, side, expectedRevision: winnerRecord.revisions[row.id] || 0 };
   pendingWinnerChoices.set(row.id, payload);
@@ -132,9 +138,9 @@ async function keepWinner(row, side, controls, note) {
     if (result.status === 403) note.textContent = 'Open Controls with your access key to keep choices.';
     else if (result.status === 409) note.textContent = 'The choice changed in another view. Your current choice is shown; choose again whenever you are ready.';
     else if (!result.ok || !data.ok) note.textContent = 'The choice could not be confirmed. Please try again.';
-    else note.textContent = side === null ? 'The comparison choice is cleared.' : 'Your choice is kept in Winners.';
+    else note.textContent = side === null ? 'Rating cleared.' : 'Rating saved.';
   } catch { note.textContent = 'The choice could not be confirmed. Please try again.'; }
-  finally { buttons.forEach(button => { button.disabled = button.dataset.choice !== 'clear' && !imagePath(row[button.dataset.choice]?.image); }); }
+  finally { buttons.forEach(button => { button.disabled = !imagePath(row[button.dataset.choice]?.image); }); }
 }
 function createComparisonCard(row) {
   const card = document.createElement('article');
@@ -142,7 +148,6 @@ function createComparisonCard(row) {
   const heading = text('h2', row.title);
   const pair = document.createElement('div'); pair.className = 'comparison-tile-pair';
   pair.append(modelCard(row.left, 'FLUX.1 dev', row), modelCard(row.right, 'FLUX.2 dev', row));
-  const prompt = text('p', row.prompt || 'Prompt not recorded.', 'comparison-tile-prompt');
   const open = text('button', 'Details and observations', 'comparison-open'); open.type = 'button';
   open.setAttribute('aria-label', `Details and observations for ${row.title}`);
   open.setAttribute('aria-controls', 'comparison-inspector');
@@ -151,14 +156,20 @@ function createComparisonCard(row) {
     $('comparison-inspector').scrollIntoView({ block: 'start', behavior: 'instant' });
     $('comparison-inspector').querySelector('summary').focus();
   });
-  const choice = document.createElement('div'); choice.className = 'comparison-choice';
   const note = text('p', '', 'comparison-choice-status'); note.setAttribute('role', 'status');
-  for (const [side, label] of [['left', 'Keep left'], ['right', 'Keep right'], [null, 'Clear choice']]) {
-    const button = text('button', label); button.type = 'button'; button.dataset.choice = side || 'clear'; button.setAttribute('aria-label', `${label} for ${row.title}`);
-    button.disabled = side !== null && !imagePath(row[side]?.image); button.setAttribute('aria-pressed', 'false');
-    button.addEventListener('click', () => keepWinner(row, side, choice, note)); choice.append(button);
+  for (const [index, side] of ['left', 'right'].entries()) {
+    const button = document.createElement('button');
+    button.type = 'button'; button.className = 'comparison-rate'; button.dataset.choice = side;
+    button.dataset.ratingLabel = `${row[side]?.model || (side === 'left' ? 'FLUX.1 dev' : 'FLUX.2 dev')} for ${row.title}`;
+    button.innerHTML = '<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10v11H3V10zm0 0 5-8c3 0 3 3 2 7h5a2 2 0 0 1 2 2l-1 8a2 2 0 0 1-2 2H7"/></svg>';
+    button.disabled = !imagePath(row[side]?.image); button.setAttribute('aria-pressed', 'false');
+    button.addEventListener('click', () => {
+      const chosen = winnerRecord.winners.find(winner => winner.comparisonId === row.id)?.side;
+      keepWinner(row, chosen === side ? null : side, pair, note);
+    });
+    pair.children[index].append(button);
   }
-  card.append(heading, pair, choice, note, prompt, open); updateChoiceCard(card, row.id); return card;
+  card.append(heading, pair, note, open); updateChoiceCard(card, row.id); return card;
 }
 function renderComparisonGrid() {
   if (!state.loaded) return;
@@ -803,13 +814,11 @@ else if (activeTab === 'tasks') refreshTasks();
 let workMode = true;
 let detailsVisible = false;
 try {
-  workMode = localStorage.getItem('artwork-comparison:work-mode') !== 'false';
   detailsVisible = localStorage.getItem('artwork-comparison:show-details') === 'true';
 } catch { /* Compact mode is the default. */ }
 function applyWorkMode() {
   document.body.classList.toggle('work-mode', workMode);
   document.body.classList.toggle('show-details', detailsVisible);
-  $('work-mode').setAttribute('aria-pressed', String(workMode));
   const expanded = detailsVisible || !workMode;
   const detailsButton = $('show-details');
   const label = expanded ? 'Collapse details' : 'Expand details';
@@ -817,11 +826,6 @@ function applyWorkMode() {
   detailsButton.setAttribute('aria-label', label);
   detailsButton.title = label;
 }
-$('work-mode').addEventListener('click', () => {
-  workMode = !workMode;
-  applyWorkMode();
-  try { localStorage.setItem('artwork-comparison:work-mode', String(workMode)); } catch { /* Current view is retained. */ }
-});
 $('show-details').addEventListener('click', () => {
   if (!workMode) { workMode = true; detailsVisible = false; }
   else detailsVisible = !detailsVisible;

@@ -1,0 +1,17 @@
+{
+  "source": "/Users/jay/FLUX/chorus/r2sync.py",
+  "sha256": "87ed5a18d19d428070cfc9c5a8ec8b261a0e9b3b6ea361ddec5c7f43c11a1622",
+  "copiedUnmodified": true,
+  "reuse": [
+    "client",
+    "upload_file",
+    "settled_frames",
+    "sha256_file",
+    "atomic_json"
+  ],
+  "excluded": [
+    "Chorus state_sources",
+    "Chorus live-state allowlist",
+    "Chorus sweep uploads"
+  ]
+}

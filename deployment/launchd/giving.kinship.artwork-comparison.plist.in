@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>EnvironmentVariables</key>
+	<dict>
+		<key>ARTWORK_CONTROL_TOKEN_FILE</key>
+		<string>@CONTROL_TOKEN_FILE@</string>
+		<key>ARTWORK_FACTORY_ROOT</key>
+		<string>@FACTORY_ROOT@</string>
+		<key>ARTWORK_FACTORY_STATE</key>
+		<string>@FACTORY_STATE@</string>
+		<key>ARTWORK_MONITOR_ROOT_THREAD</key>
+		<string>@ARTWORK_MONITOR_ROOT_THREAD@</string>
+		<key>ARTWORK_SSH_HOST</key>
+		<string>@ARTWORK_SSH_HOST@</string>
+		<key>ARTWORK_SSH_PORT</key>
+		<string>@ARTWORK_SSH_PORT@</string>
+		<key>ARTWORK_STATE</key>
+		<string>@FACTORY_STATE@</string>
+		<key>PATH</key>
+		<string>@PATH@</string>
+	</dict>
+	<key>KeepAlive</key>
+	<true/>
+	<key>Label</key>
+	<string>giving.kinship.artwork-comparison</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>@PYTHON@</string>
+		<string>-B</string>
+		<string>@CHECKOUT@/serve.py</string>
+		<string>run</string>
+	</array>
+	<key>RunAtLoad</key>
+	<true/>
+	<key>StandardErrorPath</key>
+	<string>@CHECKOUT@/.runtime/server.log</string>
+	<key>StandardOutPath</key>
+	<string>@CHECKOUT@/.runtime/server.log</string>
+	<key>ThrottleInterval</key>
+	<integer>10</integer>
+	<key>WorkingDirectory</key>
+	<string>@CHECKOUT@</string>
+</dict>
+</plist>

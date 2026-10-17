@@ -1,0 +1,87 @@
+{
+  "schema": 1,
+  "models": {
+    "pixtral": {
+      "repo": "RedHatAI/pixtral-12b-quantized.w4a16",
+      "revision": "ac844ce03d5412a69906120b05da3bd55952723e",
+      "files": {
+        "README.md": {
+          "bytes": 14461,
+          "sha256": null
+        },
+        "chat_template.json": {
+          "bytes": 1628,
+          "sha256": null
+        },
+        "config.json": {
+          "bytes": 12478,
+          "sha256": null
+        },
+        "generation_config.json": {
+          "bytes": 111,
+          "sha256": null
+        },
+        "model-00001-of-00002.safetensors": {
+          "bytes": 4986219584,
+          "sha256": "ad5983f66ed253b4a7377f5948e0e6c0f9e4c30a1b630e8633a9607a4411a0d8"
+        },
+        "model-00002-of-00002.safetensors": {
+          "bytes": 4192021568,
+          "sha256": "02a225e15ed661ca6db2c9a072a804224994947d200cb6a28e18afdceb33f557"
+        },
+        "model.safetensors.index.json": {
+          "bytes": 117068,
+          "sha256": null
+        },
+        "preprocessor_config.json": {
+          "bytes": 483,
+          "sha256": null
+        },
+        "processor_config.json": {
+          "bytes": 162,
+          "sha256": null
+        },
+        "recipe.yaml": {
+          "bytes": 463,
+          "sha256": null
+        },
+        "special_tokens_map.json": {
+          "bytes": 414,
+          "sha256": null
+        },
+        "tokenizer.json": {
+          "bytes": 17077311,
+          "sha256": "fcdf3e6b96371b9a5c8673bdf2f1bc838b994b73a6fa995dca62196346aaddb5"
+        },
+        "tokenizer_config.json": {
+          "bytes": 178752,
+          "sha256": null
+        }
+      },
+      "bytes": 9195644483
+    },
+    "dinov2": {
+      "repo": "facebook/dinov2-giant",
+      "revision": "611a9d42f2335e0f921f1e313ad3c1b7178d206d",
+      "files": {
+        "README.md": {
+          "bytes": 3033,
+          "sha256": null
+        },
+        "config.json": {
+          "bytes": 548,
+          "sha256": null
+        },
+        "model.safetensors": {
+          "bytes": 4546005432,
+          "sha256": "917d3c470db999d32a312f8542149be91c7cbac61ee8fb4b67ae3d82b79ce21f"
+        },
+        "preprocessor_config.json": {
+          "bytes": 436,
+          "sha256": null
+        }
+      },
+      "bytes": 4546009449
+    }
+  }
+}

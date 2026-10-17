@@ -1,0 +1,79 @@
+{
+  "schema": 1,
+  "models": {
+    "gemma4-12b-it-nvfp4": {
+      "repo": "unsloth/gemma-4-12b-it-NVFP4",
+      "revision": "b1f649734b34aa5575b03d186abd1b9be3d0d5c4",
+      "files": {
+        "README.md": {
+          "bytes": 29820,
+          "sha256": null
+        },
+        "chat_template.jinja": {
+          "bytes": 18924,
+          "sha256": null
+        },
+        "config.json": {
+          "bytes": 7292,
+          "sha256": null
+        },
+        "generation_config.json": {
+          "bytes": 255,
+          "sha256": null
+        },
+        "model.safetensors": {
+          "bytes": 9304966064,
+          "sha256": "7c2ee23298e7c3a9247e8947597dca5a38f8b791a0322487466d2bfad8ce704b"
+        },
+        "processor_config.json": {
+          "bytes": 1382,
+          "sha256": null
+        },
+        "recipe.yaml": {
+          "bytes": 661,
+          "sha256": null
+        },
+        "tokenizer.json": {
+          "bytes": 32169726,
+          "sha256": "adbaa8175acf7609b4359724f40eff359ec4fac1a8647eeb99d4422be708e1cf"
+        },
+        "tokenizer_config.json": {
+          "bytes": 2725,
+          "sha256": null
+        }
+      },
+      "bytes": 9337196849
+    },
+    "gemma4-12b-it-assistant": {
+      "repo": "google/gemma-4-12B-it-assistant",
+      "revision": "46d4c6f13f0ac0ad827b915669b8df9b81c64c51",
+      "files": {
+        "README.md": {
+          "bytes": 29898,
+          "sha256": null
+        },
+        "config.json": {
+          "bytes": 2346,
+          "sha256": null
+        },
+        "generation_config.json": {
+          "bytes": 233,
+          "sha256": null
+        },
+        "model.safetensors": {
+          "bytes": 845719296,
+          "sha256": "3279c173daddd7186e79d652ad94022415736d3a1370625696c898429b06d6df"
+        },
+        "tokenizer.json": {
+          "bytes": 32169884,
+          "sha256": "c001d9ada50af662c94f5ab17ec7e09f6438d1bec8246c47fee6510693d8de35"
+        },
+        "tokenizer_config.json": {
+          "bytes": 822,
+          "sha256": null
+        }
+      },
+      "bytes": 877922479
+    }
+  }
+}

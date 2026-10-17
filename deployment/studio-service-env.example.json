@@ -1,0 +1,10 @@
+{
+  "ARTWORK_SSH_HOST": "root@REPLACEMENT_HOST",
+  "ARTWORK_SSH_PORT": "SSH_PORT",
+  "ARTWORK_MONITOR_ROOT_THREAD": "CURRENT_AUTHORIZED_COORDINATOR_THREAD",
+  "ARTWORK_API_ORIGIN": "https://artwork-comparison.vercel.app",
+  "ARTWORK_FACTORY_ROOT": "/absolute/Imagen/deployment/controller/tools/artwork",
+  "ARTWORK_FACTORY_STATE": "/absolute/private/factory-state",
+  "ARTWORK_CONTROL_TOKEN_FILE": "/absolute/private/control/token",
+  "ARTWORK_PYTHON": "/absolute/python3"
+}

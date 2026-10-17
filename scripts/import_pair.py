@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 import fcntl
 import hashlib
 import json
+import math
 import os
 from pathlib import Path
 import re
@@ -50,8 +51,16 @@ def side(db, factory, data, job_id):
         raise ValueError('The source original does not match its factory record')
     receipt_path = factory / 'work' / job['attempt'] / 'generation.json'
     receipt = json.loads(receipt_path.read_text()).get('generation', {}) if receipt_path.is_file() else {}
+    if receipt and (receipt.get('id') != job_id or receipt.get('profile') != spec['model'] or
+                    receipt.get('prompt') != spec['prompt'] or
+                    receipt.get('width') != metadata['width'] or receipt.get('height') != metadata['height']):
+        raise ValueError('Generation receipt identity does not match the factory version')
     if receipt.get('sha256') and receipt['sha256'] != record['sha256']:
         raise ValueError('Generation receipt and original hashes differ')
+    seconds = receipt.get('generation_seconds')
+    if seconds is not None and (isinstance(seconds, bool) or not isinstance(seconds, (int, float)) or
+                                not math.isfinite(seconds) or seconds < 0):
+        raise ValueError('Generation time must be a measured nonnegative duration')
     name = f"{version['id']}-{record['sha256'][:12]}{source.suffix.lower()}"
     destination = data / name
     # Exclusive creation prevents overwriting any previous image, even on retries.
@@ -93,7 +102,7 @@ def side(db, factory, data, job_id):
         'versionId': version['id'], 'seed': receipt.get('seed'),
         'steps': parameters.get('num_inference_steps'),
         'width': metadata['width'], 'height': metadata['height'],
-        'seconds': receipt.get('generation_seconds'), 'precision': precision_label,
+        'seconds': seconds, 'precision': precision_label,
         'revision': models.get(model_key, {}).get('revision'), 'settings': settings,
     })
     return result

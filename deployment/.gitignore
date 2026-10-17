@@ -1,0 +1,13 @@
+# Re-deployment creates private state and dependencies separately from captured source.
+**/.state/
+**/.runtime/
+**/__pycache__/
+**/.venv/
+**/.download-venv/
+**/.uv-cache/
+**/node_modules/
+**/credentials.json
+**/token
+**/id_ed25519*
+**/*.log
+**/*.sqlite3*

@@ -1,5 +1,6 @@
 // One socket per document; every tab shares its current topic observations.
 import { sitePerformance } from './site-performance.js';
+import { applyGalleryPatch } from './gallery-patch.js';
 const topics = new Set(['gallery', 'comparisons', 'tasks', 'agents', 'monitor', 'controls', 'winners']);
 const listeners = new Map();
 const snapshots = new Map();
@@ -10,6 +11,7 @@ let suspended = false;
 let destroyed = false;
 let scheduled = false;
 let subscriptionJSON = null;
+let galleryResyncPending = false;
 const active = () => !destroyed && !suspended && !document.hidden && listeners.size > 0;
 function problem(status = 503) { const issue = new Error('Live studio observation unavailable'); issue.status = status; return issue; }
 function emit(topic, value) {
@@ -21,7 +23,7 @@ function unavailable() {
 }
 function sendSubscriptions() {
   if (socket?.readyState !== WebSocket.OPEN) return;
-  const value = JSON.stringify({ type: 'subscribe', topics: [...topics].filter(topic => topic !== 'controls' || listeners.has('controls')) });
+  const value = JSON.stringify({ type: 'subscribe', features: ['gallery-patch-v1'], topics: [...topics].filter(topic => topic !== 'controls' || listeners.has('controls')) });
   if (value !== subscriptionJSON) { subscriptionJSON = value; socket.send(value); }
 }
 function connect() {
@@ -36,12 +38,25 @@ function connect() {
     const started = performance.now();
     let value;
     try { value = JSON.parse(event.data); } catch { return; }
-    if (value.type === 'hello') { snapshots.clear(); return; }
+    if (value.type === 'hello') { snapshots.clear(); galleryResyncPending = false; return; }
     if (!topics.has(value.topic)) return;
     if (value.type === 'snapshot') {
       const previous = snapshots.get(value.topic);
       if (previous?.available && value.version <= previous.version) return;
+      if (value.topic === 'gallery') galleryResyncPending = false;
       emit(value.topic, { ...value, available: true });
+    } else if (value.type === 'patch' && value.topic === 'gallery') {
+      const previous = snapshots.get('gallery');
+      if (previous?.available && value.version <= previous.version) return;
+      try {
+        const merged = applyGalleryPatch(previous, value);
+        galleryResyncPending = false; emit('gallery', merged);
+        value = merged;
+      } catch {
+        emit('gallery', { available: false, topic: 'gallery', status: 503 });
+        if (!galleryResyncPending) { galleryResyncPending = true; connection.send(JSON.stringify({ type: 'resync', topic: 'gallery' })); }
+        return;
+      }
     } else if (value.type === 'unavailable') emit(value.topic, { ...value, available: false });
     sitePerformance.socketTopic(value.topic, value, started);
   });

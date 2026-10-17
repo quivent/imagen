@@ -8,7 +8,6 @@
   let workMode = true;
   let detailsVisible = false;
   try {
-    workMode = localStorage.getItem('artwork-comparison:work-mode') !== 'false';
     detailsVisible = localStorage.getItem('artwork-comparison:show-details') === 'true';
   } catch { /* Compact mode is the default when storage is unavailable. */ }
   const select = () => {
@@ -16,8 +15,6 @@
       document.body.classList.toggle('work-mode', workMode);
       document.body.classList.toggle('show-details', detailsVisible);
     }
-    const workButton = document.getElementById('work-mode');
-    if (workButton) workButton.setAttribute('aria-pressed', String(workMode));
     const detailsButton = document.getElementById('show-details');
     if (detailsButton) {
       const expanded = detailsVisible || !workMode;

@@ -1,13 +1,16 @@
-import { constants, watch } from 'node:fs';
+import { constants, existsSync, watch } from 'node:fs';
 import { lstat, readdir, realpath, open } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import os from 'node:os';
 
 const execute = promisify(execFile);
-const state = path.resolve(process.env.ARTWORK_FACTORY_STATE || '/Users/jay/kinship-of-cancer/tools/artwork/.state');
+const legacyState = path.join(os.homedir(), 'kinship-of-cancer/tools/artwork/.state');
+const state = path.resolve(process.env.ARTWORK_FACTORY_STATE || (existsSync(legacyState) ? legacyState :
+  fileURLToPath(new URL('../deployment/controller/tools/artwork/.state/', import.meta.url))));
 const work = path.join(state, 'work');
 const helper = fileURLToPath(new URL('../scripts/local_gallery.py', import.meta.url));
 const profiles = new Set(['flux1-dev', 'flux2-dev-nf4']);

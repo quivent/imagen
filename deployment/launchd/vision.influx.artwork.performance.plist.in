@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>EnvironmentVariables</key>
+	<dict>
+		<key>PATH</key>
+		<string>@PATH@</string>
+	</dict>
+	<key>KeepAlive</key>
+	<true/>
+	<key>Label</key>
+	<string>vision.influx.artwork.performance</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>@PYTHON@</string>
+		<string>-B</string>
+		<string>@CHECKOUT@/scripts/performance_daemon.py</string>
+		<string>--db</string>
+		<string>@CHECKOUT@/.runtime/task-inbox/inbox.sqlite3</string>
+		<string>--runtime</string>
+		<string>@CHECKOUT@/.runtime/performance</string>
+		<string>daemon</string>
+		<string>--node</string>
+		<string>@NODE@</string>
+	</array>
+	<key>RunAtLoad</key>
+	<true/>
+	<key>StandardErrorPath</key>
+	<string>@CHECKOUT@/.runtime/performance/daemon-error.log</string>
+	<key>StandardOutPath</key>
+	<string>@CHECKOUT@/.runtime/performance/daemon.log</string>
+	<key>ThrottleInterval</key>
+	<integer>30</integer>
+	<key>WorkingDirectory</key>
+	<string>@CHECKOUT@</string>
+</dict>
+</plist>

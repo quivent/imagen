@@ -2,11 +2,14 @@ import { WebSocketServer, WebSocket } from 'ws';
 import { readFile, watch } from 'node:fs';
 import { promisify } from 'node:util';
 import { createHash } from 'node:crypto';
+import { execFile } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { collectLocalGallery, subscribeLocalGallery } from './local-gallery.mjs';
 import { collectStudioMonitor, subscribeMonitor } from './studio-monitor.mjs';
+import { createGalleryPatch } from '../src/gallery-patch.js';
 
 const read = promisify(readFile);
+const execute = promisify(execFile);
 const root = fileURLToPath(new URL('../', import.meta.url));
 const api = process.env.ARTWORK_API_ORIGIN || 'https://artwork-comparison.vercel.app';
 const publicOrigin = 'https://artwork.influx.vision';
@@ -74,6 +77,20 @@ export function installStudioEvents(server) {
   const clients = new Set();
   const watchers = [];
   let closed = false;
+  let comparisonSync;
+  let comparisonDirty = false;
+  function syncComparisons() {
+    if (closed) return;
+    if (comparisonSync) { comparisonDirty = true; return; }
+    comparisonSync = execute(process.env.ARTWORK_PYTHON || 'python3', ['-I', '-B', root + 'scripts/sync_comparisons.py'], {
+      timeout: 30000, maxBuffer: 65536, env: process.env,
+    }).then(() => { if (!closed && interested('comparisons')) refresh('comparisons'); })
+      .catch(() => { /* Keep the last verified comparison collection on source failure. */ })
+      .finally(() => {
+        comparisonSync = null;
+        if (comparisonDirty) { comparisonDirty = false; syncComparisons(); }
+      });
+  }
   let remoteGallery = { jobs: [] };
   const mergeGallery = local => {
     const rows = new Map(remoteGallery.jobs.map(row => [row.id, row]));
@@ -91,7 +108,10 @@ export function installStudioEvents(server) {
     const key = socket.outbox.has('hello') ? 'hello' : deliveryPriority.find(topic => socket.outbox.has(topic));
     const message = socket.outbox.get(key);
     socket.outbox.delete(key);
-    const body = JSON.stringify(message);
+    const galleryEpoch = socket.galleryEpoch;
+    const gallery = socket.galleryPatches && message.topic === 'gallery';
+    const wire = gallery && message.type === 'snapshot' && socket.galleryBaseline ? createGalleryPatch(socket.galleryBaseline, message) : message;
+    const body = JSON.stringify(wire);
     if (Buffer.byteLength(body) > 8 * 1024 * 1024) { socket.close(1013); return; }
     socket.sending = true;
     const stalled = setTimeout(() => socket.terminate(), 10000);
@@ -99,6 +119,9 @@ export function installStudioEvents(server) {
       clearTimeout(stalled);
       socket.sending = false;
       if (error) { socket.terminate(); return; }
+      // Update only after this baseline has reached the transport. Coalesced
+      // pending versions then diff against what this client actually received.
+      if (gallery && galleryEpoch === socket.galleryEpoch) socket.galleryBaseline = message.type === 'snapshot' ? message : null;
       drain(socket);
     });
   };
@@ -188,6 +211,7 @@ export function installStudioEvents(server) {
     if (!allowedOrigin(request.headers.origin, server) || clients.size >= 32) { socket.end('HTTP/1.1 403 Forbidden\r\nConnection: close\r\n\r\n'); return; }
     wss.handleUpgrade(request, socket, head, connection => {
       connection.outbox = new Map(); connection.sending = false;
+      connection.galleryBaseline = null; connection.galleryEpoch = 0; connection.galleryPatches = false;
       connection.topics = new Set(); connection.cookie = controlCookie(request.headers.cookie); connection.alive = true;
       clients.add(connection);
       send(connection, { type: 'hello', protocol: 1, observedAt: new Date().toISOString(), topics: [...topics] });
@@ -195,7 +219,14 @@ export function installStudioEvents(server) {
       connection.on('message', bytes => {
         try {
           const message = JSON.parse(bytes.toString());
+          if (message.type === 'resync' && message.topic === 'gallery' && connection.topics.has('gallery')) {
+            connection.galleryBaseline = null; connection.galleryEpoch++;
+            const state = states.get('gallery'); if (state) deliver('gallery', state, [connection]);
+            return;
+          }
           if (message.type !== 'subscribe' || !Array.isArray(message.topics) || message.topics.length > topics.size || message.topics.some(topic => typeof topic !== 'string')) throw new Error('Unsupported message');
+          connection.galleryPatches = Array.isArray(message.features) && message.features.includes('gallery-patch-v1');
+          if (!connection.galleryPatches) { connection.galleryBaseline = null; connection.galleryEpoch++; }
           subscribe(connection, message.topics);
         } catch { connection.close(1008); }
       });
@@ -215,8 +246,10 @@ export function installStudioEvents(server) {
   });
   const releaseGallery = subscribeLocalGallery(() => {
     if (interested('gallery')) refresh('gallery');
+    syncComparisons();
     for (const group of groups.values()) refreshControl(group);
   });
+  syncComparisons();
   const heartbeat = setInterval(() => {
     for (const socket of clients) {
       if (!socket.alive) { socket.terminate(); continue; }

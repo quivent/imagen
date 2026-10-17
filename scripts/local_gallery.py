@@ -7,8 +7,9 @@ import sqlite3
 
 
 def main():
-    state = Path(os.environ.get('ARTWORK_FACTORY_STATE',
-        '/Users/jay/kinship-of-cancer/tools/artwork/.state')).resolve()
+    legacy = Path.home() / 'kinship-of-cancer/tools/artwork/.state'
+    default = legacy if legacy.exists() else Path(__file__).resolve().parents[1] / 'deployment/controller/tools/artwork/.state'
+    state = Path(os.environ.get('ARTWORK_FACTORY_STATE', str(default))).resolve()
     connection = sqlite3.connect((state / 'queue.sqlite3').as_uri() + '?mode=ro', uri=True, timeout=2)
     connection.execute('PRAGMA query_only=ON')
     rows = {}

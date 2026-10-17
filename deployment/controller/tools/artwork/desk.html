@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="artwork-token" content="__TOKEN__">
+  <title>Artwork desk</title>
+  <link rel="stylesheet" href="/desk.css">
+  <script src="/desk.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to artwork</a>
+  <header><p class="eyebrow">Kinship · local studio</p><h1>Artwork desk</h1>
+    <p>Every version kept. Your choice of what comes next.</p>
+    <nav aria-label="Studio"><a href="#collection">Collection</a><a href="#compose">New work</a><a href="#queue">Queue</a></nav>
+  </header>
+  <main id="main">
+    <p id="notice" role="status" aria-live="polite"></p>
+    <section aria-labelledby="collection" >
+      <h2 id="collection">The collection</h2>
+      <div class="filters"><label>Find a place<input id="search" type="search"></label>
+        <label>Show<select id="filter"><option value="all">All places</option><option value="pending">Awaiting your review</option></select></label>
+        <button id="refresh">Refresh records</button></div>
+      <p id="summary"></p><div id="gallery"></div>
+    </section>
+    <section aria-labelledby="compose">
+      <h2 id="compose">New work</h2>
+      <p>A request creates a separate candidate. Selected artwork stays in place until you choose a replacement.</p>
+      <form id="request-form">
+        <div class="fields">
+          <label>Scene ID<input name="scene" required pattern="[a-zA-Z0-9][a-zA-Z0-9_-]{0,99}" placeholder="scene-151"></label>
+          <label>Place name<input name="name" required></label>
+          <label>Subject<select name="family" required><option value="">Choose a subject</option><option value="landscape" selected>Landscape</option><option value="architecture">Architecture</option><option value="animals">Animals</option><option value="underwater">Underwater</option></select></label>
+          <label>Generator<select name="backend"><option value="builtin">Built-in · agent handoff</option><option value="bfl">FLUX · API worker</option><option value="command">Other · command worker</option></select></label>
+          <label>Model<input name="model" value="builtin" required></label>
+          <label>Variant name<input name="variant" placeholder="Optional; distinguishes a new attempt"></label>
+          <label>Width<input name="width" type="number" min="64" max="4096" value="1536" required></label>
+          <label>Height<input name="height" type="number" min="64" max="4096" value="1024" required></label>
+        </div>
+        <label>Scene description<textarea name="brief" rows="4"></textarea></label>
+        <details><summary>Exact prompt and reference</summary>
+          <label>Exact prompt, when needed<textarea name="prompt" rows="5"></textarea></label>
+          <p>An exact prompt is used as written. Otherwise the scene description receives the shared style and subject guidance.</p>
+          <label>Reference version<input name="referenceVersion"></label>
+          <label>Reference purpose<select name="referenceRole"><option value="reference">Composition reference</option><option value="style">Style reference</option><option value="edit-target">Edit this image</option></select></label>
+        </details>
+        <button type="submit">Add to the queue</button>
+      </form>
+    </section>
+    <section aria-labelledby="queue"><h2 id="queue">Work in the queue</h2>
+      <p>Built-in jobs wait for an agent. External jobs wait for a configured worker. Uncertain requests require a receipt or a recorded decision before retry.</p>
+      <div id="jobs"></div><pre id="metrics"></pre>
+    </section>
+    <section aria-labelledby="exports"><h2 id="exports">Gather a batch</h2>
+      <p>Creates a new local folder and manifest. It does not change the public gallery.</p>
+      <form id="export-form"><label>Batch name<input name="name" required pattern="[a-zA-Z0-9][a-zA-Z0-9_-]{0,99}"></label>
+        <label>Contents<select name="contents"><option value="selected">Selected versions</option><option value="pending">Candidates awaiting review</option></select></label>
+        <button type="submit">Prepare the batch</button></form>
+    </section>
+  </main>
+  <dialog id="comparison" aria-labelledby="comparison-title">
+    <div class="comparison-heading"><h2 id="comparison-title">Compare versions</h2><button id="comparison-close" autofocus>Back to the collection</button></div>
+    <p id="comparison-notice" role="status" aria-live="polite"></p>
+    <p>Selected artwork stays in place until you choose a replacement. Open either image to see it at full size.</p>
+    <label>Version to consider<select id="comparison-version"></select></label>
+    <div id="comparison-panels"></div>
+  </dialog>
+</body>
+</html>

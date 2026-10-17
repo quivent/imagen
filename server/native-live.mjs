@@ -1,9 +1,16 @@
 import { spawn } from 'node:child_process';
 import { createHmac, timingSafeEqual } from 'node:crypto';
 import { readFile, stat } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
+import os from 'node:os';
 
 const apiPrefix = '/api/native-live/';
-const tokenFile = process.env.ARTWORK_CONTROL_TOKEN_FILE || '/Users/jay/kinship-of-cancer/tools/artwork/.state/control/token';
+const legacyState = path.join(os.homedir(), 'kinship-of-cancer/tools/artwork/.state');
+const factoryState = process.env.ARTWORK_FACTORY_STATE || (existsSync(legacyState) ? legacyState :
+  fileURLToPath(new URL('../deployment/controller/tools/artwork/.state/', import.meta.url)));
+const tokenFile = process.env.ARTWORK_CONTROL_TOKEN_FILE || path.join(factoryState, 'control/token');
 const host = process.env.ARTWORK_SSH_HOST || 'root@184.186.104.194';
 const port = process.env.ARTWORK_SSH_PORT || '11012';
 const liveFields = new Map(Object.entries({ guidance: [0, 20], steps: [1, 120], batch_size: [1, 64],

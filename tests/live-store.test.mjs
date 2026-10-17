@@ -19,7 +19,9 @@ test('unchanged public topics remain immediately readable across tab switches', 
   }
   for (const [key, value] of Object.entries({ document, window, location: { href: 'http://localhost/' }, WebSocket: Socket })) Object.defineProperty(globalThis, key, { configurable: true, writable: true, value });
   try {
-    const source = (await readFile(new URL('../src/live-store.js', import.meta.url), 'utf8')).replace("'./site-performance.js'", JSON.stringify(new URL('../src/site-performance.js', import.meta.url).href));
+    const source = (await readFile(new URL('../src/live-store.js', import.meta.url), 'utf8'))
+      .replace("'./site-performance.js'", JSON.stringify(new URL('../src/site-performance.js', import.meta.url).href))
+      .replace("'./gallery-patch.js'", JSON.stringify(new URL('../src/gallery-patch.js', import.meta.url).href));
     const { studioLive } = await import('data:text/javascript;base64,' + Buffer.from(source).toString('base64'));
     const keepAlive = studioLive.subscribe('comparisons', () => {});
     await Promise.resolve();
@@ -40,6 +42,13 @@ test('unchanged public topics remain immediately readable across tab switches', 
     publish('gallery', 2, { jobs: [{ id: 'newer' }] });
     publish('gallery', 1, { jobs: [{ id: 'older' }] });
     assert.equal((await studioLive.read('gallery')).jobs[0].id, 'newer');
+    socket.message({ type: 'patch', topic: 'gallery', baseVersion: 2, version: 4, metadata: { updatedAt: 'latest' }, removed: [], upserts: [{ index: 0, job: { id: 'incremental' } }] });
+    assert.deepEqual((await studioLive.read('gallery')).jobs.map(row => row.id), ['incremental', 'newer']);
+    socket.message({ type: 'patch', topic: 'gallery', baseVersion: 1, version: 5, metadata: {}, removed: [], upserts: [] });
+    assert.equal(socket.sent.at(-1).type, 'resync');
+    await assert.rejects(studioLive.read('gallery'));
+    publish('gallery', 5, { jobs: [{ id: 'recovered-full-archive' }] });
+    assert.equal((await studioLive.read('gallery')).jobs[0].id, 'recovered-full-archive');
     const privateSnapshots = [];
     const privateRelease = studioLive.subscribe('controls', snapshot => privateSnapshots.push(snapshot));
     await Promise.resolve();
