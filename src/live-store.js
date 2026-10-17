@@ -1,7 +1,7 @@
 // One socket per document; every tab shares its current topic observations.
 import { sitePerformance } from './site-performance.js';
-import { applyGalleryPatch } from './gallery-patch.js';
-const topics = new Set(['gallery', 'comparisons', 'tasks', 'agents', 'monitor', 'controls', 'winners']);
+import { applyGalleryPatch, recentGallery } from './gallery-patch.js';
+const topics = new Set(['gallery', 'gallery-recent', 'comparisons', 'tasks', 'agents', 'monitor', 'controls', 'winners']);
 const listeners = new Map();
 const snapshots = new Map();
 let socket = null;
@@ -17,13 +17,14 @@ function problem(status = 503) { const issue = new Error('Live studio observatio
 function emit(topic, value) {
   snapshots.set(topic, value);
   for (const listener of [...(listeners.get(topic) || [])]) listener(value);
+  if (topic === 'gallery') emit('gallery-recent', value.available ? { ...value, topic: 'gallery-recent', data: recentGallery(value.data) } : { ...value, topic: 'gallery-recent' });
 }
 function unavailable() {
   for (const topic of topics) if (snapshots.has(topic) || listeners.has(topic)) emit(topic, { available: false, topic, status: 503 });
 }
 function sendSubscriptions() {
   if (socket?.readyState !== WebSocket.OPEN) return;
-  const value = JSON.stringify({ type: 'subscribe', features: ['gallery-patch-v1'], topics: [...topics].filter(topic => topic !== 'controls' || listeners.has('controls')) });
+  const value = JSON.stringify({ type: 'subscribe', features: ['gallery-patch-v1', 'gallery-preview-v1'], topics: [...topics].filter(topic => topic !== 'gallery-recent' && (topic !== 'controls' || listeners.has('controls'))) });
   if (value !== subscriptionJSON) { subscriptionJSON = value; socket.send(value); }
 }
 function connect() {

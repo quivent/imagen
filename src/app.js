@@ -1,3 +1,4 @@
+import worldsMarkup from './worlds-panel.html?raw';
 import { agentView, taskAssignment } from './agent-state.js';
 import { sitePerformance } from './site-performance.js';
 import protocolMarkup from './protocol-panel.html?raw';
@@ -302,13 +303,13 @@ const modelNames = { 'flux1-dev': 'FLUX.1 dev', 'flux2-dev-nf4': 'FLUX.2 dev' };
 const controlFields = ['profile', 'prompt', 'width', 'height', 'steps', 'guidance_scale', 'seed', 'max_sequence_length', 'count'];
 const controls = { authorized: false, connected: false, fetching: false, posting: false, workers: [], jobs: [], pendingLanes: new Set(), gpus: [] };
 let activeTab = 'stream';
-const tabNames = ['stream', 'gallery', 'controls', 'tasks', 'performance', 'models', 'seers', 'metrics', 'winners', 'agents', 'daemons', 'rules', 'protocol', 'monitor'];
+const tabNames = ['stream', 'gallery', 'controls', 'tasks', 'performance', 'models', 'seers', 'worlds', 'metrics', 'winners', 'agents', 'daemons', 'rules', 'protocol', 'monitor'];
 sitePerformance.registerTabs(tabNames);
 const embeddedPanels = {};
 const liveTopics = new Map();
 function syncLiveTopics() {
-  const wanted = new Set(['comparisons', ...({ stream: ['gallery'], gallery: [], tasks: ['tasks', 'monitor'], controls: ['controls', 'agents'] }[activeTab] || [])]);
-  const refreshers = { comparisons: refresh, gallery: refreshStream, tasks: refreshTasks, controls: refreshControls, agents: refreshAgentSnapshot };
+  const wanted = new Set(['comparisons', ...({ stream: ['gallery-recent'], gallery: ['controls'], tasks: ['tasks', 'monitor'], controls: ['controls', 'agents'] }[activeTab] || [])]);
+  const refreshers = { comparisons: refresh, 'gallery-recent': refreshStream, tasks: refreshTasks, controls: refreshControls, agents: refreshAgentSnapshot };
   for (const [topic, stop] of liveTopics) if (!wanted.has(topic)) { stop(); liveTopics.delete(topic); }
   for (const topic of wanted) if (!liveTopics.has(topic)) liveTopics.set(topic, studioLive.subscribe(topic, observation => topic === 'monitor' ? updateTaskRuntime(observation) : refreshers[topic]()));
 }
@@ -354,8 +355,9 @@ for (const name of tabNames) {
   $(`tab-${name}`).addEventListener('keydown', (event) => {
     if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
     event.preventDefault();
-    const index = tabNames.indexOf(name);
-    const target = event.key === 'Home' ? tabNames[0] : event.key === 'End' ? tabNames.at(-1) : tabNames[(index + (event.key === 'ArrowRight' ? 1 : -1) + tabNames.length) % tabNames.length];
+    const visibleTabs = tabNames.filter(tab => $(`tab-${tab}`).getClientRects().length > 0);
+    const index = visibleTabs.indexOf(name);
+    const target = event.key === 'Home' ? visibleTabs[0] : event.key === 'End' ? visibleTabs.at(-1) : visibleTabs[(index + (event.key === 'ArrowRight' ? 1 : -1) + visibleTabs.length) % visibleTabs.length];
     showTab(target, true);
   });
 }
@@ -457,6 +459,8 @@ function setAuthorized(value) {
   $('control-workspace').hidden = !controls.authorized;
   $('generate-submit').disabled = !controls.authorized || !controls.connected || controls.posting;
   $('generate-both').disabled = $('generate-submit').disabled;
+  $('compare-generate-both').disabled = controls.posting;
+  $('compare-generate-both').textContent = controls.authorized ? `Run both · ${Number(generationField('count').value) * 2} images` : 'Open controls';
   if (controls.authorized) $('access-key').value = '';
 }
 class ControlResponseProblem extends Error {
@@ -553,7 +557,7 @@ function renderJobs() {
   $('control-jobs').replaceChildren(...(cards.length ? cards : [text('p', 'Your queued images will appear here.', 'history-empty')]));
 }
 async function refreshControls(manual = false) {
-  if (controls.fetching || !manual && (document.hidden || activeTab !== 'controls')) return;
+  if (controls.fetching || !manual && (document.hidden || !['controls', 'gallery'].includes(activeTab))) return;
   controls.fetching = true;
   try {
     const payload = await controlRequest('state');
@@ -609,24 +613,29 @@ $('access-form').addEventListener('submit', (event) => {
 });
 const choiceOptions = {
   width: { label: 'Resolution', values: [256, 512, 768, 1024, 1536], suffix: ' px' },
-  steps: { label: 'Steps', values: [8, 16, 20, 28, 36, 50] },
   guidance_scale: { label: 'Guidance', values: [2, 3, 3.5, 4, 5, 7.5] },
   seed: { label: 'Starting seed', values: [42, 123, 2026] },
   count: { label: 'Images', values: [1, 2, 4, 8, 20] },
 };
 const modelGuidance = { 'flux1-dev': null, 'flux2-dev-nf4': null };
+const modelSteps = { 'flux1-dev': 28, 'flux2-dev-nf4': 28 };
+const validSteps = value => Number.isInteger(value) && value >= 1 && value <= 60;
 const presetSettings = { draft: { width: 512, steps: 16 }, study: { width: 512, steps: 28 }, detail: { width: 1024, steps: 36 } };
 const generationField = (key) => $('generation-form').elements.namedItem(key);
 let submittedSettings = '';
 function selectionDescription() {
-  return `${modelNames[generationField('profile').value]} · ${generationField('width').value}² · ${generationField('steps').value} steps · guidance ${generationField('guidance_scale').value} · seed ${generationField('seed').value} · ${generationField('count').value} image${generationField('count').value === '1' ? '' : 's'}`;
+  return `${modelNames[generationField('profile').value]} · ${generationField('width').value}² · ${modelSteps[generationField('profile').value]} steps · guidance ${modelGuidance[generationField('profile').value] ?? generationField('guidance_scale').value} · seed ${generationField('seed').value} · ${generationField('count').value} image${generationField('count').value === '1' ? '' : 's'}`;
 }
 function saveControlDraft() {
   const values = Object.fromEntries(controlFields.map((key) => [key, generationField(key).value]));
+  values.modelSteps = { ...modelSteps };
+  values.modelGuidance = { ...modelGuidance };
   try { localStorage.setItem('artwork-comparison:generation-draft', JSON.stringify(values)); } catch { /* Keep the current selection. */ }
 }
 function syncSelection() {
   const profile = generationField('profile').value;
+  generationField('steps').value = String(modelSteps[profile]);
+  for (const input of document.querySelectorAll('[data-step-profile]')) input.value = String(modelSteps[input.dataset.stepProfile]);
   generationField('height').value = generationField('width').value;
   generationField('max_sequence_length').value = '512';
   for (const button of document.querySelectorAll('[data-choice-field]')) {
@@ -643,9 +652,11 @@ function syncSelection() {
   }
   for (const item of profiles) $(`lane-${item}`).classList.toggle('selected-model', item === profile);
   $('selection-profile').textContent = `${modelNames[profile]} selected`;
-  $('selected-settings').textContent = selectionDescription() + (profiles.some(p => modelGuidance[p] !== null) ? ' · guidance overrides: ' + profiles.filter(p => modelGuidance[p] !== null).map(p => `${modelNames[p]} ${modelGuidance[p]}`).join(', ') : '');
+  $('selected-settings').textContent = selectionDescription() + ' · Both: ' + profiles.map(p => `${modelNames[p]} ${modelSteps[p]} steps`).join(' / ') + (profiles.some(p => modelGuidance[p] !== null) ? ' · guidance overrides: ' + profiles.filter(p => modelGuidance[p] !== null).map(p => `${modelNames[p]} ${modelGuidance[p]}`).join(', ') : '');
   $('generate-submit').firstChild.textContent = `Queue ${modelNames[profile]} `;
   $('generate-both').firstChild.textContent = `Run both · ${Number(generationField('count').value) * 2} images `;
+  $('compare-generate-both').textContent = controls.authorized ? `Run both · ${Number(generationField('count').value) * 2} images` : 'Open controls';
+  $('compare-generate-both').title = `${generationField('width').value} × ${generationField('width').value} · seed ${generationField('seed').value} · ${generationField('count').value} per model`;
   $('selected-prompt-text').textContent = generationField('prompt').value;
   for (const button of $('scene-choices').children) {
     const selected = button.promptValue === generationField('prompt').value;
@@ -680,6 +691,7 @@ for (const [key, option] of Object.entries(choiceOptions)) {
 for (const button of document.querySelectorAll('[data-model]')) button.addEventListener('click', () => selectModel(button.dataset.model));
 for (const button of document.querySelectorAll('[data-preset]')) button.addEventListener('click', () => {
   const preset = presetSettings[button.dataset.preset];
+  modelSteps[button.dataset.profile] = preset.steps;
   for (const [key, value] of Object.entries(preset)) generationField(key).value = String(value);
   selectModel(button.dataset.profile);
 });
@@ -690,6 +702,7 @@ for (const profile of profiles) {
   for (const value of [null, 3.5, 4, 5]) {
     const button = text('button', value === null ? 'Shared' : String(value));
     button.type = 'button'; button.setAttribute('aria-pressed', String(value === null));
+    button.dataset.guidanceProfile = profile; button.dataset.guidanceValue = String(value);
     button.addEventListener('click', () => {
       modelGuidance[profile] = value;
       for (const sibling of buttons.children) sibling.setAttribute('aria-pressed', String(sibling === button));
@@ -718,12 +731,34 @@ function renderSceneChoices() {
 }
 try {
   const draft = JSON.parse(localStorage.getItem('artwork-comparison:generation-draft') || '{}');
+  for (const profile of profiles) {
+    const steps = Number(draft.modelSteps?.[profile] ?? draft.steps ?? 28);
+    if (validSteps(steps)) modelSteps[profile] = steps;
+    const guidance = draft.modelGuidance?.[profile];
+    if (typeof guidance === 'number' && Number.isFinite(guidance) && guidance >= 1 && guidance <= 10) modelGuidance[profile] = guidance;
+  }
   for (const key of controlFields) {
     if (typeof draft[key] !== 'string') continue;
     if (key === 'profile' && profiles.includes(draft[key]) || key === 'prompt' && draft[key].length <= 20000 || key === 'seed' && /^\d+$/.test(draft[key]) && Number(draft[key]) <= 4294967276 || choiceOptions[key]?.values.includes(Number(draft[key]))) generationField(key).value = draft[key];
   }
 } catch { /* Use the explicit defaults. */ }
+for (const button of document.querySelectorAll('[data-guidance-profile]')) button.setAttribute('aria-pressed', String(button.dataset.guidanceValue === String(modelGuidance[button.dataset.guidanceProfile])));
+$('override-summary').textContent = profiles.map(p => `${modelNames[p]}: ${modelGuidance[p] ?? 'shared'}`).join(' · ');
 renderSceneChoices();
+for (const input of document.querySelectorAll('[data-step-profile]')) input.addEventListener('change', () => {
+  const value = Number(input.value);
+  if (!input.reportValidity() || !validSteps(value)) return;
+  modelSteps[input.dataset.stepProfile] = value;
+  syncSelection();
+});
+$('compare-generate-both').addEventListener('click', () => {
+  for (const input of $('gallery-panel').querySelectorAll('[data-step-profile]')) if (!input.reportValidity()) return;
+  if (!controls.authorized || !controls.connected) { showTab('controls', true); return; }
+  if (!current()?.prompt) { $('compare-queue-status').textContent = 'Choose a comparison first.'; return; }
+  generationField('prompt').value = current().prompt;
+  renderSceneChoices();
+  $('generation-form').requestSubmit($('generate-both'));
+});
 $('use-gallery-prompt').addEventListener('click', () => {
   if (current()?.prompt) {
     generationField('prompt').value = current().prompt;
@@ -757,19 +792,20 @@ $('generation-form').addEventListener('submit', async (event) => {
   const payload = Object.fromEntries(controlFields.map((key) => [key, ['profile', 'prompt'].includes(key) ? generationField(key).value : Number(generationField(key).value)]));
   if (!payload.prompt.trim()) { $('queue-status').textContent = 'Choose a scene for these images.'; return; }
   const targets = event.submitter?.id === 'generate-both' ? profiles : [payload.profile];
-  const requests = targets.map(profile => ({ ...payload, profile, guidance_scale: modelGuidance[profile] ?? payload.guidance_scale }));
+  const requests = targets.map(profile => ({ ...payload, profile, steps: modelSteps[profile], guidance_scale: modelGuidance[profile] ?? payload.guidance_scale }));
   const payloadJSON = JSON.stringify(requests);
   if (!pendingControlRequest || pendingControlRequest.payloadJSON !== payloadJSON) retainPendingRequest({ requestId: crypto.randomUUID(), payloadJSON });
   const requestId = pendingControlRequest.requestId;
   controls.posting = true;
   setAuthorized(controls.authorized);
   $('queue-status').textContent = 'Adding your images to the queue…';
+  $('compare-queue-status').textContent = $('queue-status').textContent;
   try {
     const results = await Promise.allSettled(requests.map(request => controlRequest('jobs', { ...request, requestId: `${requestId}-${request.profile === 'flux1-dev' ? 'f1' : 'f2'}` })));
     const accepted = results.filter(result => result.status === 'fulfilled');
     if (accepted.length === results.length) {
       retainPendingRequest(null);
-      submittedSettings = `${targets.length === 2 ? 'Both models' : modelNames[payload.profile]} · ${payload.width}² · ${payload.steps} steps · seed ${payload.seed} · ${payload.count} each · guidance ${requests.map(request => `${modelNames[request.profile]} ${request.guidance_scale}`).join(' / ')}`;
+      submittedSettings = `${payload.width}² · seed ${payload.seed} · ${payload.count} each · ${requests.map(request => `${modelNames[request.profile]} ${request.steps} steps, guidance ${request.guidance_scale}`).join(' / ')}`;
       $('applied-settings').textContent = `Submitted · ${submittedSettings}`;
       $('queue-status').textContent = `${payload.count * targets.length} ${payload.count * targets.length === 1 ? 'image' : 'images'} queued. Running work keeps its settings.`;
     } else {
@@ -781,6 +817,7 @@ $('generation-form').addEventListener('submit', async (event) => {
   } finally {
     controls.posting = false;
     setAuthorized(controls.authorized);
+    $('compare-queue-status').textContent = $('queue-status').textContent;
   }
 });
 for (const profile of profiles) {
@@ -836,7 +873,7 @@ $('show-details').addEventListener('click', () => {
   } catch { /* Current view is retained. */ }
 });
 applyWorkMode();
-const streamState = { fetching: false, jobs: [], ready: new Map(), pending: new Set(), failed: new Map(), version: 0 };
+const streamState = { fetching: false, jobs: [], counts: {}, ready: new Map(), pending: new Set(), failed: new Map(), version: 0 };
 function streamImageURL(value) {
   if (typeof value !== 'string') return null;
   try {
@@ -923,7 +960,7 @@ function renderStreamGrid() {
       }
       for (const child of [...grid.children]) if (!cards.includes(child)) child.remove();
     }
-    $(`stream-count-${profile}`).textContent = `${loaded.length} recent · ${jobs.length} archived`;
+    $(`stream-count-${profile}`).textContent = `${loaded.length} recent · ${streamState.counts[profile] ?? jobs.length} archived`;
   }
   const retained = new Set(profiles.flatMap(profile => streamState.jobs.filter(job => job.profile === profile).slice(0, streamCapacity(profile) * 2).map(streamKey)));
   for (const key of streamState.ready.keys()) if (!retained.has(key)) streamState.ready.delete(key);
@@ -932,7 +969,7 @@ async function refreshStream() {
   if (streamState.fetching || document.hidden || activeTab !== 'stream' || $('viewer').open) return;
   streamState.fetching = true;
   try {
-    const payload = await studioLive.read('gallery');
+    const payload = await studioLive.read('gallery-recent');
     if (!Array.isArray(payload.jobs)) throw new Error('Stream unavailable');
     const version = jobTime(payload.updatedAt);
     if (version && version < streamState.version) return;
@@ -944,6 +981,7 @@ async function refreshStream() {
       seen.add(key); return true;
     }).sort((a, b) => jobTime(b.created) - jobTime(a.created));
     streamState.version = version;
+    streamState.counts = payload.counts || {};
     renderStreamGrid();
     $('stream-status').textContent = streamState.jobs.length ? 'Recent completed images · newest first in each model lane · updates appear automatically.' : 'Ready for the first completed images.';
   } catch {
@@ -956,6 +994,7 @@ window.addEventListener('resize', () => { clearTimeout(streamResize); streamResi
 refreshStream();
 
 if (!$('rules-panel').children.length) $('rules-panel').innerHTML = rulesMarkup;
+if (!$('worlds-panel').children.length) $('worlds-panel').innerHTML = worldsMarkup;
 if (!$('protocol-panel').children.length) $('protocol-panel').innerHTML = protocolMarkup;
 
 for (const [name, markup, mount] of [

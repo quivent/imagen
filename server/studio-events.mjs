@@ -6,7 +6,7 @@ import { execFile } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { collectLocalGallery, subscribeLocalGallery } from './local-gallery.mjs';
 import { collectStudioMonitor, subscribeMonitor } from './studio-monitor.mjs';
-import { createGalleryPatch } from '../src/gallery-patch.js';
+import { createGalleryPatch, recentGallery } from '../src/gallery-patch.js';
 
 const read = promisify(readFile);
 const execute = promisify(execFile);
@@ -15,7 +15,7 @@ const api = process.env.ARTWORK_API_ORIGIN || 'https://artwork-comparison.vercel
 const publicOrigin = 'https://artwork.influx.vision';
 const files = { tasks: 'tasks.json', winners: 'winners.json', comparisons: 'data/comparisons.json', agents: 'agent-status.json' };
 const topics = new Set([...Object.keys(files), 'gallery', 'monitor', 'controls']);
-const deliveryPriority = ['monitor', 'agents', 'winners', 'controls', 'tasks', 'comparisons', 'gallery'];
+const deliveryPriority = ['monitor', 'agents', 'winners', 'controls', 'tasks', 'comparisons', 'gallery-recent', 'gallery'];
 function allowedOrigin(origin, server) {
   if (origin === publicOrigin) return true;
   try {
@@ -127,14 +127,19 @@ export function installStudioEvents(server) {
   };
   const send = (socket, message) => {
     if (socket.readyState !== WebSocket.OPEN) return;
-    // Keys are limited to the seven supported topics plus the greeting.
+    // Keys are limited to supported topics, the recent preview and greeting.
     socket.outbox.set(message.topic || 'hello', message);
     drain(socket);
   };
   function deliver(topic, state, recipients = clients) {
     for (const socket of recipients) if (socket.topics.has(topic)) {
       if (state.error) send(socket, { type: 'unavailable', topic, observedAt: state.observedAt, status: state.status || 503 });
-      else if (state.data) send(socket, { type: 'snapshot', topic, version: state.version, observedAt: state.observedAt, data: state.data });
+      else if (state.data) {
+        if (topic === 'gallery' && socket.galleryPreview && !socket.galleryBaseline) {
+          send(socket, { type: 'snapshot', topic: 'gallery-recent', version: state.version, observedAt: state.observedAt, data: recentGallery(state.data) });
+        }
+        send(socket, { type: 'snapshot', topic, version: state.version, observedAt: state.observedAt, data: state.data });
+      }
     }
   }
   function publish(topic, data, target, recipients) {
@@ -211,7 +216,7 @@ export function installStudioEvents(server) {
     if (!allowedOrigin(request.headers.origin, server) || clients.size >= 32) { socket.end('HTTP/1.1 403 Forbidden\r\nConnection: close\r\n\r\n'); return; }
     wss.handleUpgrade(request, socket, head, connection => {
       connection.outbox = new Map(); connection.sending = false;
-      connection.galleryBaseline = null; connection.galleryEpoch = 0; connection.galleryPatches = false;
+      connection.galleryBaseline = null; connection.galleryEpoch = 0; connection.galleryPatches = false; connection.galleryPreview = false;
       connection.topics = new Set(); connection.cookie = controlCookie(request.headers.cookie); connection.alive = true;
       clients.add(connection);
       send(connection, { type: 'hello', protocol: 1, observedAt: new Date().toISOString(), topics: [...topics] });
@@ -226,6 +231,7 @@ export function installStudioEvents(server) {
           }
           if (message.type !== 'subscribe' || !Array.isArray(message.topics) || message.topics.length > topics.size || message.topics.some(topic => typeof topic !== 'string')) throw new Error('Unsupported message');
           connection.galleryPatches = Array.isArray(message.features) && message.features.includes('gallery-patch-v1');
+          connection.galleryPreview = connection.galleryPatches && message.features.includes('gallery-preview-v1');
           if (!connection.galleryPatches) { connection.galleryBaseline = null; connection.galleryEpoch++; }
           subscribe(connection, message.topics);
         } catch { connection.close(1008); }

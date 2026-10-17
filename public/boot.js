@@ -1,5 +1,5 @@
 (() => {
-  const tabs = ['stream', 'gallery', 'controls', 'tasks', 'performance', 'models', 'seers', 'metrics', 'winners', 'agents', 'daemons', 'rules', 'protocol', 'monitor'];
+  const tabs = ['stream', 'gallery', 'controls', 'tasks', 'performance', 'models', 'seers', 'worlds', 'metrics', 'winners', 'agents', 'daemons', 'rules', 'protocol', 'monitor'];
   const query = new URLSearchParams(location.search);
   const requested = query.get('tab');
   const tab = new URLSearchParams(location.hash.slice(1)).has('control') ? 'controls'

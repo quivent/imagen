@@ -2,6 +2,22 @@
 // archive actually sent to each connection. Never truncate the archive.
 const indexes = new WeakMap();
 const key = row => `${row.profile || ''}:${row.id}`;
+export function recentGallery(data, limit = 18) {
+  const profiles = ['flux1-dev', 'flux2-dev-nf4'];
+  const counts = Object.fromEntries(profiles.map(profile => [profile, 0]));
+  const latest = Object.fromEntries(profiles.map(profile => [profile, []]));
+  const time = row => typeof row.created === 'number' ? row.created : Date.parse(row.created) / 1000 || 0;
+  for (const row of data.jobs) {
+    if (!profiles.includes(row.profile)) continue;
+    counts[row.profile]++;
+    const rows = latest[row.profile];
+    const position = rows.findIndex(previous => time(row) > time(previous));
+    if (position >= 0) rows.splice(position, 0, row);
+    else if (rows.length < limit) rows.push(row);
+    if (rows.length > limit) rows.pop();
+  }
+  return { ...data, jobs: profiles.flatMap(profile => latest[profile]), counts, totalJobs: data.jobs.length };
+}
 function index(data) {
   if (!indexes.has(data)) indexes.set(data, new Map(data.jobs.map(row => [key(row), JSON.stringify(row)])));
   return indexes.get(data);

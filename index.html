@@ -4,7 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="dark">
-  <title>Comparison · Artwork Studio</title>
+  <title>Imagen · Artwork Studio</title>
+  <script src="/studio-access.js"></script>
+  <link rel="stylesheet" href="/src/worlds.css">
   <link rel="icon" href="data:,">
   <link rel="stylesheet" href="/src/style.css">
   <link rel="stylesheet" href="/src/metrics.css">
@@ -35,6 +37,7 @@
       <button id="tab-performance" type="button" role="tab" aria-selected="false" aria-controls="performance-panel" tabindex="-1">Performance</button>
       <button id="tab-models" type="button" role="tab" aria-selected="false" aria-controls="models-panel" tabindex="-1">Models</button>
       <button id="tab-seers" type="button" role="tab" aria-selected="false" aria-controls="seers-panel" tabindex="-1">Seers</button>
+      <button id="tab-worlds" type="button" role="tab" aria-selected="false" aria-controls="worlds-panel" tabindex="-1">Worlds</button>
       <button id="tab-metrics" type="button" role="tab" aria-selected="false" aria-controls="metrics-panel" tabindex="-1">Metrics</button>
       <button id="tab-winners" type="button" role="tab" aria-selected="false" aria-controls="winners-panel" tabindex="-1">Winners</button>
       <button id="tab-agents" type="button" role="tab" aria-selected="false" aria-controls="agents-panel" tabindex="-1">Agents</button>
@@ -44,6 +47,7 @@
       <button id="tab-monitor" type="button" role="tab" aria-selected="false" aria-controls="monitor-panel" tabindex="-1">Monitor</button>
     </div>
     </div>
+    <section id="worlds-panel" role="tabpanel" aria-labelledby="tab-worlds" hidden></section>
     <section id="stream-panel" role="tabpanel" aria-labelledby="tab-stream">
       <section id="stream-introduction" class="introduction"><div><p class="eyebrow">LIVE FROM THE GENERATORS</p><h1>Images as they arrive.</h1><p class="subheading">Recent completed images from each model, gathered across the available space.</p></div></section>
       <div class="stream-lanes">
@@ -55,8 +59,8 @@
     <section id="gallery-panel" role="tabpanel" aria-labelledby="tab-gallery" hidden>
     <section id="gallery-introduction" class="introduction">
       <div><p class="eyebrow">FLUX.1 &amp; FLUX.2</p><h1>Two ways of seeing.</h1><p class="subheading">The same idea, considered side by side.</p></div>
-      <div class="collection-controls"><label for="scene">In the collection</label><select id="scene" disabled><option>No images yet</option></select></div>
     </section>
+    <div class="compare-generation" aria-label="Next comparison generation settings"><div class="collection-controls"><label for="scene">Next pair</label><select id="scene" disabled><option>No images yet</option></select></div><label>FLUX.1 steps<input id="compare-steps-flux1" data-step-profile="flux1-dev" type="number" min="1" max="60" step="1" value="28" required></label><label>FLUX.2 steps<input id="compare-steps-flux2" data-step-profile="flux2-dev-nf4" type="number" min="1" max="60" step="1" value="28" required></label><button id="compare-generate-both" type="button">Run both</button><p id="compare-queue-status" role="status"></p></div>
     <section id="empty" class="empty" aria-labelledby="empty-heading" hidden>
       <div class="empty-pair" aria-hidden="true"><span>A</span><span>B</span></div>
       <h2 id="empty-heading">A little space for the first pair.</h2>
@@ -95,6 +99,7 @@
           <div class="model-workbenches">
             <article class="model-workbench worker-lane" id="lane-flux1-dev">
               <div class="model-card-top"><button type="button" class="model-choice" data-model="flux1-dev" aria-pressed="true"><span class="model-number">01</span><span><strong>FLUX.1 <small>dev</small></strong><span class="model-precision">Native · BF16</span></span><span class="model-check" aria-hidden="true">↗</span></button><span class="lane-phase" id="phase-flux1-dev">Connecting</span></div>
+              <label class="model-step-control" for="model-steps-flux1">Steps for next FLUX.1 request<input id="model-steps-flux1" data-step-profile="flux1-dev" type="number" min="1" max="60" step="1" value="28" required></label>
               <div class="preset-row" aria-label="FLUX.1 presets">
                 <button type="button" data-preset="draft" data-profile="flux1-dev" aria-pressed="false"><strong>16 steps</strong><span>512 · 16 steps</span></button>
                 <button type="button" data-preset="study" data-profile="flux1-dev" aria-pressed="true"><strong>28 steps</strong><span>512 · 28 steps</span></button>
@@ -104,6 +109,7 @@
             </article>
             <article class="model-workbench worker-lane" id="lane-flux2-dev-nf4">
               <div class="model-card-top"><button type="button" class="model-choice" data-model="flux2-dev-nf4" aria-pressed="false"><span class="model-number">02</span><span><strong>FLUX.2 <small>dev</small></strong><span class="model-precision">BF16 · NF4 text encoder</span></span><span class="model-check" aria-hidden="true">↗</span></button><span class="lane-phase" id="phase-flux2-dev-nf4">Connecting</span></div>
+              <label class="model-step-control" for="model-steps-flux2">Steps for next FLUX.2 request<input id="model-steps-flux2" data-step-profile="flux2-dev-nf4" type="number" min="1" max="60" step="1" value="28" required></label>
               <div class="preset-row" aria-label="FLUX.2 presets">
                 <button type="button" data-preset="draft" data-profile="flux2-dev-nf4" aria-pressed="false"><strong>16 steps</strong><span>512 · 16 steps</span></button>
                 <button type="button" data-preset="study" data-profile="flux2-dev-nf4" aria-pressed="false"><strong>28 steps</strong><span>512 · 28 steps</span></button>

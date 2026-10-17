@@ -3,6 +3,7 @@ data/
 __pycache__/
 node_modules/
 dist/
+.vercel/
 .DS_Store
 *.pyc
 
@@ -11,3 +12,5 @@ dist/
 /agent-status.json
 /monitor-state.json
 /winners.json
+.vercel
+.env*

@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { createGalleryPatch, applyGalleryPatch } from '../src/gallery-patch.js';
+import { createGalleryPatch, applyGalleryPatch, recentGallery } from '../src/gallery-patch.js';
 
 const snapshot = (version, jobs, metadata = {}) => ({ type: 'snapshot', topic: 'gallery', version, observedAt: '2026-10-17T23:00:00Z', available: true, data: { ...metadata, jobs } });
 const row = (id, seconds = 3) => ({ id, profile: 'flux1-dev', seconds });
@@ -43,4 +43,16 @@ test('missing or inconsistent baselines and malformed updates require a full res
   assert.throws(() => applyGalleryPatch({ ...before, version: 0 }, patch));
   assert.throws(() => applyGalleryPatch(before, { ...patch, upserts: [{ index: 99, job: row('new') }] }));
   assert.throws(() => applyGalleryPatch(before, { ...patch, order: ['flux1-dev:new', 'flux1-dev:new'] }));
+});
+
+test('a recent preview contains the newest rows of each lane and accurate complete archive counts', () => {
+  const jobs = Array.from({ length: 100 }, (_, created) => ({ id: String(created), profile: created % 2 ? 'flux1-dev' : 'flux2-dev-nf4', created }));
+  const data = { updatedAt: 'now', exclusions: { count: 2 }, jobs };
+  const preview = recentGallery(data);
+  assert.equal(preview.jobs.length, 36);
+  assert.deepEqual(preview.counts, { 'flux1-dev': 50, 'flux2-dev-nf4': 50 });
+  assert.equal(preview.totalJobs, 100);
+  assert.deepEqual(preview.jobs.filter(row => row.profile === 'flux1-dev').map(row => row.created), Array.from({ length: 18 }, (_, index) => 99 - index * 2));
+  assert.equal(preview.jobs.find(row => row.profile === 'flux2-dev-nf4').created, 98);
+  assert.equal(data.jobs.length, 100, 'preview construction does not truncate the archive');
 });

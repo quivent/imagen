@@ -27,7 +27,17 @@ test('unchanged public topics remain immediately readable across tab switches', 
     await Promise.resolve();
     const socket = connections[0]; socket.open();
     const publish = (topic, version, data) => socket.message({ type: 'snapshot', topic, version, data });
-    publish('gallery', 1, { jobs: [{ id: 'existing-archive' }] });
+    assert.equal(socket.sent[0].topics.length, 6, 'preview feature does not add a wire subscription unsupported by older servers');
+    assert.ok(socket.sent[0].features.includes('gallery-preview-v1'));
+    publish('gallery-recent', 1, { jobs: [{ id: 'preview', profile: 'flux1-dev' }], counts: { 'flux1-dev': 3 } });
+    assert.equal((await studioLive.read('gallery-recent')).jobs[0].id, 'preview');
+    let archiveResolved = false;
+    const archive = studioLive.read('gallery').then(() => { archiveResolved = true; });
+    await Promise.resolve();
+    assert.equal(archiveResolved, false, 'archive/statistics consumers never receive a partial preview');
+    publish('gallery', 1, { jobs: [{ id: 'existing-archive', profile: 'flux1-dev' }, { id: 'older-a', profile: 'flux1-dev' }, { id: 'older-b', profile: 'flux1-dev' }] });
+    await archive;
+    assert.equal((await studioLive.read('gallery-recent')).counts['flux1-dev'], 3, 'full snapshots also supply recent data for older servers');
     for (let visit = 0; visit < 20; visit++) {
       const received = [];
       const release = studioLive.subscribe('gallery', snapshot => received.push(snapshot));

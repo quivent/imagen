@@ -31,4 +31,6 @@ Runtime versions are pinned in `/workspace/artwork/judges/runtime.lock.txt`; Pix
 
 The Seers tab observes real image requests through `seer_observer.py`, attached to the two vLLM servers and the DINO app. It stores captured image bytes by SHA256 and pairs each review with its own inputs, prompt, timestamps and feedback under `seers/`. It preserves the original response, including streamed Pixtral/Gemma responses; nonvisual requests do not replace visual feedback. It does not schedule reviews or change generation prompts.
 
+The [Imagen to Basalt world protocol](../../docs/IMAGE-TO-WORLD-PROTOCOL.md) defines how these observations feed image analysis, selection of existing Basalt scene programs, bounded parameter fitting and exploration review. It preserves Jay's Lithos authorship and acceptance boundaries; the fitting controller is separate implementation work.
+
 `seers_snapshot.py --watch` supplies fresh readiness and review observations over one private SSH connection shared by connected Seers viewers. `server/seers.mjs` serves `/api/seers/events` and hash-verified captured images. The browser subscribes only while Seers is visible; stale connections show unknown activity while retaining historical feedback. The three-model inference/capture proof is `seers-proof.json`.
