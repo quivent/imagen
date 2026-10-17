@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Comparison · Artwork Studio</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/metrics.css">
+  <link rel="stylesheet" href="/monitor.css">
+  <link rel="stylesheet" href="/winners.css">
+  <script src="/boot.js"></script>
+  <script type="module" src="/app.js"></script>
+</head>
+<body class="work-mode">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="masthead">
+    <div class="brand"><span class="mark" aria-hidden="true">◒</span><span>Artwork Studio<small>THE WORKING STUDIO</small></span></div>
+    <div class="header-actions"><button id="work-mode" type="button" class="quiet" aria-pressed="true">Work mode</button><button id="show-details" type="button" class="quiet" aria-expanded="false" aria-controls="gallery-introduction stream-introduction">Show details</button></div>
+  </header>
+  <main id="main" tabindex="-1">
+    <div class="studio-tabs"><div class="studio-tab-buttons" role="tablist" aria-label="Artwork Studio">
+      <button id="tab-stream" type="button" role="tab" aria-selected="true" aria-controls="stream-panel">Stream</button>
+      <button id="tab-gallery" type="button" role="tab" aria-selected="false" aria-controls="gallery-panel" tabindex="-1">Compare</button>
+      <button id="tab-controls" type="button" role="tab" aria-selected="false" aria-controls="controls-panel" tabindex="-1">Controls</button>
+      <button id="tab-tasks" type="button" role="tab" aria-selected="false" aria-controls="tasks-panel" tabindex="-1">Tasks</button>
+      <button id="tab-metrics" type="button" role="tab" aria-selected="false" aria-controls="metrics-panel" tabindex="-1">Metrics</button>
+      <button id="tab-winners" type="button" role="tab" aria-selected="false" aria-controls="winners-panel" tabindex="-1">Winners</button>
+      <button id="tab-monitor" type="button" role="tab" aria-selected="false" aria-controls="monitor-panel" tabindex="-1">Monitor</button>
+    </div>
+    </div>
+    <section id="stream-panel" role="tabpanel" aria-labelledby="tab-stream">
+      <section id="stream-introduction" class="introduction"><div><p class="eyebrow">LIVE FROM THE GENERATORS</p><h1>Images as they arrive.</h1><p class="subheading">Recent completed images from each model, gathered across the available space.</p></div></section>
+      <div class="stream-lanes">
+        <section class="stream-lane" aria-labelledby="stream-heading-flux1-dev"><header class="stream-lane-heading"><h2 id="stream-heading-flux1-dev">FLUX.1 dev</h2><span id="stream-count-flux1-dev">Awaiting images</span></header><div id="stream-grid-flux1-dev" class="stream-grid"><p class="stream-placeholder">Room for the next images.</p></div></section>
+        <section class="stream-lane" aria-labelledby="stream-heading-flux2-dev-nf4"><header class="stream-lane-heading"><h2 id="stream-heading-flux2-dev-nf4">FLUX.2 dev</h2><span id="stream-count-flux2-dev-nf4">Awaiting images</span></header><div id="stream-grid-flux2-dev-nf4" class="stream-grid"><p class="stream-placeholder">Room for the next images.</p></div></section>
+      </div>
+      <p id="stream-status" class="status" role="status">Connecting to the image stream.</p>
+    </section>
+    <section id="gallery-panel" role="tabpanel" aria-labelledby="tab-gallery" hidden>
+    <section id="gallery-introduction" class="introduction">
+      <div><p class="eyebrow">FLUX.1 &amp; FLUX.2</p><h1>Two ways of seeing.</h1><p class="subheading">The same idea, considered side by side.</p></div>
+      <div class="collection-controls"><label for="scene">In the collection</label><select id="scene" disabled><option>No images yet</option></select></div>
+    </section>
+    <section id="empty" class="empty" aria-labelledby="empty-heading" hidden>
+      <div class="empty-pair" aria-hidden="true"><span>A</span><span>B</span></div>
+      <h2 id="empty-heading">A little space for the first pair.</h2>
+      <p>The images will appear here as they arrive.<br>Each version keeps its own place.</p>
+    </section>
+    <div id="comparison-grid" class="comparison-grid" aria-label="All comparison pairs" aria-busy="true"><article class="comparison-tile comparison-loading" aria-hidden="true"><div class="comparison-loading-title">Reading comparisons</div><div class="comparison-tile-pair"><div class="comparison-loading-frame"></div><div class="comparison-loading-frame"></div></div><p class="comparison-loading-caption">Original pairs are on their way.</p><div class="comparison-loading-action"></div></article><article class="comparison-tile comparison-loading" aria-hidden="true"><div class="comparison-loading-title">Reading comparisons</div><div class="comparison-tile-pair"><div class="comparison-loading-frame"></div><div class="comparison-loading-frame"></div></div><p class="comparison-loading-caption">Original pairs are on their way.</p><div class="comparison-loading-action"></div></article><article class="comparison-tile comparison-loading" aria-hidden="true"><div class="comparison-loading-title">Reading comparisons</div><div class="comparison-tile-pair"><div class="comparison-loading-frame"></div><div class="comparison-loading-frame"></div></div><p class="comparison-loading-caption">Original pairs are on their way.</p><div class="comparison-loading-action"></div></article><article class="comparison-tile comparison-loading" aria-hidden="true"><div class="comparison-loading-title">Reading comparisons</div><div class="comparison-tile-pair"><div class="comparison-loading-frame"></div><div class="comparison-loading-frame"></div></div><p class="comparison-loading-caption">Original pairs are on their way.</p><div class="comparison-loading-action"></div></article><article class="comparison-tile comparison-loading" aria-hidden="true"><div class="comparison-loading-title">Reading comparisons</div><div class="comparison-tile-pair"><div class="comparison-loading-frame"></div><div class="comparison-loading-frame"></div></div><p class="comparison-loading-caption">Original pairs are on their way.</p><div class="comparison-loading-action"></div></article><article class="comparison-tile comparison-loading" aria-hidden="true"><div class="comparison-loading-title">Reading comparisons</div><div class="comparison-tile-pair"><div class="comparison-loading-frame"></div><div class="comparison-loading-frame"></div></div><p class="comparison-loading-caption">Original pairs are on their way.</p><div class="comparison-loading-action"></div></article></div>
+    <details id="comparison-inspector" class="comparison-inspector" hidden><summary>Selected comparison · prompts, settings and observations</summary>
+    <section id="comparison" hidden aria-labelledby="scene-title">
+      <div class="scene-heading"><div><p id="position" class="eyebrow"></p><h2 id="scene-title"></h2></div><div class="scene-actions"><button id="previous" class="square" aria-label="Previous comparison">←</button><button id="next" class="square" aria-label="Next comparison">→</button><button id="swap" class="quiet">Swap sides</button></div></div>
+      <div class="pair" id="pair"></div>
+      <section class="prompt-card" aria-labelledby="prompt-heading"><div><p class="eyebrow">THE STARTING POINT</p><h3 id="prompt-heading">A shared prompt</h3></div><p id="prompt"></p></section>
+      <details class="generation-details"><summary>Generation details</summary><div id="details" class="details-grid"></div><p class="small-note">Times are recorded generation times when available. Shared seeds do not produce matching noise across different models.</p></details>
+      <section class="notes"><label for="note">Your observations <span>Saved in this browser</span></label><textarea id="note" rows="3" placeholder="What draws you in? What would you change?"></textarea><p id="note-status" class="small-note" aria-live="polite"></p></section>
+    </section>
+    </details>
+    <p id="status" class="status" role="status" aria-live="polite">Reading the comparison collection.</p>
+    </section>
+    <section id="controls-panel" role="tabpanel" aria-labelledby="tab-controls" hidden>
+      <div class="introduction controls-introduction">
+        <div><p class="eyebrow">THE WORKING STUDIO</p><h1>The working studio.</h1><p class="subheading">A place, a model, a few considered choices.</p></div>
+        <p id="control-connection" class="control-connection">Private controls</p>
+      </div>
+      <section id="access-panel" hidden class="access-panel" aria-labelledby="access-heading">
+        <div><p class="eyebrow">YOUR STUDIO</p><h2 id="access-heading">Open the controls.</h2><p>Use your access key to work with the generators.<br>The gallery is always here to look through.</p></div>
+        <form id="access-form"><label for="access-key">Access key</label><div class="access-entry"><input id="access-key" type="password" autocomplete="off" required aria-describedby="access-status"><button id="access-submit" type="submit" class="primary">Open controls</button></div><p id="access-status" class="small-note" role="status"></p></form>
+      </section>
+      <section class="agent-strip" aria-labelledby="agent-heading"><div class="agent-strip-heading"><h2 id="agent-heading">The team</h2><p id="agent-summary">Assignment snapshot · 3 worker slots + 1 coordinator</p></div><div id="agent-assignments" class="agent-assignments"></div><p id="agent-updated" class="snapshot-time">Loading assignment snapshot.</p></section>
+      <div id="control-workspace" hidden>
+        <form id="generation-form" class="workbench">
+          <div class="workbench-heading"><div><p class="eyebrow">GENERATION WORKBENCH</p><h2>Choose. Render. Compare.</h2></div><p class="selection-pill" id="selection-profile">FLUX.1 selected</p></div>
+          <input id="generate-profile" name="profile" type="hidden" value="flux1-dev">
+          <input id="generate-prompt" name="prompt" type="hidden" value="">
+          <input id="generate-width" name="width" type="hidden" value="512"><input id="generate-height" name="height" type="hidden" value="512">
+          <input id="generate-steps" name="steps" type="hidden" value="28"><input id="generate-guidance" name="guidance_scale" type="hidden" value="3.5">
+          <input id="generate-seed" name="seed" type="hidden" value="42"><input id="generate-sequence" name="max_sequence_length" type="hidden" value="512"><input id="generate-count" name="count" type="hidden" value="1">
+          <div class="model-workbenches">
+            <article class="model-workbench worker-lane" id="lane-flux1-dev">
+              <div class="model-card-top"><button type="button" class="model-choice" data-model="flux1-dev" aria-pressed="true"><span class="model-number">01</span><span><strong>FLUX.1 <small>dev</small></strong><span class="model-precision">Native · BF16</span></span><span class="model-check" aria-hidden="true">↗</span></button><span class="lane-phase" id="phase-flux1-dev">Connecting</span></div>
+              <div class="preset-row" aria-label="FLUX.1 presets">
+                <button type="button" data-preset="draft" data-profile="flux1-dev" aria-pressed="false"><strong>16 steps</strong><span>512 · 16 steps</span></button>
+                <button type="button" data-preset="study" data-profile="flux1-dev" aria-pressed="true"><strong>28 steps</strong><span>512 · 28 steps</span></button>
+                <button type="button" data-preset="detail" data-profile="flux1-dev" aria-pressed="false"><strong>Large square</strong><span>1024 · 36 steps</span></button>
+              </div>
+              <p class="lane-current" id="current-flux1-dev">Current work will appear here.</p><dl class="lane-measures" id="measures-flux1-dev"></dl><button type="button" class="quiet lane-pause" id="pause-flux1-dev" disabled>Pause after this image</button>
+            </article>
+            <article class="model-workbench worker-lane" id="lane-flux2-dev-nf4">
+              <div class="model-card-top"><button type="button" class="model-choice" data-model="flux2-dev-nf4" aria-pressed="false"><span class="model-number">02</span><span><strong>FLUX.2 <small>dev</small></strong><span class="model-precision">BF16 · NF4 text encoder</span></span><span class="model-check" aria-hidden="true">↗</span></button><span class="lane-phase" id="phase-flux2-dev-nf4">Connecting</span></div>
+              <div class="preset-row" aria-label="FLUX.2 presets">
+                <button type="button" data-preset="draft" data-profile="flux2-dev-nf4" aria-pressed="false"><strong>16 steps</strong><span>512 · 16 steps</span></button>
+                <button type="button" data-preset="study" data-profile="flux2-dev-nf4" aria-pressed="false"><strong>28 steps</strong><span>512 · 28 steps</span></button>
+                <button type="button" data-preset="detail" data-profile="flux2-dev-nf4" aria-pressed="false"><strong>Large square</strong><span>1024 · 36 steps</span></button>
+              </div>
+              <p class="lane-current" id="current-flux2-dev-nf4">Current work will appear here.</p><dl class="lane-measures" id="measures-flux2-dev-nf4"></dl><button type="button" class="quiet lane-pause" id="pause-flux2-dev-nf4" disabled>Pause after this image</button>
+            </article>
+          </div>
+          <div class="workbench-body">
+            <section class="scene-library" aria-labelledby="scene-library-heading"><div class="section-heading"><h3 id="scene-library-heading">01 <span>A place to begin</span></h3><button type="button" id="use-gallery-prompt" class="quiet">Current comparison ↗</button></div><div id="scene-choices" class="scene-choices" role="group" aria-label="Scene prompt"></div><details class="selected-prompt"><summary id="selected-scene-title">Choose a scene</summary><p id="selected-prompt-text"></p></details></section>
+            <section class="setting-library" aria-labelledby="setting-heading"><div class="section-heading"><h3 id="setting-heading">02 <span>Make it your own</span></h3><span class="fixed-setting">Square · context 512</span></div><div id="parameter-choices" class="parameter-choices"></div><details class="guidance-overrides"><summary>Per-model guidance overrides <span id="override-summary">Shared setting</span></summary><div id="model-overrides"></div></details><p class="sequence-note">Images run sequentially. Each repeat adds one to the seed.</p></section>
+          </div>
+          <div class="render-bar"><div><p class="eyebrow">SELECTED FOR NEXT REQUEST</p><p id="selected-settings" class="selected-settings"></p><p id="applied-settings" class="applied-settings">No request submitted from this page.</p></div><div class="render-actions"><button id="generate-both" type="submit" class="primary">Run both models <span aria-hidden="true">↗</span></button><button id="generate-submit" type="submit" class="quiet">Queue selected model <span aria-hidden="true">↗</span></button><p id="queue-status" class="small-note" role="status"></p></div></div>
+        </form>
+        <details class="recent-work"><summary>Recent work <span id="recent-work-count"></span></summary><div id="control-jobs"><p class="history-empty">Your queued images will appear here.</p></div></details>
+      </div>
+      <p id="control-status" class="status" role="status"></p>
+    </section>
+    <section id="tasks-panel" role="tabpanel" aria-labelledby="tab-tasks" hidden>
+      <div class="tasks-heading"><div><p class="eyebrow">STUDIO RECORD</p><h1>Tasks</h1><p>This is the artwork work recorded in the project. It is kept with the site, so it does not depend on a chat or this browser.</p></div></div>
+      <p id="tasks-updated" class="snapshot-time"></p>
+      <div id="tasks-list" class="tasks-list"></div>
+      <p id="tasks-status" class="status" role="status" aria-live="polite"></p>
+    </section>
+    <section id="metrics-panel" class="metrics-panel" role="tabpanel" aria-labelledby="tab-metrics" hidden></section>
+    <section id="monitor-panel" class="monitor-panel" role="tabpanel" aria-labelledby="tab-monitor" hidden></section>
+    <section id="winners-panel" class="winners-panel" role="tabpanel" aria-labelledby="tab-winners" hidden></section>
+  </main>
+  <footer><span>Art first. Details when you want them.</span><span>Originals remain unchanged.</span></footer>
+  <dialog id="viewer" aria-labelledby="viewer-title"><div class="viewer-heading"><h2 id="viewer-title"></h2><button id="close-viewer">Close <span aria-hidden="true">×</span></button></div><img id="viewer-image" alt=""></dialog>
+</body>
+</html>

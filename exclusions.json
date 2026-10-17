@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "exclusions": [
+    {
+      "enabled": true,
+      "comparisonId": "scene-001-v1",
+      "jobIds": [
+        "af9b8fb225384bac990a153b262ab48f",
+        "6fc40b19a4364dada1de631442fde042"
+      ],
+      "reason": "Initial 1536 × 1024 setup pair; the study uses 512 × 512. Originals and receipts are retained."
+    }
+  ]
+}

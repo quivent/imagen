@@ -1,0 +1,13 @@
+data/
+.runtime/
+__pycache__/
+node_modules/
+dist/
+.DS_Store
+*.pyc
+
+# Local operational records and observations
+/tasks.json
+/agent-status.json
+/monitor-state.json
+/winners.json
