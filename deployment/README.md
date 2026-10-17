@@ -20,7 +20,7 @@ This is a source bundle, not a backup. It contains no weights, images, queues, j
 | `api/` | Existing authenticated Controls and public R2 gallery API source; Vercel-only API deployment configuration. |
 | `../server/`, `../scripts/`, `../serve.py` | Current local-first studio and its daemons. Corrections/Winners no longer import code from a sibling repository. |
 
-The captured two-card topology uses GPU 0 for native FLUX.1 and the judge services; GPU 1 runs FLUX.2 with its NF4 text encoder. Original model precision, 512-pixel study dimensions, 28 steps, seed policy, 3.5 study guidance, judge GPU allocations and inference settings are preserved in source/configuration. Two cards are independent lanes; their VRAM is not combined.
+The captured two-card topology uses GPU 0 for native FLUX.1 and the judge services; GPU 1 runs FLUX.2 with its NF4 text encoder. Original model precision, 28 steps, seed policy, 3.5 study guidance and judge GPU allocations are preserved. Jay raised FLUX.2 continuous output to 1024×1024 on 2026-10-17; FLUX.1 remains 512×512. Two cards are independent lanes; their VRAM is not combined.
 
 ```mermaid
 flowchart LR

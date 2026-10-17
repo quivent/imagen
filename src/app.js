@@ -1,4 +1,5 @@
 import worldsMarkup from './worlds-panel.html?raw';
+import { createGenerationSteps } from './generation-steps.js';
 import { agentView, taskAssignment } from './agent-state.js';
 import { sitePerformance } from './site-performance.js';
 import { reconcileComparisonOptions } from './comparison-options.js';
@@ -460,7 +461,7 @@ function setAuthorized(value) {
   $('generate-both').disabled = $('generate-submit').disabled;
   if (!controls.authorized || !controls.connected) for (const profile of profiles) $(`pause-${profile}`).disabled = true;
   $('compare-generate-both').disabled = controls.posting;
-  $('compare-generate-both').textContent = controls.authorized ? `Run both · ${Number(generationField('count').value) * 2} images` : 'Open controls';
+  $('compare-generate-both').textContent = `Run both · ${Number(generationField('count').value) * 2} images`;
   if (controls.authorized) $('access-key').value = '';
 }
 class ControlResponseProblem extends Error {
@@ -596,6 +597,7 @@ async function authenticate(token) {
     token = '';
     $('access-status').textContent = '';
     await refreshControls(true);
+    await generationSteps.retry();
   } catch (problem) {
     token = '';
     $('access-status').textContent = [401, 403].includes(problem.status) ? 'That key could not open the controls. Check it and try again.' : 'The controls are not available at the moment. Your gallery is still here.';
@@ -619,8 +621,15 @@ const choiceOptions = {
 };
 const modelGuidance = { 'flux1-dev': null, 'flux2-dev-nf4': null };
 const modelSteps = { 'flux1-dev': 28, 'flux2-dev-nf4': 28 };
+const modelResolution = { 'flux1-dev': 512, 'flux2-dev-nf4': 1024 };
 const validSteps = value => Number.isInteger(value) && value >= 1 && value <= 60;
+const generationSteps = createGenerationSteps({
+  read: () => modelSteps,
+  apply: values => { Object.assign(modelSteps, values); syncSelection(); },
+  status: message => { for (const id of ['compare-step-status', 'control-step-status']) if ($(id)) $(id).textContent = message; },
+});
 const presetSettings = { draft: { width: 512, steps: 16 }, study: { width: 512, steps: 28 }, detail: { width: 1024, steps: 36 } };
+const presetForModel = (name, profile) => ({ ...presetSettings[name], ...(name === 'study' && profile === 'flux2-dev-nf4' ? { width: 1024 } : {}) });
 const generationField = (key) => $('generation-form').elements.namedItem(key);
 let submittedSettings = '';
 function selectionDescription() {
@@ -629,11 +638,13 @@ function selectionDescription() {
 function saveControlDraft() {
   const values = Object.fromEntries(controlFields.map((key) => [key, generationField(key).value]));
   values.modelSteps = { ...modelSteps };
+  values.modelResolution = { ...modelResolution };
   values.modelGuidance = { ...modelGuidance };
   try { localStorage.setItem('artwork-comparison:generation-draft', JSON.stringify(values)); } catch { /* Keep the current selection. */ }
 }
 function syncSelection() {
   const profile = generationField('profile').value;
+  generationField('width').value = String(modelResolution[profile]);
   generationField('steps').value = String(modelSteps[profile]);
   for (const input of document.querySelectorAll('[data-step-profile]')) input.value = String(modelSteps[input.dataset.stepProfile]);
   generationField('height').value = generationField('width').value;
@@ -646,7 +657,7 @@ function syncSelection() {
   }
   for (const button of document.querySelectorAll('[data-model]')) button.setAttribute('aria-pressed', String(button.dataset.model === profile));
   for (const button of document.querySelectorAll('[data-preset]')) {
-    const preset = presetSettings[button.dataset.preset];
+    const preset = presetForModel(button.dataset.preset, button.dataset.profile);
     const selected = button.dataset.profile === profile && Number(generationField('width').value) === preset.width && Number(generationField('steps').value) === preset.steps && Number(generationField('guidance_scale').value) === (profile === 'flux1-dev' ? 3.5 : 4);
     button.setAttribute('aria-pressed', String(selected));
   }
@@ -655,8 +666,8 @@ function syncSelection() {
   $('selected-settings').textContent = selectionDescription() + ' · Both: ' + profiles.map(p => `${modelNames[p]} ${modelSteps[p]} steps`).join(' / ') + (profiles.some(p => modelGuidance[p] !== null) ? ' · guidance overrides: ' + profiles.filter(p => modelGuidance[p] !== null).map(p => `${modelNames[p]} ${modelGuidance[p]}`).join(', ') : '');
   $('generate-submit').firstChild.textContent = `Queue ${modelNames[profile]} `;
   $('generate-both').firstChild.textContent = `Run both · ${Number(generationField('count').value) * 2} images `;
-  $('compare-generate-both').textContent = controls.authorized ? `Run both · ${Number(generationField('count').value) * 2} images` : 'Open controls';
-  $('compare-generate-both').title = `${generationField('width').value} × ${generationField('width').value} · seed ${generationField('seed').value} · ${generationField('count').value} per model`;
+  $('compare-generate-both').textContent = `Run both · ${Number(generationField('count').value) * 2} images`;
+  $('compare-generate-both').title = `${profiles.map(p => `${modelNames[p]} ${modelResolution[p]} × ${modelResolution[p]}`).join(' / ')} · seed ${generationField('seed').value} · ${generationField('count').value} per model`;
   $('selected-prompt-text').textContent = generationField('prompt').value;
   for (const button of $('scene-choices').children) {
     const selected = button.promptValue === generationField('prompt').value;
@@ -682,6 +693,7 @@ for (const [key, option] of Object.entries(choiceOptions)) {
     button.setAttribute('aria-pressed', 'false');
     button.addEventListener('click', () => {
       generationField(key).value = value === 'random' ? String(crypto.getRandomValues(new Uint32Array(1))[0] % 4294967276) : String(value);
+      if (key === 'width') modelResolution[generationField('profile').value] = Number(value);
       if (key === 'steps') modelSteps[generationField('profile').value] = Number(value);
       syncSelection();
     });
@@ -691,10 +703,12 @@ for (const [key, option] of Object.entries(choiceOptions)) {
 }
 for (const button of document.querySelectorAll('[data-model]')) button.addEventListener('click', () => selectModel(button.dataset.model));
 for (const button of document.querySelectorAll('[data-preset]')) button.addEventListener('click', () => {
-  const preset = presetSettings[button.dataset.preset];
+  const preset = presetForModel(button.dataset.preset, button.dataset.profile);
   modelSteps[button.dataset.profile] = preset.steps;
+  modelResolution[button.dataset.profile] = preset.width;
   for (const [key, value] of Object.entries(preset)) generationField(key).value = String(value);
   selectModel(button.dataset.profile);
+  void generationSteps.save();
 });
 for (const profile of profiles) {
   const group = document.createElement('fieldset'); group.className = 'choice-field';
@@ -733,6 +747,8 @@ function renderSceneChoices() {
 try {
   const draft = JSON.parse(localStorage.getItem('artwork-comparison:generation-draft') || '{}');
   for (const profile of profiles) {
+    const resolution = Number(draft.modelResolution?.[profile] ?? (profile === 'flux1-dev' && draft.profile === profile ? draft.width : modelResolution[profile]));
+    if (choiceOptions.width.values.includes(resolution)) modelResolution[profile] = resolution;
     const steps = Number(draft.modelSteps?.[profile] ?? draft.steps ?? 28);
     if (validSteps(steps)) modelSteps[profile] = steps;
     const guidance = draft.modelGuidance?.[profile];
@@ -751,7 +767,9 @@ for (const input of document.querySelectorAll('[data-step-profile]')) input.addE
   if (!input.reportValidity() || !validSteps(value)) return;
   modelSteps[input.dataset.stepProfile] = value;
   syncSelection();
+  void generationSteps.save();
 });
+void generationSteps.load();
 $('compare-generate-both').addEventListener('click', () => {
   for (const input of $('gallery-panel').querySelectorAll('[data-step-profile]')) if (!input.reportValidity()) return;
   if (!controls.authorized || !controls.connected) { showTab('controls', true); return; }
@@ -793,7 +811,7 @@ $('generation-form').addEventListener('submit', async (event) => {
   const payload = Object.fromEntries(controlFields.map((key) => [key, ['profile', 'prompt'].includes(key) ? generationField(key).value : Number(generationField(key).value)]));
   if (!payload.prompt.trim()) { $('queue-status').textContent = 'Choose a scene for these images.'; return; }
   const targets = event.submitter?.id === 'generate-both' ? profiles : [payload.profile];
-  const requests = targets.map(profile => ({ ...payload, profile, steps: modelSteps[profile], guidance_scale: modelGuidance[profile] ?? payload.guidance_scale }));
+  const requests = targets.map(profile => ({ ...payload, profile, width: modelResolution[profile], height: modelResolution[profile], steps: modelSteps[profile], guidance_scale: modelGuidance[profile] ?? payload.guidance_scale }));
   const payloadJSON = JSON.stringify(requests);
   if (!pendingControlRequest || pendingControlRequest.payloadJSON !== payloadJSON) retainPendingRequest({ requestId: crypto.randomUUID(), payloadJSON });
   const requestId = pendingControlRequest.requestId;
@@ -806,7 +824,7 @@ $('generation-form').addEventListener('submit', async (event) => {
     const accepted = results.filter(result => result.status === 'fulfilled');
     if (accepted.length === results.length) {
       retainPendingRequest(null);
-      submittedSettings = `${payload.width}² · seed ${payload.seed} · ${payload.count} each · ${requests.map(request => `${modelNames[request.profile]} ${request.steps} steps, guidance ${request.guidance_scale}`).join(' / ')}`;
+      submittedSettings = `seed ${payload.seed} · ${payload.count} each · ${requests.map(request => `${modelNames[request.profile]} ${request.width}², ${request.steps} steps, guidance ${request.guidance_scale}`).join(' / ')}`;
       $('applied-settings').textContent = `Submitted · ${submittedSettings}`;
       $('queue-status').textContent = `${payload.count * targets.length} ${payload.count * targets.length === 1 ? 'image' : 'images'} queued. Running work keeps its settings.`;
     } else {
@@ -840,6 +858,16 @@ for (const profile of profiles) {
     }
   });
 }
+async function connectWorkstation() {
+  if (!['127.0.0.1', 'localhost'].includes(location.hostname)) return;
+  try {
+    const response = await fetch('/api/workstation-session', { method: 'POST', credentials: 'same-origin', signal: AbortSignal.timeout(10000) });
+    if (!response.ok) return;
+    studioLive.reconnect();
+    await refreshControls(true);
+  } catch { /* Existing authenticated sessions and live reconnect stay available. */ }
+}
+void connectWorkstation();
 const requestedTab = bootstrapControlToken !== null ? 'controls' : new URLSearchParams(location.search).get('tab');
 showTab(tabNames.includes(requestedTab) ? requestedTab : new URLSearchParams(location.search).has('comparison') ? 'gallery' : 'stream', false, false);
 if (bootstrapControlToken !== null) {

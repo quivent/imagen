@@ -138,7 +138,7 @@ async function callNative(payload) {
   });
 }
 
-async function authorized(request) {
+export async function authorized(request) {
   try {
     const cookies = String(request.headers.cookie || '').split(';').map(value => value.trim());
     const cookie = cookies.find(value => value.startsWith('__Host-artwork-control=')) || cookies.find(value => value.startsWith('artwork-dev-control=')) || '';

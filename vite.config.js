@@ -1,3 +1,4 @@
+import { installGenerationSteps } from './server/generation-steps.mjs';
 import { installLocalGallery } from './server/local-gallery.mjs';
 import { installSeers } from './server/seers.mjs';
 import { installNativeLive } from './server/native-live.mjs';
@@ -80,7 +81,7 @@ const proxy = {
 export default defineConfig({
   root,
   publicDir: 'public',
-  plugins: [{ name: 'seers', configureServer: installSeers, configurePreviewServer: installSeers }, { name: 'native-live', configureServer: installNativeLive, configurePreviewServer: installNativeLive }, { name: 'local-gallery', configureServer: installLocalGallery, configurePreviewServer: installLocalGallery }, { name: 'studio-winners', configureServer: installWinners, configurePreviewServer: installWinners }, { name: 'studio-events', configureServer: installStudioEvents, configurePreviewServer: installStudioEvents }, { name: 'studio-corrections', configureServer: installCorrections, configurePreviewServer: installCorrections }, { name: 'initial-panel-markup', transformIndexHtml(html) {
+  plugins: [{ name: 'generation-steps', configureServer: installGenerationSteps, configurePreviewServer: installGenerationSteps }, { name: 'seers', configureServer: installSeers, configurePreviewServer: installSeers }, { name: 'native-live', configureServer: installNativeLive, configurePreviewServer: installNativeLive }, { name: 'local-gallery', configureServer: installLocalGallery, configurePreviewServer: installLocalGallery }, { name: 'studio-winners', configureServer: installWinners, configurePreviewServer: installWinners }, { name: 'studio-events', configureServer: installStudioEvents, configurePreviewServer: installStudioEvents }, { name: 'studio-corrections', configureServer: installCorrections, configurePreviewServer: installCorrections }, { name: 'initial-panel-markup', transformIndexHtml(html) {
     for (const name of ['metrics', 'monitor', 'winners', 'agents', 'rules', 'daemons', 'performance', 'protocol', 'models', 'seers', 'worlds']) {
       const markup = readFileSync(path.join(root, 'src', name + '-panel.html'), 'utf8');
       html = html.replace(new RegExp('(<section id="' + name + '-panel"[^>]*>)</section>'), (_match, opening) => opening + markup + '</section>');

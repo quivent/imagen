@@ -84,10 +84,10 @@
     {
       "source": "tools/artwork/remote/refill.py",
       "destination": "tools/artwork/remote/refill.py",
-      "sourceSha256": "3d951bad7befbad078c610e3771c6b86e43259cf66ceb4a131db97fa9ac28864",
-      "sha256": "ae39849ba9e7240ea72e21dfc37ac69e342b29a013a9a304e2724bb50e9ebc8e",
+      "sourceSha256": "9b303fec5f08002659b1afe23bc645842e2b5005486e7478a3427b0bcc66bd8a",
+      "sha256": "8bf198cea4dab993f9efd7d3f4f2de3ac6caf06dea4ee9d3a2ebde3ce86f2cde",
       "sanitized": true,
-      "transformation": "Portable factory-state configuration and explicit SSH endpoint; no generation behavior changed."
+      "transformation": "Preserve portable ARTWORK_FACTORY_STATE override; read validated durable per-model step settings for future refills."
     },
     {
       "source": "tools/artwork/ingress/manage.py",

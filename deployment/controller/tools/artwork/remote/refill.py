@@ -17,10 +17,25 @@ STATE = Path(os.environ.get('ARTWORK_FACTORY_STATE', str(ARTWORK / '.state')))
 RUNTIME = STATE / 'generation-refill'
 LABEL = 'giving.kinship.artwork-refill'
 PROFILES = ('flux1-dev', 'flux2-dev-nf4')
+RESOLUTIONS = {'flux1-dev': 512, 'flux2-dev-nf4': 1024}
 TARGET = 3
 INTERVAL = 5
 ACTIVE = {'queued', 'active', 'submitted'}
 sys.path.insert(0, str(ARTWORK))
+
+
+def configured_steps():
+    path = RUNTIME / 'settings.json'
+    if not path.exists():
+        return {profile: 28 for profile in PROFILES}
+    if path.is_symlink() or path.stat().st_size > 4096:
+        raise ValueError('Invalid step settings file')
+    value = json.loads(path.read_text())
+    steps = value.get('modelSteps') if isinstance(value, dict) else None
+    if (set(value) != {'modelSteps'} or not isinstance(steps, dict) or set(steps) != set(PROFILES)
+            or any(type(steps[profile]) is not int or not 1 <= steps[profile] <= 60 for profile in PROFILES)):
+        raise ValueError('Step settings require whole counts from 1 to 60 for both models')
+    return steps
 
 
 def refill():
@@ -35,6 +50,7 @@ def refill():
                 "SELECT scene,spec,state FROM jobs WHERE backend='command'")]
         finally:
             connection.close()
+        steps = configured_steps()
         store = Store(STATE)
         report = {'checkedAt': time.time(), 'targetOutstandingPerModel': TARGET, 'models': []}
         for profile in PROFILES:
@@ -54,14 +70,15 @@ def refill():
                     pending = [scene for scene in scenes if scene['id'] not in seen]
                 scene = pending[0]
                 request = {'scene': scene['id'], 'name': scene['name'], 'backend': 'command',
-                           'model': profile, 'prompt': scene['prompt'], 'width': 512, 'height': 512,
-                           'settings': {'seed': 42 + study_pass - 1, 'steps': 28, 'guidance_scale': 3.5,
+                           'model': profile, 'prompt': scene['prompt'],
+                           'width': RESOLUTIONS[profile], 'height': RESOLUTIONS[profile],
+                           'settings': {'seed': 42 + study_pass - 1, 'steps': steps[profile], 'guidance_scale': 3.5,
                                         'max_sequence_length': 512},
                            'variant': f'continuous-study-pass-{study_pass:04d}'}
                 result = store.enqueue(request)
                 own.append((scene['id'], request, 'queued'))
                 added.append({'scene': scene['id'], 'pass': study_pass, **result})
-            report['models'].append({'profile': profile, 'outstandingBefore': active, 'added': added})
+            report['models'].append({'profile': profile, 'steps': steps[profile], 'outstandingBefore': active, 'added': added})
         temporary = RUNTIME / 'status.tmp'
         temporary.write_text(json.dumps(report, indent=2) + '\n')
         temporary.replace(RUNTIME / 'status.json')

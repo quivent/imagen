@@ -4,6 +4,10 @@ This tree preserves the source used by the Mac factory, its four model-specific 
 
 The primary studio and current inbox, Enforcer, Performance, and lifecycle collector already live at the checkout root (`serve.py`, `server/`, `scripts/`). Their captured service templates are in `../launchd/`. They are not duplicated here. Control middleware and remote/GPU/R2 runtime capture are maintained separately under `deployment/`.
 
+## Generation defaults
+
+The continuous refiller submits FLUX.1 at 512×512 and FLUX.2 at 1024×1024, following Jay’s resolution increase on 2026-10-17. Both retain 28 steps, guidance 3.5 and their existing per-pass seed policy. Accepted jobs retain their submitted settings. The live refiller uses this repository’s source and the existing private factory database.
+
 ## Prerequisites and configuration
 
 Use macOS with user launchd, Python 3.11+ (the active installation uses 3.14), Node 22.12+, npm, OpenSSH, `cwebp`, and `dwebp`. Run `npm ci` at the checkout root. Python controller code uses only the standard library. SSH requires credentials and pinned known-host entries supplied outside Git. The GPU host must already have its remote workers deployed; capturing these sources starts no inference.
