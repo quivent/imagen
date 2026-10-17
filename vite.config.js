@@ -1,6 +1,7 @@
+import { installLocalGallery } from './server/local-gallery.mjs';
 import { defineConfig } from 'vite';
-import { installStudioMonitor } from '../kinship-of-cancer/tools/artwork/control/studio-monitor.mjs';
-import { installStudioEvents } from '../kinship-of-cancer/tools/artwork/control/studio-events.mjs';
+import { installStudioMonitor } from './server/studio-monitor.mjs';
+import { installStudioEvents } from './server/studio-events.mjs';
 import { installCorrections } from '../kinship-of-cancer/tools/artwork/control/corrections.mjs';
 import { installWinners } from '../kinship-of-cancer/tools/artwork/control/winners.mjs';
 import { readFileSync, realpathSync, statSync } from 'node:fs';
@@ -34,7 +35,7 @@ function runtimeFiles(server) {
     }
     const runtime = records.has(pathname) || pathname.startsWith('/data/');
     if (!runtime) {
-      if (/\.(?:py|md|log)$/.test(pathname) || pathname.startsWith('/@fs/') || pathname.split('/').includes('.runtime')) { res.writeHead(404).end(); return; }
+      if (pathname.startsWith('/server/') || pathname.startsWith('/scripts/') || /\.(?:py|md|log)$/.test(pathname) || pathname.startsWith('/@fs/') || pathname.split('/').includes('.runtime')) { res.writeHead(404).end(); return; }
       next(); return;
     }
     try {
@@ -72,9 +73,9 @@ const proxy = {
 export default defineConfig({
   root,
   publicDir: 'public',
-  plugins: [{ name: 'studio-winners', configureServer: installWinners, configurePreviewServer: installWinners }, { name: 'studio-events', configureServer: installStudioEvents, configurePreviewServer: installStudioEvents }, { name: 'studio-corrections', configureServer: installCorrections, configurePreviewServer: installCorrections }, { name: 'initial-panel-markup', transformIndexHtml(html) {
-    for (const name of ['metrics', 'monitor', 'winners']) {
-      const markup = readFileSync(path.join(root, name + '-panel.html'), 'utf8');
+  plugins: [{ name: 'local-gallery', configureServer: installLocalGallery, configurePreviewServer: installLocalGallery }, { name: 'studio-winners', configureServer: installWinners, configurePreviewServer: installWinners }, { name: 'studio-events', configureServer: installStudioEvents, configurePreviewServer: installStudioEvents }, { name: 'studio-corrections', configureServer: installCorrections, configurePreviewServer: installCorrections }, { name: 'initial-panel-markup', transformIndexHtml(html) {
+    for (const name of ['metrics', 'monitor', 'winners', 'agents', 'rules', 'daemons', 'performance', 'protocol']) {
+      const markup = readFileSync(path.join(root, 'src', name + '-panel.html'), 'utf8');
       html = html.replace(new RegExp('(<section id="' + name + '-panel"[^>]*>)</section>'), (_match, opening) => opening + markup + '</section>');
     }
     return html;

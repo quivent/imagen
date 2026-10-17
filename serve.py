@@ -30,6 +30,12 @@ def main():
     args = parser.parse_args()
     if args.action == 'run':
         os.chdir(ROOT)
+        environment_file = RUNTIME / 'service-env.json'
+        if environment_file.exists():
+            values = json.loads(environment_file.read_text())
+            for key in ('ARTWORK_SSH_HOST', 'ARTWORK_SSH_PORT', 'ARTWORK_MONITOR_ROOT_THREAD', 'ARTWORK_API_ORIGIN'):
+                if isinstance(values.get(key), str):
+                    os.environ[key] = values[key]
         npm = shutil.which('npm')
         if not npm:
             raise RuntimeError('npm is required; install Node 22.12 or newer')

@@ -143,7 +143,7 @@ function stop() {
 function sync() {
   if (!alive()) { stop(); return; }
   if (!releaseTopic) releaseTopic = studioLive.subscribe('gallery', refresh);
-  if (timer === null) timer = setInterval(refresh, 15000);
+
   refresh();
 }
 const visibility = () => sync();

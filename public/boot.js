@@ -1,11 +1,30 @@
 (() => {
-  const tabs = ['stream', 'gallery', 'controls', 'tasks', 'metrics', 'winners', 'monitor'];
+  const tabs = ['stream', 'gallery', 'controls', 'tasks', 'performance', 'metrics', 'winners', 'agents', 'daemons', 'rules', 'protocol', 'monitor'];
   const query = new URLSearchParams(location.search);
   const requested = query.get('tab');
   const tab = new URLSearchParams(location.hash.slice(1)).has('control') ? 'controls'
     : tabs.includes(requested) ? requested : query.has('comparison') ? 'gallery' : 'stream';
   document.documentElement.dataset.bootTab = tab;
+  let workMode = true;
+  let detailsVisible = false;
+  try {
+    workMode = localStorage.getItem('artwork-comparison:work-mode') !== 'false';
+    detailsVisible = localStorage.getItem('artwork-comparison:show-details') === 'true';
+  } catch { /* Compact mode is the default when storage is unavailable. */ }
   const select = () => {
+    if (document.body) {
+      document.body.classList.toggle('work-mode', workMode);
+      document.body.classList.toggle('show-details', detailsVisible);
+    }
+    const workButton = document.getElementById('work-mode');
+    if (workButton) workButton.setAttribute('aria-pressed', String(workMode));
+    const detailsButton = document.getElementById('show-details');
+    if (detailsButton) {
+      const expanded = detailsVisible || !workMode;
+      detailsButton.setAttribute('aria-expanded', String(expanded));
+      const label = expanded ? 'Hide details' : 'Show details';
+      if (detailsButton.textContent !== label) detailsButton.textContent = label;
+    }
     for (const panel of document.querySelectorAll('[role="tabpanel"]')) panel.hidden = panel.id !== tab + '-panel';
     for (const button of document.querySelectorAll('[role="tab"]')) {
       const selected = button.id === 'tab-' + tab;

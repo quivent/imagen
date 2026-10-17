@@ -3,6 +3,7 @@ const CACHE = 'kinship-artwork-images-v1';
 function artwork(url) {
   if (url.origin !== self.location.origin) return false;
   if (url.pathname === '/api/gallery/image') return Boolean(url.searchParams.get('key'));
+  if (url.pathname === '/api/local-gallery/image') return /^[A-Za-z0-9_-]{1,100}$/.test(url.searchParams.get('job') || '') && /^[a-f0-9]{64}$/i.test(url.searchParams.get('sha256') || '');
   return /^\/data\/[A-Za-z0-9_./-]+\.(png|jpe?g|webp|avif)$/i.test(url.pathname);
 }
 async function remember(cache, request, response) {

@@ -8,6 +8,7 @@ let retry = 500;
 let suspended = false;
 let destroyed = false;
 let scheduled = false;
+let subscriptionJSON = null;
 const active = () => !destroyed && !suspended && !document.hidden && listeners.size > 0;
 function problem(status = 503) { const issue = new Error('Live studio observation unavailable'); issue.status = status; return issue; }
 function emit(topic, value) {
@@ -15,26 +16,28 @@ function emit(topic, value) {
   for (const listener of [...(listeners.get(topic) || [])]) listener(value);
 }
 function unavailable() {
-  for (const topic of listeners.keys()) emit(topic, { available: false, topic, status: 503 });
+  for (const topic of topics) if (snapshots.has(topic) || listeners.has(topic)) emit(topic, { available: false, topic, status: 503 });
 }
 function sendSubscriptions() {
-  if (socket?.readyState === WebSocket.OPEN) socket.send(JSON.stringify({ type: 'subscribe', topics: [...listeners.keys()] }));
+  if (socket?.readyState !== WebSocket.OPEN) return;
+  const value = JSON.stringify({ type: 'subscribe', topics: [...topics].filter(topic => topic !== 'controls' || listeners.has('controls')) });
+  if (value !== subscriptionJSON) { subscriptionJSON = value; socket.send(value); }
 }
 function connect() {
   if (!active() || socket) return;
   const url = new URL('/api/studio-events', location.href);
   url.protocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
   const connection = new WebSocket(url); socket = connection;
-  connection.addEventListener('open', () => { if (socket === connection) { retry = 500; sendSubscriptions(); } });
+  connection.addEventListener('open', () => { if (socket === connection) { retry = 500; subscriptionJSON = null; sendSubscriptions(); } });
   connection.addEventListener('message', event => {
     if (socket !== connection) return;
     let value;
     try { value = JSON.parse(event.data); } catch { return; }
     if (value.type === 'hello') { snapshots.clear(); return; }
-    if (!topics.has(value.topic) || !listeners.has(value.topic)) return;
+    if (!topics.has(value.topic)) return;
     if (value.type === 'snapshot') {
       const previous = snapshots.get(value.topic);
-      if (previous?.available && value.version < previous.version) return;
+      if (previous?.available && value.version <= previous.version) return;
       emit(value.topic, { ...value, available: true });
     } else if (value.type === 'unavailable') emit(value.topic, { ...value, available: false });
   });

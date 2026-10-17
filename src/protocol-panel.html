@@ -1,0 +1,55 @@
+<div class="protocol-view">
+  <h1>Protocol</h1>
+  <p class="protocol-intro">Start here when joining the studio. Rules holds the standing instructions; this is the working handoff.</p>
+
+  <section class="protocol-card" aria-labelledby="protocol-start">
+    <h2 id="protocol-start">Before you edit</h2>
+    <ol class="protocol-checklist">
+      <li>Read your bounded assignment, the current task record, and the relevant repository instructions.</li>
+      <li>Agree file ownership with the Coordinator before concurrent edits. Preserve existing user work.</li>
+      <li>Use the existing named agent for the job. Send only the context, constraints, owned files, and completion criteria needed.</li>
+      <li>Prioritize explicitly requested early tasks. Report an essential blocker promptly; otherwise return one concise completion handoff with evidence and remaining work.</li>
+    </ol>
+  </section>
+
+  <section class="protocol-card" aria-labelledby="protocol-intake">
+    <h2 id="protocol-intake">Request → durable task → acknowledgement</h2>
+    <p>The Coordinator appends each sanitized user request to the local inbox with a stable source-message dedupe key. Chat is not intercepted automatically. Reuse the same key when retrying the same request.</p>
+    <pre aria-label="Record a sanitized request"><code>python3 scripts/task_inbox.py add --dedupe-key 'source-message-key' &lt;&lt;'REQUEST'
+Sanitized request and its essential constraints.
+REQUEST</code></pre>
+    <p>The persistent launchd inbox daemon sends ID-only notices to the Coordinator. The Coordinator passes those IDs to Task Keeper; Codex does not permit direct queue delivery to a subagent.</p>
+    <p>Task Keeper reads each request, records or updates <code>tasks.json</code>, and then acknowledges its inbox ID. Each task includes difficulty, a time range, confidence, and blockers, using compact durable context. Every unfinished task stays visible.</p>
+    <pre aria-label="Task Keeper intake commands"><code>python3 scripts/task_inbox.py read INBOX_ID
+# Record or update tasks.json before acknowledging.
+python3 scripts/task_inbox.py ack INBOX_ID --task-id TASK_ID</code></pre>
+    <p class="protocol-note">Queue acceptance means accepted for delivery, not read or recorded. Reconcile an uncertain delivery before retrying.</p>
+  </section>
+
+  <section class="protocol-card" aria-labelledby="protocol-team">
+    <h2 id="protocol-team">Work with the existing team</h2>
+    <dl class="protocol-roles">
+      <div><dt>Coordinator</dt><dd>Owns intake, priorities, file ownership, integration, and final verification. May make small edits directly.</dd></div>
+      <div><dt>Task Keeper</dt><dd>Maintains the durable task record, estimates, blockers, and inbox acknowledgements.</dd></div>
+      <div><dt>Frontend · Site Setup · Model Downloads</dt><dd>Persistent specialists; reuse the matching agent with a brief, bounded assignment.</dd></div>
+    </dl>
+    <p>The user may add independent peer sessions. Send compact context through the supported queue command to the exact agreed session ID; never copy the full chat.</p>
+    <pre aria-label="Send a bounded peer handoff"><code>codex queue --thread EXACT_SESSION_ID --message 'Task; constraints; owned files; completion criteria.'</code></pre>
+    <p class="protocol-note">Keep coordination to necessary assignments, handoffs, blockers, and completion. A queued handoff still needs read or completion evidence.</p>
+  </section>
+
+  <section class="protocol-card" aria-labelledby="protocol-verify">
+    <h2 id="protocol-verify">Verify ordinary work</h2>
+    <ul class="protocol-checklist">
+      <li>Observe ordinary authorized generation. Never create test or proof artwork. Preserve the requested model, steps, resolution, and precision.</li>
+      <li>The original <code>~/FLUX</code> worker writes originals locally and uploads to R2 independently. Stream must show local arrivals without waiting for R2.</li>
+      <li>Monitor, Agents, and Daemons need fresh source evidence. Mark missing measurements unknown. The Coordinator personally verifies the monitor daemon, actual WebSocket delivery, and reconnect behavior.</li>
+    </ul>
+  </section>
+
+  <section class="protocol-card" aria-labelledby="protocol-map">
+    <h2 id="protocol-map">Know the boundaries</h2>
+    <p>Frontend source lives in <code>src/</code>; utilities live in <code>scripts/</code>; entry HTML, Vite configuration, and <code>serve.py</code> live at the repository root. Backend migration code lives in the external kinship repository: read its <code>AGENTS.md</code> before editing there.</p>
+    <p>Keep generated output, builds, runtime records, and credentials out of Git. Keep the remote Vercel frontend untouched.</p>
+  </section>
+</div>

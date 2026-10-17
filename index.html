@@ -6,12 +6,16 @@
   <meta name="color-scheme" content="dark">
   <title>Comparison · Artwork Studio</title>
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="/style.css">
-  <link rel="stylesheet" href="/metrics.css">
-  <link rel="stylesheet" href="/monitor.css">
-  <link rel="stylesheet" href="/winners.css">
+  <link rel="stylesheet" href="/src/style.css">
+  <link rel="stylesheet" href="/src/metrics.css">
+  <link rel="stylesheet" href="/src/monitor.css">
+  <link rel="stylesheet" href="/src/agents.css">
+  <link rel="stylesheet" href="/src/performance.css">
+  <link rel="stylesheet" href="/src/daemons.css">
+  <link rel="stylesheet" href="/src/rules.css">
+  <link rel="stylesheet" href="/src/winners.css">
   <script src="/boot.js"></script>
-  <script type="module" src="/app.js"></script>
+  <script type="module" src="/src/app.js"></script>
 </head>
 <body class="work-mode">
   <a class="skip" href="#main">Skip to content</a>
@@ -25,16 +29,21 @@
       <button id="tab-gallery" type="button" role="tab" aria-selected="false" aria-controls="gallery-panel" tabindex="-1">Compare</button>
       <button id="tab-controls" type="button" role="tab" aria-selected="false" aria-controls="controls-panel" tabindex="-1">Controls</button>
       <button id="tab-tasks" type="button" role="tab" aria-selected="false" aria-controls="tasks-panel" tabindex="-1">Tasks</button>
+      <button id="tab-performance" type="button" role="tab" aria-selected="false" aria-controls="performance-panel" tabindex="-1">Performance</button>
       <button id="tab-metrics" type="button" role="tab" aria-selected="false" aria-controls="metrics-panel" tabindex="-1">Metrics</button>
       <button id="tab-winners" type="button" role="tab" aria-selected="false" aria-controls="winners-panel" tabindex="-1">Winners</button>
+      <button id="tab-agents" type="button" role="tab" aria-selected="false" aria-controls="agents-panel" tabindex="-1">Agents</button>
+      <button id="tab-daemons" type="button" role="tab" aria-selected="false" aria-controls="daemons-panel" tabindex="-1">Daemons</button>
+      <button id="tab-protocol" type="button" role="tab" aria-selected="false" aria-controls="protocol-panel" tabindex="-1">Protocol</button>
+      <button id="tab-rules" type="button" role="tab" aria-selected="false" aria-controls="rules-panel" tabindex="-1">Rules</button>
       <button id="tab-monitor" type="button" role="tab" aria-selected="false" aria-controls="monitor-panel" tabindex="-1">Monitor</button>
     </div>
     </div>
     <section id="stream-panel" role="tabpanel" aria-labelledby="tab-stream">
       <section id="stream-introduction" class="introduction"><div><p class="eyebrow">LIVE FROM THE GENERATORS</p><h1>Images as they arrive.</h1><p class="subheading">Recent completed images from each model, gathered across the available space.</p></div></section>
       <div class="stream-lanes">
-        <section class="stream-lane" aria-labelledby="stream-heading-flux1-dev"><header class="stream-lane-heading"><h2 id="stream-heading-flux1-dev">FLUX.1 dev</h2><span id="stream-count-flux1-dev">Awaiting images</span></header><div id="stream-grid-flux1-dev" class="stream-grid"><p class="stream-placeholder">Room for the next images.</p></div></section>
-        <section class="stream-lane" aria-labelledby="stream-heading-flux2-dev-nf4"><header class="stream-lane-heading"><h2 id="stream-heading-flux2-dev-nf4">FLUX.2 dev</h2><span id="stream-count-flux2-dev-nf4">Awaiting images</span></header><div id="stream-grid-flux2-dev-nf4" class="stream-grid"><p class="stream-placeholder">Room for the next images.</p></div></section>
+        <section class="stream-lane" aria-labelledby="stream-heading-flux1-dev"><header class="stream-lane-heading"><h2 id="stream-heading-flux1-dev">FLUX.1 dev</h2><span id="stream-count-flux1-dev">Loading images</span></header><div id="stream-grid-flux1-dev" class="stream-grid"></div></section>
+        <section class="stream-lane" aria-labelledby="stream-heading-flux2-dev-nf4"><header class="stream-lane-heading"><h2 id="stream-heading-flux2-dev-nf4">FLUX.2 dev</h2><span id="stream-count-flux2-dev-nf4">Loading images</span></header><div id="stream-grid-flux2-dev-nf4" class="stream-grid"></div></section>
       </div>
       <p id="stream-status" class="status" role="status">Connecting to the image stream.</p>
     </section>
@@ -114,11 +123,15 @@
       <div id="tasks-list" class="tasks-list"></div>
       <p id="tasks-status" class="status" role="status" aria-live="polite"></p>
     </section>
+    <section id="performance-panel" role="tabpanel" aria-labelledby="tab-performance" hidden></section>
     <section id="metrics-panel" class="metrics-panel" role="tabpanel" aria-labelledby="tab-metrics" hidden></section>
+    <section id="agents-panel" role="tabpanel" aria-labelledby="tab-agents" hidden></section>
+    <section id="daemons-panel" role="tabpanel" aria-labelledby="tab-daemons" hidden></section>
+    <section id="protocol-panel" role="tabpanel" aria-labelledby="tab-protocol" hidden></section>
+    <section id="rules-panel" role="tabpanel" aria-labelledby="tab-rules" hidden></section>
     <section id="monitor-panel" class="monitor-panel" role="tabpanel" aria-labelledby="tab-monitor" hidden></section>
     <section id="winners-panel" class="winners-panel" role="tabpanel" aria-labelledby="tab-winners" hidden></section>
   </main>
-  <footer><span>Art first. Details when you want them.</span><span>Originals remain unchanged.</span></footer>
   <dialog id="viewer" aria-labelledby="viewer-title"><div class="viewer-heading"><h2 id="viewer-title"></h2><button id="close-viewer">Close <span aria-hidden="true">×</span></button></div><img id="viewer-image" alt=""></dialog>
 </body>
 </html>

@@ -1,3 +1,5 @@
+import protocolMarkup from './protocol-panel.html?raw';
+import './protocol.css';
 import { studioLive } from './live-store.js';
 import { installImageCache, artworkImageURL } from './image-cache.js';
 import metricsMarkup from './metrics-panel.html?raw';
@@ -6,6 +8,13 @@ import winnersMarkup from './winners-panel.html?raw';
 import { mountWinners } from './winners.js';
 import { mountMetrics } from './metrics.js';
 import { mountMonitor } from './monitor.js';
+import agentsMarkup from './agents-panel.html?raw';
+import rulesMarkup from './rules-panel.html?raw';
+import { mountAgents } from './agents.js';
+import performanceMarkup from './performance-panel.html?raw';
+import { mountPerformance } from './performance.js';
+import daemonsMarkup from './daemons-panel.html?raw';
+import { mountDaemons } from './daemons.js';
 'use strict';
 installImageCache();
 const $ = (id) => document.getElementById(id);
@@ -234,7 +243,7 @@ async function refresh(manual = false) {
       if (!row || typeof row.id !== 'string' || !row.id || typeof row.title !== 'string' || ids.has(row.id)) return false;
       ids.add(row.id);
       return true;
-    });
+    }).reverse();
     const signature = JSON.stringify(rows);
     state.loaded = true;
     if (signature !== state.signature) {
@@ -277,7 +286,7 @@ const modelNames = { 'flux1-dev': 'FLUX.1 dev', 'flux2-dev-nf4': 'FLUX.2 dev' };
 const controlFields = ['profile', 'prompt', 'width', 'height', 'steps', 'guidance_scale', 'seed', 'max_sequence_length', 'count'];
 const controls = { authorized: false, connected: false, fetching: false, posting: false, workers: [], jobs: [], pendingLanes: new Set(), gpus: [] };
 let activeTab = 'stream';
-const tabNames = ['stream', 'gallery', 'controls', 'tasks', 'metrics', 'winners', 'monitor'];
+const tabNames = ['stream', 'gallery', 'controls', 'tasks', 'performance', 'metrics', 'winners', 'agents', 'daemons', 'rules', 'protocol', 'monitor'];
 const embeddedPanels = {};
 const liveTopics = new Map();
 function syncLiveTopics() {
@@ -335,15 +344,23 @@ const taskStates = { working: 'In progress', next: 'Next', ongoing: 'Ongoing', d
 let tasksLoading = false;
 let tasksSignature = '';
 function renderTasks(rows) {
+  const doneOpen = $('tasks-list').querySelector('.task-group-done')?.open || false;
   const sections = [];
   for (const [state, heading] of Object.entries(taskStates)) {
     const priorityRank = { urgent: 0, high: 1 };
     const matching = rows.filter(row => row.status === state).sort((a, b) => (priorityRank[a.priority] ?? 2) - (priorityRank[b.priority] ?? 2));
     if (!matching.length) continue;
-    const section = document.createElement('section');
-    section.className = 'task-group';
+    const section = document.createElement(state === 'done' ? 'details' : 'section');
+    section.className = state === 'done' ? 'task-group task-group-done' : 'task-group';
     const title = text('h2', heading);
-    section.append(title);
+    if (state === 'done') {
+      section.open = doneOpen;
+      const summary = document.createElement('summary');
+      const icon = text('span', '›', 'task-done-icon');
+      icon.setAttribute('aria-hidden', 'true');
+      summary.append(icon, title, text('span', String(matching.length), 'task-done-count'));
+      section.append(summary);
+    } else section.append(title);
     const list = document.createElement('div');
     list.className = 'task-cards';
     for (const row of matching) {
@@ -356,6 +373,11 @@ function renderTasks(rows) {
       if (row.priority) top.append(text('span', row.priority === 'urgent' ? 'First priority' : 'High priority', 'task-priority'));
       top.append(text('span', heading, 'task-state'));
       card.append(top, text('h3', row.title));
+      if (row.difficulty || row.estimatedMinutes) {
+        const range = row.estimatedMinutes;
+        const estimate = range && Number.isFinite(range.min) && Number.isFinite(range.max) ? `${range.min}–${range.max} min estimated` : '';
+        card.append(text('p', [row.difficulty, estimate, row.estimateConfidence && `${row.estimateConfidence} confidence`].filter(Boolean).join(' · '), 'task-detail'));
+      }
       if (row.detail) card.append(text('p', row.detail, 'task-detail'));
       if (row.evidence) card.append(text('p', row.evidence, 'task-evidence'));
       list.append(card);
@@ -819,7 +841,7 @@ function streamCard(job, image, url) {
   if (available(settings.guidance_scale)) parts.push(`guidance ${settings.guidance_scale}`);
   const detail = document.createElement('details'); detail.className = 'stream-item-details';
   detail.append(text('summary', 'Prompt and settings'), text('p', job.prompt || 'Prompt not recorded.', 'stream-prompt'), text('p', parts.join(' · '), 'stream-settings'));
-  caption.append(line, text('p', parts.slice(0, 3).join(' · '), 'stream-quick-settings'), detail);
+  caption.append(line, detail);
   card.append(button, caption);
   return card;
 }
@@ -894,9 +916,15 @@ window.addEventListener('resize', () => { clearTimeout(streamResize); streamResi
 
 refreshStream();
 
+if (!$('rules-panel').children.length) $('rules-panel').innerHTML = rulesMarkup;
+if (!$('protocol-panel').children.length) $('protocol-panel').innerHTML = protocolMarkup;
+
 for (const [name, markup, mount] of [
+  ['performance', performanceMarkup, mountPerformance],
   ['metrics', metricsMarkup, mountMetrics],
   ['monitor', monitorMarkup, mountMonitor],
+  ['agents', agentsMarkup, mountAgents],
+  ['daemons', daemonsMarkup, mountDaemons],
   ['winners', winnersMarkup, mountWinners],
 ]) {
   const root = $(name + '-panel');

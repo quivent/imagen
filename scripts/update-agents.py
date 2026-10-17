@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Update an explicit assignment snapshot; publish.py deploy makes it public."""
+"""Update the local assignment snapshot served by the studio."""
 import argparse
 from datetime import datetime, timezone
 import json
@@ -7,7 +7,7 @@ import os
 from pathlib import Path
 import tempfile
 
-PATH = Path(__file__).with_name('agent-status.json')
+PATH = Path(__file__).resolve().parents[1] / 'agent-status.json'
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
@@ -30,7 +30,7 @@ def main():
     finally:
         if os.path.exists(name):
             os.unlink(name)
-    print(f"Snapshot updated: {args.worker} {args.status}; publish to update the site.")
+    print(f"Snapshot updated: {args.worker} {args.status}.")
 
 if __name__ == '__main__':
     main()

@@ -74,7 +74,7 @@ export function mountMonitor({ root, isActive = () => true }) {
 
   const interval = 2500;
   const freshFor = 12000;
-  let enabled = true;
+  let enabled = false;
   let disposed = false;
   let suspended = false;
   let controller = null;
@@ -144,18 +144,18 @@ export function mountMonitor({ root, isActive = () => true }) {
   }
   function agents(section) {
     source('agents', section);
-    if (section?.ok !== true || section.live !== true || !fresh(section.observedAt) || section.capacity !== 3 || !Array.isArray(section.agents) || section.agents.length !== 3 || new Set(section.agents.map(agent => agent.id)).size !== 3 || section.agents.some(agent => typeof agent.id !== 'string' || !agent.id)) {
+    if (section?.ok !== true || section.live !== true || !fresh(section.observedAt) || !Number.isInteger(section.capacity) || !Array.isArray(section.agents) || section.agents.length !== section.capacity || new Set(section.agents.map(agent => agent.id)).size !== section.agents.length || section.agents.some(agent => typeof agent.id !== 'string' || !agent.id)) {
       unknown('agents', section, 'Current agent runtime evidence is unavailable or older than 12 seconds. A manually updated assignment file is not live agent health.');
       list('agents-list', []); return;
     }
     const running = section.agents.filter(agent => agent.status === 'running').length;
     const unknownStatus = section.agents.some(agent => !['running', 'idle', 'done', 'complete', 'completed', 'stopped', 'closed'].includes(agent.status));
-    const full = running === 3 && section.coordinator === 'running';
+    const full = section.capacity > 0 && running === section.capacity && section.coordinator === 'running';
     if (unknownStatus || !['running', 'idle'].includes(section.coordinator)) {
       unknown('agents', section, 'The runtime source does not establish the current state of every agent slot.');
     } else {
       state('agents', full ? 'All slots in use' : 'Capacity available', full ? 'active' : 'attention');
-      $('agents-evidence').textContent = `${running} of 3 worker slots reported running; coordinator ${section.coordinator} is counted separately. These slots are not the task-record count.`;
+      $('agents-evidence').textContent = `${running} of ${section.capacity} observed workers reported running; coordinator ${section.coordinator} is counted separately. These slots are not the task-record count.`;
     }
     list('agents-list', section.agents.map(agent => `${agent.id} · ${agent.status || 'unknown'} · ${agent.task || 'Task not recorded'}${agent.lastEventAt ? ' · latest lifecycle event ' + stamp(agent.lastEventAt) : ''}`));
   }
@@ -168,7 +168,7 @@ export function mountMonitor({ root, isActive = () => true }) {
     const working = section.working;
     const claims = Array.isArray(section.claims) ? section.claims.filter(claim => claim.active === true) : [];
     state('tasks', working.length ? 'Task records in progress' : 'No task record in progress', working.length ? 'active' : 'attention');
-    $('tasks-evidence').textContent = `${working.length} task records marked working; ${claims.length} active claim leases. Task records, claim leases and worker slots count different things; a task can use more than one worker.`;
+    $('tasks-evidence').textContent = `${working.length} current tasks assigned to running agents. Full task history is on the Tasks tab.`;
     list('tasks-list', working.map(task => `${task.id} · ${task.title || 'Active project work'}${claims.some(claim => claim.id === task.id) ? ' · active claim' : ''}`));
   }
   function render(data) {
@@ -184,37 +184,29 @@ export function mountMonitor({ root, isActive = () => true }) {
     $('status').textContent = 'The live monitor is reconnecting automatically. Previous observations are not shown as current compliance.';
     updateCorrections();
   }
-  async function refresh() {
+  function receive(observation) {
     if (!alive()) return;
-    if (lastResponse) {
-      if (!fresh(lastResponse.observedAt)) disconnected();
-      else render(lastResponse);
+    root.dataset.monitorReady = 'true';
+    const data = observation?.data;
+    if (observation?.available !== true || data?.ok !== true || !fresh(data.observedAt)) {
+      lastResponse = null; disconnected(); return;
     }
-    if (busy) { refreshRequested = true; return; }
-    refreshRequested = false; busy = true;
-    const request = new AbortController(); controller = request;
-    const timeout = setTimeout(() => request.abort(), 8000);
-    try {
-      const data = await studioLive.read('monitor');
-      if (!alive()) return;
-      if (data.ok !== true || !fresh(data.observedAt)) throw new Error('Live observation is old');
-      lastResponse = data; lastConnectedAt = Date.now(); render(data);
-    } catch {
-      if (alive()) { disconnected(); lastResponse = null; }
-    } finally {
-      clearTimeout(timeout); controller = null; busy = false;
-      if (refreshRequested && alive()) queueMicrotask(refresh);
+    lastResponse = data; lastConnectedAt = Date.now(); render(data);
+  }
+  function refresh() {
+    if (!alive()) return;
+    if (lastResponse && !fresh(lastResponse.observedAt)) {
+      lastResponse = null; disconnected();
     }
   }
   function stop() {
     if (timer !== null) clearInterval(timer);
-    timer = null; releaseTopic?.(); releaseTopic = null; controller?.abort();
+    timer = null; releaseTopic?.(); releaseTopic = null;
   }
   function sync() {
     if (!alive()) { stop(); return; }
-    if (!releaseTopic) releaseTopic = studioLive.subscribe('monitor', refresh);
+    if (!releaseTopic) releaseTopic = studioLive.subscribe('monitor', receive);
     if (timer === null) timer = setInterval(refresh, interval);
-    refresh();
   }
   const visibility = () => sync();
   const pagehide = () => { suspended = true; stop(); };
