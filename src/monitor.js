@@ -1,5 +1,6 @@
 import { studioLive } from './live-store.js';
 import './monitor.css';
+import { agentView, dispatchView, taskAssignment } from './agent-state.js';
 
 export function mountMonitor({ root, isActive = () => true }) {
   const $ = id => root.querySelector('#monitor-' + id);
@@ -142,37 +143,35 @@ export function mountMonitor({ root, isActive = () => true }) {
     }
     list('generation-lanes', workers.filter(Boolean).map(worker => `${names[worker.profile]} · ${Number(worker.running) > 0 || worker.current ? 'running' : worker.phase || 'unknown'} · ${worker.paused ? 'dispatch paused' : 'dispatch open'} · ${Number.isFinite(worker.queued) ? worker.queued : 'unknown'} queued${worker.current ? ' · job ' + worker.current : ''}`));
   }
-  function agents(section) {
+  function agents(section, snapshot) {
     source('agents', section);
-    if (section?.ok !== true || section.live !== true || !fresh(section.observedAt) || !Number.isInteger(section.capacity) || !Array.isArray(section.agents) || section.agents.length !== section.capacity || new Set(section.agents.map(agent => agent.id)).size !== section.agents.length || section.agents.some(agent => typeof agent.id !== 'string' || !agent.id)) {
-      unknown('agents', section, 'Current agent runtime evidence is unavailable or older than 12 seconds. A manually updated assignment file is not live agent health.');
+    const view = agentView(snapshot);
+    if (!view.fresh) {
+      unknown('agents', section, 'Current agent runtime evidence is unavailable or older than 12 seconds.');
       list('agents-list', []); return;
     }
-    const running = section.agents.filter(agent => agent.status === 'running').length;
-    const unknownStatus = section.agents.some(agent => !['running', 'idle', 'done', 'complete', 'completed', 'stopped', 'closed'].includes(agent.status));
-    const full = section.capacity > 0 && running === section.capacity && section.coordinator === 'running';
-    if (unknownStatus || !['running', 'idle'].includes(section.coordinator)) {
-      unknown('agents', section, 'The runtime source does not establish the current state of every agent slot.');
-    } else {
-      state('agents', full ? 'All slots in use' : 'Capacity available', full ? 'active' : 'attention');
-      $('agents-evidence').textContent = `${running} of ${section.capacity} observed workers reported running; coordinator ${section.coordinator} is counted separately. These slots are not the task-record count.`;
-    }
-    list('agents-list', section.agents.map(agent => `${agent.id} · ${agent.status || 'unknown'} · ${agent.task || 'Task not recorded'}${agent.lastEventAt ? ' · latest lifecycle event ' + stamp(agent.lastEventAt) : ''}`));
+    const dispatch = dispatchView(snapshot);
+    if (dispatch.state === 'violation') state('agents', 'Dispatch violation', 'attention');
+    else if (dispatch.state === 'ok') state('agents', `${view.running} running · ${view.available} available`, 'active');
+    else state('agents', 'Dispatch unknown', 'unknown');
+    $('agents-evidence').textContent = `${view.running} running · ${view.available} available · ${view.agents.length} agents in this session. Coordinator ${view.coordinator.status}.${dispatch.state === 'violation' ? ` Ready work is not being dispatched (${Array.isArray(dispatch.readyTaskIds) ? dispatch.readyTaskIds.length : 'unknown'} ready tasks).` : dispatch.state === 'unknown' ? ' Dispatch compliance has no fresh enforcement observation.' : ' Dispatch compliance is verified by the current enforcement observation.'}${Number.isFinite(dispatch.score) ? ` Enforcement score: ${dispatch.score}.` : ''}`;
+    list('agents-list', view.agents.map(agent => `${agent.name || agent.id} · ${agent.status} · ${agent.status === 'running' ? 'current assignment' : 'last assignment'}: ${agent.task || 'not recorded'}${agent.currentTaskId ? ' · task ' + agent.currentTaskId : ''}`));
   }
-  function tasks(section) {
+  function tasks(section, snapshot) {
     source('tasks', section);
-    if (section?.ok !== true || !fresh(section.observedAt) || !Array.isArray(section.working)) {
-      unknown('tasks', section, 'Current claims and task work could not be read from the project sources.');
+    const view = agentView(snapshot);
+    if (section?.ok !== true || !fresh(section.observedAt) || !Array.isArray(section.working) || !view.fresh) {
+      unknown('tasks', section, 'Current task records and matching live assignments could not both be verified.');
       list('tasks-list', []); return;
     }
     const working = section.working;
-    const claims = Array.isArray(section.claims) ? section.claims.filter(claim => claim.active === true) : [];
-    state('tasks', working.length ? 'Task records in progress' : 'No task record in progress', working.length ? 'active' : 'attention');
-    $('tasks-evidence').textContent = `${working.length} current tasks assigned to running agents. Full task history is on the Tasks tab.`;
-    list('tasks-list', working.map(task => `${task.id} · ${task.title || 'Active project work'}${claims.some(claim => claim.id === task.id) ? ' · active claim' : ''}`));
+    const matched = working.filter(task => taskAssignment(view, task));
+    state('tasks', matched.length ? `${matched.length} tasks running` : 'No matching task running', matched.length ? 'active' : 'attention');
+    $('tasks-evidence').textContent = `${matched.length} task records match a running agent and current task ID. ${working.length - matched.length} recorded in progress without a matching running assignment. Full task history is on the Tasks tab.`;
+    list('tasks-list', working.map(task => { const agent = taskAssignment(view, task); return `${task.id} · ${task.title || 'Project work'} · ${agent ? 'running: ' + (agent.name || agent.id) : 'recorded in progress; no matching running assignment'}`; }));
   }
   function render(data) {
-    generation(data.generation); agents(data.agents); tasks(data.tasks); updateCorrections();
+    generation(data.generation); agents(data.agents, data); tasks(data.tasks, data); updateCorrections();
     state('connection', 'Connected', 'active');
     $('connection-time').textContent = `Response received ${stamp(lastConnectedAt)} · server observed ${stamp(data.observedAt)} · ${age(data.observedAt)}`;
     $('status').textContent = 'Live connection updates automatically. Each rule uses its own current source observation.';

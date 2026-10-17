@@ -13,6 +13,8 @@
   <link rel="stylesheet" href="/src/performance.css">
   <link rel="stylesheet" href="/src/daemons.css">
   <link rel="stylesheet" href="/src/rules.css">
+  <link rel="stylesheet" href="/src/protocol.css">
+  <link rel="stylesheet" href="/src/models.css">
   <link rel="stylesheet" href="/src/winners.css">
   <script src="/boot.js"></script>
   <script type="module" src="/src/app.js"></script>
@@ -21,7 +23,7 @@
   <a class="skip" href="#main">Skip to content</a>
   <header class="masthead">
     <div class="brand"><span class="mark" aria-hidden="true">◒</span><span>Artwork Studio<small>THE WORKING STUDIO</small></span></div>
-    <div class="header-actions"><button id="work-mode" type="button" class="quiet" aria-pressed="true">Work mode</button><button id="show-details" type="button" class="quiet" aria-expanded="false" aria-controls="gallery-introduction stream-introduction">Show details</button></div>
+    <div class="header-actions"><button id="work-mode" type="button" class="quiet" aria-pressed="true">Work mode</button><button id="show-details" type="button" class="quiet" aria-label="Expand details" title="Expand details" aria-expanded="false" aria-controls="gallery-introduction stream-introduction"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button></div>
   </header>
   <main id="main" tabindex="-1">
     <div class="studio-tabs"><div class="studio-tab-buttons" role="tablist" aria-label="Artwork Studio">
@@ -30,6 +32,7 @@
       <button id="tab-controls" type="button" role="tab" aria-selected="false" aria-controls="controls-panel" tabindex="-1">Controls</button>
       <button id="tab-tasks" type="button" role="tab" aria-selected="false" aria-controls="tasks-panel" tabindex="-1">Tasks</button>
       <button id="tab-performance" type="button" role="tab" aria-selected="false" aria-controls="performance-panel" tabindex="-1">Performance</button>
+      <button id="tab-models" type="button" role="tab" aria-selected="false" aria-controls="models-panel" tabindex="-1">Models</button>
       <button id="tab-metrics" type="button" role="tab" aria-selected="false" aria-controls="metrics-panel" tabindex="-1">Metrics</button>
       <button id="tab-winners" type="button" role="tab" aria-selected="false" aria-controls="winners-panel" tabindex="-1">Winners</button>
       <button id="tab-agents" type="button" role="tab" aria-selected="false" aria-controls="agents-panel" tabindex="-1">Agents</button>
@@ -124,6 +127,7 @@
       <p id="tasks-status" class="status" role="status" aria-live="polite"></p>
     </section>
     <section id="performance-panel" role="tabpanel" aria-labelledby="tab-performance" hidden></section>
+    <section id="models-panel" role="tabpanel" aria-labelledby="tab-models" hidden></section>
     <section id="metrics-panel" class="metrics-panel" role="tabpanel" aria-labelledby="tab-metrics" hidden></section>
     <section id="agents-panel" role="tabpanel" aria-labelledby="tab-agents" hidden></section>
     <section id="daemons-panel" role="tabpanel" aria-labelledby="tab-daemons" hidden></section>

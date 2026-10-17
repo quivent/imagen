@@ -1,5 +1,6 @@
+import { agentView, taskAssignment } from './agent-state.js';
+import { sitePerformance } from './site-performance.js';
 import protocolMarkup from './protocol-panel.html?raw';
-import './protocol.css';
 import { studioLive } from './live-store.js';
 import { installImageCache, artworkImageURL } from './image-cache.js';
 import metricsMarkup from './metrics-panel.html?raw';
@@ -15,6 +16,8 @@ import performanceMarkup from './performance-panel.html?raw';
 import { mountPerformance } from './performance.js';
 import daemonsMarkup from './daemons-panel.html?raw';
 import { mountDaemons } from './daemons.js';
+import modelsMarkup from './models-panel.html?raw';
+import { mountModels } from './models.js';
 'use strict';
 installImageCache();
 const $ = (id) => document.getElementById(id);
@@ -286,14 +289,15 @@ const modelNames = { 'flux1-dev': 'FLUX.1 dev', 'flux2-dev-nf4': 'FLUX.2 dev' };
 const controlFields = ['profile', 'prompt', 'width', 'height', 'steps', 'guidance_scale', 'seed', 'max_sequence_length', 'count'];
 const controls = { authorized: false, connected: false, fetching: false, posting: false, workers: [], jobs: [], pendingLanes: new Set(), gpus: [] };
 let activeTab = 'stream';
-const tabNames = ['stream', 'gallery', 'controls', 'tasks', 'performance', 'metrics', 'winners', 'agents', 'daemons', 'rules', 'protocol', 'monitor'];
+const tabNames = ['stream', 'gallery', 'controls', 'tasks', 'performance', 'models', 'metrics', 'winners', 'agents', 'daemons', 'rules', 'protocol', 'monitor'];
+sitePerformance.registerTabs(tabNames);
 const embeddedPanels = {};
 const liveTopics = new Map();
 function syncLiveTopics() {
-  const wanted = new Set(['comparisons', ...({ stream: ['gallery'], gallery: [], tasks: ['tasks'], controls: ['controls', 'agents'] }[activeTab] || [])]);
+  const wanted = new Set(['comparisons', ...({ stream: ['gallery'], gallery: [], tasks: ['tasks', 'monitor'], controls: ['controls', 'agents'] }[activeTab] || [])]);
   const refreshers = { comparisons: refresh, gallery: refreshStream, tasks: refreshTasks, controls: refreshControls, agents: refreshAgentSnapshot };
   for (const [topic, stop] of liveTopics) if (!wanted.has(topic)) { stop(); liveTopics.delete(topic); }
-  for (const topic of wanted) if (!liveTopics.has(topic)) liveTopics.set(topic, studioLive.subscribe(topic, () => refreshers[topic]()));
+  for (const topic of wanted) if (!liveTopics.has(topic)) liveTopics.set(topic, studioLive.subscribe(topic, observation => topic === 'monitor' ? updateTaskRuntime(observation) : refreshers[topic]()));
 }
 
 let jobSignature = '';
@@ -311,6 +315,7 @@ function retainPendingRequest(value) {
 }
 
 function showTab(tab, focus = false, load = true) {
+  const finishTiming = sitePerformance.beginTab(tab);
   activeTab = tab;
   syncLiveTopics();
   for (const name of tabNames) {
@@ -328,6 +333,8 @@ function showTab(tab, focus = false, load = true) {
   if (load && tab === 'controls') refreshControls();
   if (load && tab === 'stream') refreshStream();
   if (load && tab === 'tasks') refreshTasks();
+  syncTaskRuntimeClock(tab === 'tasks');
+  finishTiming();
 }
 for (const name of tabNames) {
   $(`tab-${name}`).addEventListener('click', () => showTab(name));
@@ -343,7 +350,27 @@ for (const name of tabNames) {
 const taskStates = { working: 'In progress', next: 'Next', ongoing: 'Ongoing', done: 'Done' };
 let tasksLoading = false;
 let tasksSignature = '';
+let taskRows = [];
+let taskMonitorSnapshot = null;
+let taskRuntimeConnected = false;
+let taskRuntimeTimer = null;
+let taskRuntimeFresh = false;
+function updateTaskRuntime(observation) {
+  taskRuntimeConnected = observation.available === true;
+  if (taskRuntimeConnected) taskMonitorSnapshot = observation.data;
+  taskRuntimeFresh = agentView(taskMonitorSnapshot, taskRuntimeConnected).fresh;
+  if (activeTab === 'tasks') renderTasks(taskRows);
+}
+function syncTaskRuntimeClock(active) {
+  clearInterval(taskRuntimeTimer); taskRuntimeTimer = null;
+  if (active) taskRuntimeTimer = setInterval(() => {
+    const fresh = agentView(taskMonitorSnapshot, taskRuntimeConnected).fresh;
+    if (fresh !== taskRuntimeFresh) { taskRuntimeFresh = fresh; renderTasks(taskRows); }
+  }, 1000);
+}
 function renderTasks(rows) {
+  taskRows = rows;
+  const runtime = agentView(taskMonitorSnapshot, taskRuntimeConnected);
   const doneOpen = $('tasks-list').querySelector('.task-group-done')?.open || false;
   const sections = [];
   for (const [state, heading] of Object.entries(taskStates)) {
@@ -352,7 +379,7 @@ function renderTasks(rows) {
     if (!matching.length) continue;
     const section = document.createElement(state === 'done' ? 'details' : 'section');
     section.className = state === 'done' ? 'task-group task-group-done' : 'task-group';
-    const title = text('h2', heading);
+    const title = text('h2', state === 'working' ? 'Recorded in progress' : heading);
     if (state === 'done') {
       section.open = doneOpen;
       const summary = document.createElement('summary');
@@ -371,8 +398,10 @@ function renderTasks(rows) {
       top.className = 'task-card-top';
       top.append(text('span', row.id, 'task-id'));
       if (row.priority) top.append(text('span', row.priority === 'urgent' ? 'First priority' : 'High priority', 'task-priority'));
-      top.append(text('span', heading, 'task-state'));
+      const assignment = taskAssignment(runtime, row);
+      top.append(text('span', state === 'working' ? assignment ? 'Running' : 'Recorded in progress' : heading, 'task-state'));
       card.append(top, text('h3', row.title));
+      if (row.owner || assignment || state === 'working') card.append(text('p', assignment ? `Current assignment: ${assignment.name || assignment.id}` : `Recorded owner: ${row.owner || 'not recorded'} · ${runtime.fresh ? 'no matching running assignment' : 'live assignment unknown'}`, 'task-detail'));
       if (row.difficulty || row.estimatedMinutes) {
         const range = row.estimatedMinutes;
         const estimate = range && Number.isFinite(range.min) && Number.isFinite(range.max) ? `${range.min}–${range.max} min estimated` : '';
@@ -779,8 +808,12 @@ function applyWorkMode() {
   document.body.classList.toggle('work-mode', workMode);
   document.body.classList.toggle('show-details', detailsVisible);
   $('work-mode').setAttribute('aria-pressed', String(workMode));
-  $('show-details').setAttribute('aria-expanded', String(detailsVisible || !workMode));
-  $('show-details').textContent = detailsVisible || !workMode ? 'Hide details' : 'Show details';
+  const expanded = detailsVisible || !workMode;
+  const detailsButton = $('show-details');
+  const label = expanded ? 'Collapse details' : 'Expand details';
+  detailsButton.setAttribute('aria-expanded', String(expanded));
+  detailsButton.setAttribute('aria-label', label);
+  detailsButton.title = label;
 }
 $('work-mode').addEventListener('click', () => {
   workMode = !workMode;
@@ -921,6 +954,7 @@ if (!$('protocol-panel').children.length) $('protocol-panel').innerHTML = protoc
 
 for (const [name, markup, mount] of [
   ['performance', performanceMarkup, mountPerformance],
+  ['models', modelsMarkup, mountModels],
   ['metrics', metricsMarkup, mountMetrics],
   ['monitor', monitorMarkup, mountMonitor],
   ['agents', agentsMarkup, mountAgents],
@@ -936,6 +970,7 @@ if (import.meta.hot) import.meta.hot.dispose(() => {
   for (const panel of Object.values(embeddedPanels)) panel.destroy();
   for (const stop of liveTopics.values()) stop();
   liveTopics.clear();
+  clearInterval(taskRuntimeTimer);
 });
 
 window.dispatchEvent(new Event('artwork-ready'));

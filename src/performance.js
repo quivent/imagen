@@ -1,4 +1,5 @@
 import { studioLive } from './live-store.js';
+import { sitePerformance } from './site-performance.js';
 import './performance.css';
 
 export function mountPerformance({ root, isActive = () => true }) {
@@ -28,6 +29,45 @@ export function mountPerformance({ root, isActive = () => true }) {
     if (className) node.className = className;
     return node;
   };
+  const milliseconds = input => finite(input) ? `${number.format(input)} ms` : 'Not observed';
+  const bytes = input => input > 0 ? `${number.format(input / 1024)} KB` : 'Cached / unavailable';
+  function siteTable(id, rows) {
+    if (!rows.length) {
+      const row = document.createElement('tr'); const cell = text('td', 'No observations yet');
+      cell.colSpan = $(id).closest('table').querySelectorAll('thead th').length;
+      row.append(cell); $(id).replaceChildren(row); return;
+    }
+    $(id).replaceChildren(...rows.map(fields => {
+      const row = document.createElement('tr');
+      fields.forEach((field, index) => { const cell = text(index ? 'td' : 'th', String(field)); if (!index) cell.scope = 'row'; row.append(cell); });
+      return row;
+    }));
+  }
+  function renderSite() {
+    const data = sitePerformance.snapshot();
+    const nav = data.navigation;
+    const cards = [['First byte (TTFB)', nav.ttfb], ['DOM ready', nav.dom], ['Window load', nav.load], ['First contentful paint', nav.fcp], ['Largest contentful paint', nav.lcp]];
+    $('site-overview').replaceChildren(...cards.map(([label, duration]) => {
+      const card = text('dl', '', 'performance-site-measure'); card.append(text('dt', label), text('dd', milliseconds(duration))); return card;
+    }));
+    const slowResources = data.resources.filter(row => row.duration >= 1000).length;
+    const slowTabs = data.tabs.filter(row => row.worstMs >= 100).length;
+    const staleMonitor = data.topics.find(row => row.topic === 'monitor' && row.available && Number.isFinite(row.sourceAt) && data.now - row.sourceAt > 12000);
+    const issues = [`${slowResources} requests ≥ 1 s`, `${slowTabs} tabs with frames ≥ 100 ms`, `${data.longTasks.length} retained long tasks`, `${data.errors.length} retained errors`];
+    if (staleMonitor) issues.push('Monitor source is stale');
+    $('site-status').textContent = `${issues.join(' · ')}. ${data.resourceCount} resource observations this session. ${!data.supported.resource ? 'Resource observation unsupported. ' : ''}${!data.supported.paint ? 'Paint observation unsupported. ' : ''}${!data.supported['largest-contentful-paint'] ? 'Largest-contentful-paint unsupported. ' : ''}${!data.frameSupported ? 'Animation-frame measurements unsupported.' : ''}`;
+    $('site-status').classList.toggle('performance-slow', slowResources > 0 || slowTabs > 0 || Boolean(staleMonitor) || data.errors.length > 0);
+    siteTable('site-tabs', data.tabs.map(row => [row.name, row.count, milliseconds(row.latestMs), milliseconds(row.worstMs), milliseconds(row.handlerMs), !row.count ? 'Visit to measure' : row.latestMs === null ? 'Frame pending / unavailable' : row.latestMs >= 100 ? 'Slow frame' : 'Under 100 ms']));
+    siteTable('site-resource-types', data.groups.map(row => [row.type, row.count, milliseconds(row.totalMs / row.count), milliseconds(row.worstMs), bytes(row.bytes)]));
+    siteTable('site-resources', [...data.resources].sort((a, b) => b.duration - a.duration).slice(0, 15).map(row => [row.path, row.type, milliseconds(row.duration), bytes(row.bytes), row.status ?? 'Unavailable']));
+    $('site-socket').textContent = `${data.socket.state} · latest connection ${milliseconds(data.socket.connectMs)} · ${data.socket.attempts} attempts · ${data.socket.reconnects} reconnect attempts after disconnect · ${data.socket.disconnects} unexpected disconnects`;
+    const age = input => Number.isFinite(input) && input >= 0 ? milliseconds(input) : 'Unknown / clock difference';
+    siteTable('site-topics', data.topics.map(row => [row.topic, milliseconds(row.initialMs), row.count, milliseconds(row.handlerMs), milliseconds(row.frameMs), age(data.now - row.receivedAt), age(row.receivedAt - row.publicationAt), !row.available ? 'Unavailable' : row.topic === 'monitor' ? `${!Number.isFinite(row.sourceAt) || data.now - row.sourceAt > 12000 ? 'Stale / unknown' : 'Available'} · source age ${age(data.now - row.sourceAt)}` : 'Available']));
+    $('site-longtasks').textContent = data.supported.longtask ? `${data.longTasks.length} retained tasks over 50 ms · ${milliseconds(data.longTasks.reduce((sum, row) => sum + row.duration, 0))} total occupied time. Latest 10 below; session retains up to 100.` : 'Long-task observation is unsupported in this browser; main-thread blocking is unknown.';
+    siteTable('site-longtask-list', data.longTasks.slice(-10).reverse().map(row => [milliseconds(row.start), milliseconds(row.duration)]));
+    $('site-errors').textContent = `${data.errors.length} retained JavaScript, promise or resource load errors (up to 50). HTTP failures are shown in the requests table when the browser exposes status codes.`;
+    $('site-error-list').replaceChildren(...data.errors.slice(-10).reverse().map(row => text('li', `${row.type} · ${row.path} · ${milliseconds(row.at)} since navigation`)));
+  }
   function renderArchive() {
     const now = Date.now();
     const unique = new Map();
@@ -75,7 +115,7 @@ export function mountPerformance({ root, isActive = () => true }) {
     }) : [text('p', 'GPU telemetry is not available yet.', 'performance-source')]));
     $('gpu-status').textContent = live ? `${live} GPUs with fresh telemetry. Observations older than 12 seconds become unknown.` : 'Current GPU readings are unknown until fresh telemetry arrives.';
   }
-  function render() { renderArchive(); renderGPUs(); }
+  function render() { renderSite(); renderArchive(); renderGPUs(); }
   function sync() {
     const active = !disposed && enabled && !document.hidden && isActive();
     if (active && !releases.length) {

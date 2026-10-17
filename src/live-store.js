@@ -1,4 +1,5 @@
 // One socket per document; every tab shares its current topic observations.
+import { sitePerformance } from './site-performance.js';
 const topics = new Set(['gallery', 'comparisons', 'tasks', 'agents', 'monitor', 'controls', 'winners']);
 const listeners = new Map();
 const snapshots = new Map();
@@ -27,10 +28,12 @@ function connect() {
   if (!active() || socket) return;
   const url = new URL('/api/studio-events', location.href);
   url.protocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+  sitePerformance.socketStart();
   const connection = new WebSocket(url); socket = connection;
-  connection.addEventListener('open', () => { if (socket === connection) { retry = 500; subscriptionJSON = null; sendSubscriptions(); } });
+  connection.addEventListener('open', () => { if (socket === connection) { sitePerformance.socketOpen(); retry = 500; subscriptionJSON = null; sendSubscriptions(); } });
   connection.addEventListener('message', event => {
     if (socket !== connection) return;
+    const started = performance.now();
     let value;
     try { value = JSON.parse(event.data); } catch { return; }
     if (value.type === 'hello') { snapshots.clear(); return; }
@@ -40,10 +43,12 @@ function connect() {
       if (previous?.available && value.version <= previous.version) return;
       emit(value.topic, { ...value, available: true });
     } else if (value.type === 'unavailable') emit(value.topic, { ...value, available: false });
+    sitePerformance.socketTopic(value.topic, value, started);
   });
   connection.addEventListener('error', () => connection.close());
   connection.addEventListener('close', () => {
     if (socket !== connection) return;
+    sitePerformance.socketClose();
     socket = null; unavailable();
     if (active()) { reconnectTimer = setTimeout(() => { reconnectTimer = null; connect(); }, retry); retry = Math.min(10000, retry * 2); }
   });
@@ -51,6 +56,7 @@ function connect() {
 function stop() {
   clearTimeout(reconnectTimer); reconnectTimer = null;
   const previous = socket; socket = null;
+  if (previous) sitePerformance.socketClose(false);
   previous?.close(); snapshots.clear(); unavailable();
 }
 function sync() {
@@ -71,7 +77,14 @@ function subscribe(topic, listener) {
   sync();
   return () => {
     listeners.get(topic)?.delete(listener);
-    if (listeners.get(topic)?.size === 0) { listeners.delete(topic); snapshots.delete(topic); }
+    if (listeners.get(topic)?.size === 0) {
+      listeners.delete(topic);
+      // Public topics stay subscribed on the wire, including while their tab is
+      // hidden. Retain their latest observation so reopening an unchanged topic
+      // does not wait for a publication that may never arrive. Controls alone
+      // leave the wire when their final listener leaves.
+      if (topic === 'controls') snapshots.delete(topic);
+    }
     sync();
   };
 }

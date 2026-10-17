@@ -5,6 +5,8 @@
     <li><h2>Record every task</h2><p>Pass each requested task to Task Keeper so it appears on the task list.</p></li>
     <li><h2>Start small tasks promptly</h2><p>The coordinator may take small or early tasks immediately while keeping the task record current.</p></li>
     <li><h2>Reuse the named agents</h2><p>Keep persistent agents with readable names. Give them concise context when assigning or handing off work.</p></li>
+    <li><h2>Assign ready work to available agents</h2><p>The Coordinator must assign ready, authorized tasks to available agents and verify that work actually starts. Unknown or stale status does not mean busy. Show blocked work and its blockers explicitly; never invent busywork.</p></li>
+    <li><h2>Enforce available capacity with evidence</h2><p>Enforcer observes fresh worker lifecycle evidence and the ready task list, then escalates to the Coordinator for dispatch. Its durable penalty is −1 per elapsed second of evidenced idle capacity while ready work exists, counted from activation without retroactive charges. Accounting must survive restarts without duplicate charges. Enforcement must not change GPU configuration or generation settings. The Coordinator must verify the actual daemon before reporting it live.</p></li>
     <li><h2>Keep the repository clean</h2><p>Exclude generated artifacts, dependencies, stale files, and local runtime records from commits.</p></li>
     <li><h2>Leave the Vercel deployment alone</h2><p>Keep the existing remote Vercel deployment untouched unless a change is explicitly requested.</p></li>
     <li><h2>Verify the live monitor</h2><p>The coordinator must personally verify the monitor daemon and real WebSocket evidence before reporting live monitoring as working.</p></li>

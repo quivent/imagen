@@ -12,6 +12,7 @@ const api = process.env.ARTWORK_API_ORIGIN || 'https://artwork-comparison.vercel
 const publicOrigin = 'https://artwork.influx.vision';
 const files = { tasks: 'tasks.json', winners: 'winners.json', comparisons: 'data/comparisons.json', agents: 'agent-status.json' };
 const topics = new Set([...Object.keys(files), 'gallery', 'monitor', 'controls']);
+const deliveryPriority = ['monitor', 'agents', 'winners', 'controls', 'tasks', 'comparisons', 'gallery'];
 function allowedOrigin(origin, server) {
   if (origin === publicOrigin) return true;
   try {
@@ -58,7 +59,16 @@ async function curated(topic, data) {
 }
 
 export function installStudioEvents(server) {
-  const wss = new WebSocketServer({ noServer: true, maxPayload: 4096, perMessageDeflate: false });
+  const wss = new WebSocketServer({
+    noServer: true, maxPayload: 4096,
+    // The archive is repetitive JSON (~2 MB). Independent, low-cost messages
+    // cut public transfer size without retaining compression history per tab.
+    perMessageDeflate: {
+      serverNoContextTakeover: true, clientNoContextTakeover: true,
+      threshold: 1024, concurrencyLimit: 2,
+      zlibDeflateOptions: { level: 1, memLevel: 4 },
+    },
+  });
   const states = new Map();
   const groups = new Map();
   const clients = new Set();
@@ -72,10 +82,31 @@ export function installStudioEvents(server) {
   };
   void getJSON('/api/gallery').then(data => { remoteGallery = data; if (interested('gallery')) refresh('gallery'); }).catch(() => {});
   const interested = topic => [...clients].some(socket => socket.topics.has(topic));
+  // Drain one message at a time. A valid initial gallery plus the other topics
+  // can exceed the socket buffer budget even for a fast client. Keep only the
+  // latest unsent observation per topic instead of disconnecting that client
+  // halfway through its initial subscription burst.
+  const drain = socket => {
+    if (socket.readyState !== WebSocket.OPEN || socket.sending || !socket.outbox.size) return;
+    const key = socket.outbox.has('hello') ? 'hello' : deliveryPriority.find(topic => socket.outbox.has(topic));
+    const message = socket.outbox.get(key);
+    socket.outbox.delete(key);
+    const body = JSON.stringify(message);
+    if (Buffer.byteLength(body) > 8 * 1024 * 1024) { socket.close(1013); return; }
+    socket.sending = true;
+    const stalled = setTimeout(() => socket.terminate(), 10000);
+    socket.send(body, error => {
+      clearTimeout(stalled);
+      socket.sending = false;
+      if (error) { socket.terminate(); return; }
+      drain(socket);
+    });
+  };
   const send = (socket, message) => {
     if (socket.readyState !== WebSocket.OPEN) return;
-    if (socket.bufferedAmount > 2 * 1024 * 1024) { socket.close(1013); return; }
-    socket.send(JSON.stringify(message));
+    // Keys are limited to the seven supported topics plus the greeting.
+    socket.outbox.set(message.topic || 'hello', message);
+    drain(socket);
   };
   function deliver(topic, state, recipients = clients) {
     for (const socket of recipients) if (socket.topics.has(topic)) {
@@ -127,7 +158,9 @@ export function installStudioEvents(server) {
     } finally { group.pending = false; }
   }
   function subscribe(socket, requested) {
-    socket.topics = new Set(requested.filter(topic => topics.has(topic)));
+    // Current status must not wait behind the multi-megabyte image archive on
+    // a public connection. Deliver small cached observations before gallery.
+    socket.topics = new Set(requested.filter(topic => topics.has(topic)).sort((a, b) => deliveryPriority.indexOf(a) - deliveryPriority.indexOf(b)));
     if (!socket.topics.has('controls')) detachPrivate(socket);
     for (const topic of socket.topics) {
       if (topic === 'controls') {
@@ -154,6 +187,7 @@ export function installStudioEvents(server) {
     if (pathname !== '/api/studio-events') return;
     if (!allowedOrigin(request.headers.origin, server) || clients.size >= 32) { socket.end('HTTP/1.1 403 Forbidden\r\nConnection: close\r\n\r\n'); return; }
     wss.handleUpgrade(request, socket, head, connection => {
+      connection.outbox = new Map(); connection.sending = false;
       connection.topics = new Set(); connection.cookie = controlCookie(request.headers.cookie); connection.alive = true;
       clients.add(connection);
       send(connection, { type: 'hello', protocol: 1, observedAt: new Date().toISOString(), topics: [...topics] });
@@ -165,7 +199,7 @@ export function installStudioEvents(server) {
           subscribe(connection, message.topics);
         } catch { connection.close(1008); }
       });
-      connection.on('close', () => { detachPrivate(connection); clients.delete(connection); });
+      connection.on('close', () => { connection.outbox.clear(); detachPrivate(connection); clients.delete(connection); });
       connection.on('error', () => {});
     });
   }

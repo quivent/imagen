@@ -1,6 +1,28 @@
 <div class="performance-view">
   <h1>Performance</h1>
-  <p class="performance-source">Recorded generation timings and live GPU telemetry.</p>
+  <p class="performance-source">This site’s load times, tab response, live connection and slowdowns in this browser session, alongside generation and GPU performance.</p>
+  <section aria-labelledby="performance-site-heading">
+    <h2 id="performance-site-heading">Site performance</h2>
+    <div id="performance-site-overview" class="performance-site-overview"></div>
+    <p id="performance-site-status" class="performance-source" role="status">Waiting for browser measurements.</p>
+    <p class="performance-source">Load measurements start at document navigation. Tab and socket frame measurements end at the second animation-frame callback after the action; they observe frame scheduling, not guaranteed pixels on screen or completion of later network requests. Values describe this browser and connection only.</p>
+    <h3>Every tab</h3>
+    <div class="performance-table-wrap"><table class="performance-site-table"><thead><tr><th>Tab</th><th>Visits</th><th>Latest to frame</th><th>Worst to frame</th><th>Latest handler</th><th>Assessment</th></tr></thead><tbody id="performance-site-tabs"></tbody></table></div>
+    <h3>Requests by type</h3>
+    <div class="performance-table-wrap"><table><thead><tr><th>Type</th><th>Requests</th><th>Average</th><th>Slowest</th><th>Transferred</th></tr></thead><tbody id="performance-site-resource-types"></tbody></table></div>
+    <h3>Slowest requests</h3>
+    <div class="performance-table-wrap"><table class="performance-site-table"><thead><tr><th class="performance-request-path">Resource</th><th>Type</th><th>Duration</th><th>Transferred</th><th>HTTP status</th></tr></thead><tbody id="performance-site-resources"></tbody></table></div>
+    <p class="performance-source">The 15 slowest requests from up to 500 retained resource observations. Durations include network and request scheduling, and can overlap. Zero transfer size means cached or size unavailable; paths omit query strings. Live socket messages are measured separately below.</p>
+    <h3>Live socket and data delivery</h3>
+    <p id="performance-site-socket" class="performance-source"></p>
+    <div class="performance-table-wrap"><table class="performance-site-table"><thead><tr><th>Topic</th><th>Initial after open</th><th>Messages</th><th>Latest handler</th><th>To frame</th><th>Last arrival</th><th>Publication age on arrival</th><th>State</th></tr></thead><tbody id="performance-site-topics"></tbody></table></div>
+    <p class="performance-source">Publication age includes any server cache age and clock differences; it is not a one-way network latency measurement. Last arrival is time since a message reached this browser. Unchanged archive topics can remain quiet normally; live monitor observations older than 12 seconds are flagged.</p>
+    <h3>Main-thread slowdowns and errors</h3>
+    <p id="performance-site-longtasks" class="performance-source"></p>
+    <div class="performance-table-wrap"><table><thead><tr><th>Observed since navigation</th><th>Duration</th></tr></thead><tbody id="performance-site-longtask-list"></tbody></table></div>
+    <p id="performance-site-errors" class="performance-source"></p>
+    <ul id="performance-site-error-list" class="performance-site-errors"></ul>
+  </section>
   <section aria-labelledby="performance-models-heading"><h2 id="performance-models-heading">Generation timings</h2>
     <p id="performance-archive-status" class="performance-source" role="status">Connecting to completed generations.</p>
     <div class="performance-table-wrap"><table><thead><tr><th scope="col">Model</th><th scope="col">Latest recorded time</th><th scope="col">Recent median</th><th scope="col">Duration samples</th><th scope="col">Last hour</th><th scope="col">Latest settings</th></tr></thead><tbody id="performance-models"></tbody></table></div>

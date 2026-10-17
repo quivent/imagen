@@ -1,1 +1,17 @@
 .performance-view{max-width:1500px;margin:0 auto;line-height:1.5}.performance-view h1{font-size:clamp(28px,4vw,36px);margin:0 0 8px}.performance-view h2{font-size:17px;margin:22px 0 12px}.performance-source{font-size:12px;color:var(--muted);margin:8px 0}.performance-table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:10px}.performance-view table{width:100%;border-collapse:collapse;text-align:left;font-size:12px;background:var(--surface)}.performance-view th,.performance-view td{padding:13px 15px;vertical-align:top;border-bottom:1px solid var(--border)}.performance-view thead th{color:var(--muted);font-size:11px;font-weight:500;white-space:nowrap}.performance-view tbody tr:last-child>*{border-bottom:0}.performance-gpus{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:12px}.performance-gpu{padding:15px 18px;background:var(--surface);border:1px solid var(--border);border-radius:10px}.performance-gpu h3{font-size:14px;margin:0 0 12px}.performance-gpu dl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;margin:0}.performance-gpu dt{font-size:11px;color:var(--muted)}.performance-gpu dd{font-size:20px;margin:3px 0 0;font-variant-numeric:tabular-nums}.performance-gpu .performance-source{margin-top:12px}
+/* Use the full tab width and keep long values inside their panels. */
+.performance-view{width:100%;max-width:none;min-width:0}
+.performance-view section,.performance-table-wrap,.performance-gpu{min-width:0;max-width:100%}
+.performance-view table{table-layout:fixed}
+.performance-view th,.performance-view td,.performance-gpu dd{overflow-wrap:anywhere}
+.performance-view thead th{white-space:normal}
+@media(max-width:650px){.performance-view th,.performance-view td{padding:10px 6px;font-size:11px}}
+.performance-site-overview{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px;margin:12px 0}
+.performance-site-measure{margin:0;padding:14px;background:var(--surface);border:1px solid var(--border);border-radius:10px;min-width:0}
+.performance-site-measure dt{font-size:12px;color:var(--muted)}
+.performance-site-measure dd{margin:7px 0 0;font-size:22px;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.performance-view h3{font-size:14px;margin:22px 0 10px}
+.performance-view .performance-site-table{min-width:760px}
+.performance-view .performance-request-path{width:40%}
+.performance-site-errors{padding-left:20px;font-size:12px;overflow-wrap:anywhere}
+.performance-slow{color:#dc895d;font-weight:600}

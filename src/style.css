@@ -39,6 +39,7 @@ button.primary:hover{background:#edcd9d;border-color:#edcd9d}
 .work-mode:not(.show-details) .introduction,.work-mode:not(.show-details) .prompt-card,.work-mode:not(.show-details) .generation-details,.work-mode:not(.show-details) .notes,.work-mode:not(.show-details) footer{display:none}
 .work-mode:not(.show-details) .scene-heading{margin-bottom:18px}.work-mode:not(.show-details) .scene-heading h2{font-size:23px}
 #work-mode[aria-pressed=true]{border-color:#a38c6b;color:var(--accent)}
+#show-details{display:grid;place-items:center;width:44px;min-height:44px;padding:0;flex:none}#show-details svg{display:block}#show-details[aria-expanded=true] svg{transform:rotate(180deg)}
 .stream-pair{display:grid;grid-template-columns:1fr 1fr;gap:24px}.stream-card .image-area{aspect-ratio:1}.stream-card .image-area:disabled{opacity:1;cursor:default}
 .stream-lane-heading{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:17px 21px;border-bottom:1px solid var(--border)}.stream-lane-heading h2{font:500 17px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.stream-lane-heading>span{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
 .stream-caption{padding:18px 21px}.stream-scene{margin:0 0 15px;font-size:14px}.stream-prompt-label{font-size:10px;letter-spacing:1px;color:var(--accent);margin:0 0 7px}.stream-prompt{font-family:Georgia,serif;font-size:15px;color:#d4d1c9;line-height:1.6;margin:0;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}.show-details .stream-prompt{display:block}.stream-settings{font-size:12px;color:var(--muted);line-height:1.6;margin:14px 0 0}.work-mode:not(.show-details) .stream-settings{display:none}
@@ -94,5 +95,6 @@ html[data-boot-tab=daemons] #daemons-panel{display:block!important}
 html[data-boot-tab=rules] #rules-panel{display:block!important}
 
 html[data-boot-tab=performance] #performance-panel{display:block!important}
+html[data-boot-tab=models] #models-panel{display:block!important}
 
 html[data-boot-tab=protocol] #protocol-panel{display:block!important}

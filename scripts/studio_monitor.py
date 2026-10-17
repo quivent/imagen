@@ -116,6 +116,7 @@ def agents():
                 result['coordinatorLastTransitionAt'] = state.get('lastTransitionAt')
                 result['coordinatorStartedAt'] = state.get('lastTransitionAt') if state['status'] == 'running' else None
                 result['coordinatorTask'] = assignments.get('/root', {}).get('task', 'Coordinate current work')
+                result['coordinatorCurrentTaskId'] = assignments.get('/root', {}).get('taskId')
             else:
                 # Publish only team paths, states and event timestamps. No task text.
                 path = row['agent_path']
@@ -137,6 +138,7 @@ def agents():
 def generation():
     result = {'ok': False, 'observedAt': None, 'source': 'Private resident GPU worker health over SSH', 'workers': []}
     code = """import json,datetime,subprocess
+from pathlib import Path
 from urllib.request import urlopen
 workers=[]
 for port in [18761,18762]:
@@ -155,7 +157,20 @@ try:
    except ValueError:gpu[key]=None
   gpus.append(gpu)
 except Exception:pass
-print(json.dumps({'workers':workers,'gpus':gpus,'observedAt':observed}))
+items=[]
+for filename,kind in [('/workspace/artwork/models/manifest.json','generation'),('/workspace/artwork/judges/download-receipt.json','judge')]:
+ try:
+  receipt=json.loads(Path(filename).read_text())
+  for ident,entry in receipt.get('models',{}).items():
+   target=Path(entry['path'])
+   verified=target.is_dir() and (kind=='generation' and (target/'.download-complete.json').is_file() or kind=='judge' and receipt.get('complete') is True)
+   lane=0 if ident=='flux1' else 1 if ident.startswith('flux2') else None
+   worker=workers[lane] if lane is not None else {}
+   loaded=worker.get('phase')=='ready' if worker.get('phase') else None
+   precision={'flux1':'BF16','flux2':'BF16','flux2-nf4':'NF4 text encoder','pixtral':'W4A16','dinov2':'BF16'}.get(ident)
+   items.append({'id':ident,'name':{'flux1':'FLUX.1 DEV','flux2':'FLUX.2 DEV','flux2-nf4':'FLUX.2 text encoder','pixtral':'Pixtral 12B','dinov2':'DINOv2 Giant'}.get(ident,ident),'repo':entry.get('repo'),'revision':entry.get('revision'),'precision':precision,'bytes':entry.get('bytes'),'downloaded':verified,'loaded':loaded,'phase':worker.get('phase'),'gpuIndex':lane,'problem':None if lane is not None else 'GPU residency has not been verified by this monitor.'})
+ except Exception:pass
+print(json.dumps({'workers':workers,'gpus':gpus,'models':{'observedAt':observed,'items':items},'observedAt':observed}))
 """
     try:
         host = os.environ.get('ARTWORK_SSH_HOST', '')
@@ -165,7 +180,7 @@ print(json.dumps({'workers':workers,'gpus':gpus,'observedAt':observed}))
         data = json.loads(process.stdout)
         if len(data['workers']) != 2:
             return result
-        result.update(ok=True, workers=data['workers'], gpus=data.get('gpus',[]), observedAt=data['observedAt'])
+        result.update(ok=True, workers=data['workers'], gpus=data.get('gpus',[]), models=data.get('models'), observedAt=data['observedAt'])
     except Exception:
         pass
     return result
@@ -175,7 +190,7 @@ def tasks():
     result = {'ok': False, 'observedAt': None, 'source': 'Persistent project task record; claim leases when available', 'working': [], 'claims': []}
     try:
         record = json.loads((REPO / 'tasks.json').read_text())
-        result['working'] = [{'id': row['id'], 'title': row['title']} for row in record['tasks'] if row.get('status') == 'working']
+        result['working'] = [{'id': row['id'], 'title': row['title'], 'owner': row.get('owner')} for row in record['tasks'] if row.get('status') == 'working']
         claims_path = REPO / '.tracker' / 'runtime' / 'claims.json'
         claims = json.loads(claims_path.read_text()).get('claims', {}) if claims_path.exists() else {}
         for ident, claim in claims.items():
@@ -195,6 +210,7 @@ def daemons():
         ('ingress', 'Public connection', 'Keeps the encrypted reverse tunnel to the HTTPS gateway connected.', 'giving.kinship.artwork-ingress'),
         ('refiller', 'Generation queue', 'Keeps a bounded queue of ordinary scene jobs available to both model lanes.', 'giving.kinship.artwork-refill'),
         ('inbox', 'Task inbox', 'Durably stores incoming requests and notifies the coordinator for Task Keeper.', 'vision.influx.artwork.task-inbox'),
+        ('enforcer', 'Enforcer', 'Checks ready work against observed assignments, records penalties and escalates dispatch gaps.', 'vision.influx.artwork.enforcer'),
     ]
     items = []
     for ident, name, description, label in descriptions:
@@ -212,6 +228,12 @@ def daemons():
                 item['lastActivityAt']=state.get('observedAt')
                 item['activityLabel']='Latest monitor observation'
             except Exception:pass
+        elif ident == 'enforcer':
+            try:
+                state = json.loads((REPO / '.runtime/task-inbox/enforcement.json').read_text())
+                item['lastActivityAt'] = state.get('observedAt')
+                item['activityLabel'] = 'Latest assignment enforcement check'
+            except Exception: pass
         elif ident == 'inbox':
             try:
                 path=REPO/'.runtime/task-inbox/inbox.sqlite3'
@@ -234,6 +256,14 @@ def daemons():
     return {'ok':True,'observedAt':now(),'staleAfterSeconds':12,'items':items}
 
 
+def enforcement():
+    try:
+        state = json.loads((REPO / '.runtime/task-inbox/enforcement.json').read_text())
+        return {**state, 'rule': 'dispatch', 'state': {'satisfied': 'ok', 'violation': 'violation'}.get(state.get('state'), 'unknown'), 'runningAgents': state.get('agentsRunning')}
+    except Exception:
+        return {'rule': 'dispatch', 'state': 'unknown', 'observedAt': None}
+
+
 if __name__ == '__main__':
     from concurrent.futures import ThreadPoolExecutor
     with ThreadPoolExecutor(max_workers=3) as pool:
@@ -251,5 +281,6 @@ if __name__ == '__main__':
             active_ids.add(assignments.get('/root', {}).get('taskId'))
         task_data['working'] = [row for row in task_data.get('working', []) if row['id'] in active_ids]
         task_data['source'] = 'Current-session running agents matched to recorded active task assignments'
-        result = {'ok': True, 'generation': generation_result.result(), 'agents': agent_data, 'tasks': task_data, 'daemons': daemons(), 'observedAt': now()}
+        result = {'ok': True, 'generation': generation_result.result(), 'agents': agent_data, 'tasks': task_data, 'daemons': daemons(), 'enforcement': enforcement(), 'observedAt': now()}
+    result['models'] = result['generation'].get('models', {'observedAt': None, 'items': []})
     print(json.dumps(result))

@@ -1,5 +1,5 @@
 (() => {
-  const tabs = ['stream', 'gallery', 'controls', 'tasks', 'performance', 'metrics', 'winners', 'agents', 'daemons', 'rules', 'protocol', 'monitor'];
+  const tabs = ['stream', 'gallery', 'controls', 'tasks', 'performance', 'models', 'seers', 'metrics', 'winners', 'agents', 'daemons', 'rules', 'protocol', 'monitor'];
   const query = new URLSearchParams(location.search);
   const requested = query.get('tab');
   const tab = new URLSearchParams(location.hash.slice(1)).has('control') ? 'controls'
@@ -22,8 +22,9 @@
     if (detailsButton) {
       const expanded = detailsVisible || !workMode;
       detailsButton.setAttribute('aria-expanded', String(expanded));
-      const label = expanded ? 'Hide details' : 'Show details';
-      if (detailsButton.textContent !== label) detailsButton.textContent = label;
+      const label = expanded ? 'Collapse details' : 'Expand details';
+      detailsButton.setAttribute('aria-label', label);
+      detailsButton.title = label;
     }
     for (const panel of document.querySelectorAll('[role="tabpanel"]')) panel.hidden = panel.id !== tab + '-panel';
     for (const button of document.querySelectorAll('[role="tab"]')) {

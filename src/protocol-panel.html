@@ -31,11 +31,25 @@ python3 scripts/task_inbox.py ack INBOX_ID --task-id TASK_ID</code></pre>
     <dl class="protocol-roles">
       <div><dt>Coordinator</dt><dd>Owns intake, priorities, file ownership, integration, and final verification. May make small edits directly.</dd></div>
       <div><dt>Task Keeper</dt><dd>Maintains the durable task record, estimates, blockers, and inbox acknowledgements.</dd></div>
+      <div><dt>Enforcer</dt><dd>Observes fresh worker lifecycle evidence and ready tasks, then queues a Coordinator wake. The Coordinator dispatches and verifies actual running work.</dd></div>
       <div><dt>Frontend · Site Setup · Model Downloads</dt><dd>Persistent specialists; reuse the matching agent with a brief, bounded assignment.</dd></div>
     </dl>
     <p>The user may add independent peer sessions. Send compact context through the supported queue command to the exact agreed session ID; never copy the full chat.</p>
     <pre aria-label="Send a bounded peer handoff"><code>codex queue --thread EXACT_SESSION_ID --message 'Task; constraints; owned files; completion criteria.'</code></pre>
     <p class="protocol-note">Keep coordination to necessary assignments, handoffs, blockers, and completion. A queued handoff still needs read or completion evidence.</p>
+  </section>
+
+  <section class="protocol-card" aria-labelledby="protocol-enforcement">
+    <h2 id="protocol-enforcement">Use available capacity for ready work</h2>
+    <p>Assign ready, authorized tasks to available agents. The Coordinator checks priorities and file ownership, issues bounded assignments, and verifies actual running work. Task Keeper records the assignment and acknowledges the associated inbox request after recording it.</p>
+    <p>Enforcer observes and escalates; the Coordinator dispatches. Enforcer monitors fresh worker lifecycle evidence together with the ready task list and queues a Coordinator wake when available capacity needs work. It cannot invoke the Coordinator’s collaboration tools directly. The task inbox daemon delivers request IDs; Enforcer monitors capacity. These are separate responsibilities.</p>
+    <ul class="protocol-checklist">
+      <li>Unknown or stale status is not evidence of being busy or idle. Require fresh evidence before accounting for idle capacity.</li>
+      <li>Keep blocked tasks visible with explicit blockers. Assign only ready, authorized work; never invent busywork to occupy an agent.</li>
+      <li>Maintain a durable penalty ledger of −1 per elapsed second of evidenced idle capacity while ready work exists, beginning at activation. Do not charge earlier time. Deduplicate accounting and preserve it across restarts.</li>
+      <li>Enforcement must not mutate GPU configuration, models, steps, resolution, or precision.</li>
+    </ul>
+    <p class="protocol-note">Enforcer runs as a separate supervised daemon. The Coordinator verified its live process and public status, penalty accounting, duplicate protection, restart safety, stale-source handling, and escalation deduplication. The Coordinator remains responsible for dispatching escalated work.</p>
   </section>
 
   <section class="protocol-card" aria-labelledby="protocol-verify">
