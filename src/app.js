@@ -1,6 +1,7 @@
 import worldsMarkup from './worlds-panel.html?raw';
 import { agentView, taskAssignment } from './agent-state.js';
 import { sitePerformance } from './site-performance.js';
+import { reconcileComparisonOptions } from './comparison-options.js';
 import protocolMarkup from './protocol-panel.html?raw';
 import { studioLive } from './live-store.js';
 import { installImageCache, artworkImageURL } from './image-cache.js';
@@ -173,7 +174,7 @@ function createComparisonCard(row) {
   card.append(heading, pair, note, open); updateChoiceCard(card, row.id); return card;
 }
 function renderComparisonGrid() {
-  if (!state.loaded) return;
+  if (!state.loaded || activeTab !== 'gallery') return;
   const grid = $('comparison-grid');
   grid.setAttribute('aria-busy', 'false');
   // Keep the keyboard user's exact node until focus moves out of the gallery.
@@ -197,24 +198,16 @@ function renderComparisonGrid() {
 }
 $('comparison-grid').addEventListener('focusout', () => queueMicrotask(renderComparisonGrid));
 function render() {
+  // Keep receiving and validating comparison data in every tab, but construct
+  // its image cards and inspector only when Compare is actually visible.
+  if (activeTab !== 'gallery') return;
   const row = current();
   $('empty').hidden = !state.loaded || !!row;
   $('comparison').hidden = !row;
   $('comparison-inspector').hidden = !row;
   renderComparisonGrid();
   $('scene').disabled = !state.rows.length;
-  const options = state.rows.map((item) => {
-    const option = document.createElement('option');
-    option.value = item.id;
-    option.textContent = item.title;
-    return option;
-  });
-  if (!options.length) {
-    const option = document.createElement('option');
-    option.textContent = 'No images yet';
-    options.push(option);
-  }
-  $('scene').replaceChildren(...options);
+  reconcileComparisonOptions($('scene'), state.rows);
   if (!row) return;
   $('scene').value = row.id;
   const index = state.rows.indexOf(row);
@@ -224,12 +217,16 @@ function render() {
   $('next').disabled = index === state.rows.length - 1;
   const sides = [[row.left, 'FLUX.1 dev'], [row.right, 'FLUX.2 dev']];
   if (state.swapped) sides.reverse();
-  $('pair').classList.toggle('square-pair', sides.every(([side]) => side?.width && side.width === side.height));
-  $('pair').replaceChildren(...sides.map(([side, fallback]) => modelCard(side, fallback, row)));
-  $('details').replaceChildren(...sides.map(([side, fallback]) => detailPanel(side, fallback, row)));
-  $('prompt').textContent = row.prompt || 'The prompt has not been recorded yet.';
-  const promptsDiffer = [row.left, row.right].some((side) => side?.prompt && side.prompt !== row.prompt);
-  $('prompt-heading').textContent = promptsDiffer ? 'The starting brief' : 'A shared prompt';
+  const signature = JSON.stringify([row, state.swapped]);
+  if (signature !== state.renderedSignature) {
+    $('pair').classList.toggle('square-pair', sides.every(([side]) => side?.width && side.width === side.height));
+    $('pair').replaceChildren(...sides.map(([side, fallback]) => modelCard(side, fallback, row)));
+    $('details').replaceChildren(...sides.map(([side, fallback]) => detailPanel(side, fallback, row)));
+    $('prompt').textContent = row.prompt || 'The prompt has not been recorded yet.';
+    const promptsDiffer = [row.left, row.right].some((side) => side?.prompt && side.prompt !== row.prompt);
+    $('prompt-heading').textContent = promptsDiffer ? 'The starting brief' : 'A shared prompt';
+    state.renderedSignature = signature;
+  }
   if (state.renderedId !== row.id) {
     try {
       $('note').value = localStorage.getItem(`artwork-comparison:note:${row.id}`) || '';
@@ -343,6 +340,7 @@ function showTab(tab, focus = false, load = true) {
   else url.searchParams.delete('tab');
   history.replaceState(null, '', url);
   for (const [name, panel] of Object.entries(embeddedPanels)) panel.setActive(name === tab);
+  if (tab === 'gallery') render();
   if (focus) $(`tab-${tab}`).focus();
   if (load && tab === 'controls') refreshControls();
   if (load && tab === 'stream') refreshStream();
@@ -456,9 +454,11 @@ async function refreshTasks(manual = false) {
 function setAuthorized(value) {
   controls.authorized = value === true;
   $('access-panel').hidden = controls.authorized;
-  $('control-workspace').hidden = !controls.authorized;
+  $('control-workspace').hidden = false;
+  for (const element of document.querySelectorAll('[data-private-control]')) element.hidden = !controls.authorized;
   $('generate-submit').disabled = !controls.authorized || !controls.connected || controls.posting;
   $('generate-both').disabled = $('generate-submit').disabled;
+  if (!controls.authorized || !controls.connected) for (const profile of profiles) $(`pause-${profile}`).disabled = true;
   $('compare-generate-both').disabled = controls.posting;
   $('compare-generate-both').textContent = controls.authorized ? `Run both · ${Number(generationField('count').value) * 2} images` : 'Open controls';
   if (controls.authorized) $('access-key').value = '';
@@ -682,6 +682,7 @@ for (const [key, option] of Object.entries(choiceOptions)) {
     button.setAttribute('aria-pressed', 'false');
     button.addEventListener('click', () => {
       generationField(key).value = value === 'random' ? String(crypto.getRandomValues(new Uint32Array(1))[0] % 4294967276) : String(value);
+      if (key === 'steps') modelSteps[generationField('profile').value] = Number(value);
       syncSelection();
     });
     group.append(button);

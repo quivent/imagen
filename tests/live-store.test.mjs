@@ -21,7 +21,8 @@ test('unchanged public topics remain immediately readable across tab switches', 
   try {
     const source = (await readFile(new URL('../src/live-store.js', import.meta.url), 'utf8'))
       .replace("'./site-performance.js'", JSON.stringify(new URL('../src/site-performance.js', import.meta.url).href))
-      .replace("'./gallery-patch.js'", JSON.stringify(new URL('../src/gallery-patch.js', import.meta.url).href));
+      .replace("'./gallery-patch.js'", JSON.stringify(new URL('../src/gallery-patch.js', import.meta.url).href))
+      .replace("'./comparisons-patch.js'", JSON.stringify(new URL('../src/comparisons-patch.js', import.meta.url).href));
     const { studioLive } = await import('data:text/javascript;base64,' + Buffer.from(source).toString('base64'));
     const keepAlive = studioLive.subscribe('comparisons', () => {});
     await Promise.resolve();
@@ -59,6 +60,17 @@ test('unchanged public topics remain immediately readable across tab switches', 
     await assert.rejects(studioLive.read('gallery'));
     publish('gallery', 5, { jobs: [{ id: 'recovered-full-archive' }] });
     assert.equal((await studioLive.read('gallery')).jobs[0].id, 'recovered-full-archive');
+    publish('comparisons', 10, { schemaVersion: 1, comparisons: [{ id: 'kept-pair', left: { jobId: 'left-original' }, right: { jobId: 'right-original' } }] });
+    publish('winners', 2, { winners: [{ comparisonId: 'kept-pair', side: 'left', selection: { jobId: 'left-original' } }] });
+    socket.message({ type: 'patch', topic: 'comparisons', baseVersion: 10, version: 13, metadata: { schemaVersion: 1 }, removed: [], upserts: [{ index: 1, job: { id: 'new-pair', left: { jobId: 'left-new' }, right: { jobId: 'right-new' } } }] });
+    assert.deepEqual((await studioLive.read('comparisons')).comparisons.map(row => row.id), ['kept-pair', 'new-pair']);
+    assert.equal((await studioLive.read('winners')).winners[0].selection.jobId, 'left-original');
+    socket.message({ type: 'patch', topic: 'comparisons', baseVersion: 11, version: 14, metadata: {}, removed: [], upserts: [] });
+    assert.deepEqual(socket.sent.at(-1), { type: 'resync', topic: 'comparisons' });
+    await assert.rejects(studioLive.read('comparisons'));
+    assert.equal((await studioLive.read('gallery')).jobs[0].id, 'recovered-full-archive', 'comparison gap recovery does not discard gallery');
+    publish('comparisons', 14, { schemaVersion: 1, comparisons: [{ id: 'full-recovered-pair' }] });
+    assert.equal((await studioLive.read('comparisons')).comparisons[0].id, 'full-recovered-pair');
     const privateSnapshots = [];
     const privateRelease = studioLive.subscribe('controls', snapshot => privateSnapshots.push(snapshot));
     await Promise.resolve();

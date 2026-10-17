@@ -7,6 +7,7 @@ import { fileURLToPath } from 'node:url';
 import { collectLocalGallery, subscribeLocalGallery } from './local-gallery.mjs';
 import { collectStudioMonitor, subscribeMonitor } from './studio-monitor.mjs';
 import { createGalleryPatch, recentGallery } from '../src/gallery-patch.js';
+import { createComparisonsPatch } from '../src/comparisons-patch.js';
 
 const read = promisify(readFile);
 const execute = promisify(execFile);
@@ -16,6 +17,7 @@ const publicOrigin = 'https://artwork.influx.vision';
 const files = { tasks: 'tasks.json', winners: 'winners.json', comparisons: 'data/comparisons.json', agents: 'agent-status.json' };
 const topics = new Set([...Object.keys(files), 'gallery', 'monitor', 'controls']);
 const deliveryPriority = ['monitor', 'agents', 'winners', 'controls', 'tasks', 'comparisons', 'gallery-recent', 'gallery'];
+const patchWriters = { gallery: createGalleryPatch, comparisons: createComparisonsPatch };
 function allowedOrigin(origin, server) {
   if (origin === publicOrigin) return true;
   try {
@@ -108,9 +110,10 @@ export function installStudioEvents(server) {
     const key = socket.outbox.has('hello') ? 'hello' : deliveryPriority.find(topic => socket.outbox.has(topic));
     const message = socket.outbox.get(key);
     socket.outbox.delete(key);
-    const galleryEpoch = socket.galleryEpoch;
-    const gallery = socket.galleryPatches && message.topic === 'gallery';
-    const wire = gallery && message.type === 'snapshot' && socket.galleryBaseline ? createGalleryPatch(socket.galleryBaseline, message) : message;
+    const epoch = socket.patchEpochs.get(message.topic) || 0;
+    const patching = socket.patchTopics.has(message.topic);
+    const baseline = socket.patchBaselines.get(message.topic);
+    const wire = patching && message.type === 'snapshot' && baseline ? patchWriters[message.topic](baseline, message) : message;
     const body = JSON.stringify(wire);
     if (Buffer.byteLength(body) > 8 * 1024 * 1024) { socket.close(1013); return; }
     socket.sending = true;
@@ -121,7 +124,10 @@ export function installStudioEvents(server) {
       if (error) { socket.terminate(); return; }
       // Update only after this baseline has reached the transport. Coalesced
       // pending versions then diff against what this client actually received.
-      if (gallery && galleryEpoch === socket.galleryEpoch) socket.galleryBaseline = message.type === 'snapshot' ? message : null;
+      if (patching && epoch === (socket.patchEpochs.get(message.topic) || 0)) {
+        if (message.type === 'snapshot') socket.patchBaselines.set(message.topic, message);
+        else socket.patchBaselines.delete(message.topic);
+      }
       drain(socket);
     });
   };
@@ -135,7 +141,7 @@ export function installStudioEvents(server) {
     for (const socket of recipients) if (socket.topics.has(topic)) {
       if (state.error) send(socket, { type: 'unavailable', topic, observedAt: state.observedAt, status: state.status || 503 });
       else if (state.data) {
-        if (topic === 'gallery' && socket.galleryPreview && !socket.galleryBaseline) {
+        if (topic === 'gallery' && socket.galleryPreview && !socket.patchBaselines.has('gallery')) {
           send(socket, { type: 'snapshot', topic: 'gallery-recent', version: state.version, observedAt: state.observedAt, data: recentGallery(state.data) });
         }
         send(socket, { type: 'snapshot', topic, version: state.version, observedAt: state.observedAt, data: state.data });
@@ -216,7 +222,7 @@ export function installStudioEvents(server) {
     if (!allowedOrigin(request.headers.origin, server) || clients.size >= 32) { socket.end('HTTP/1.1 403 Forbidden\r\nConnection: close\r\n\r\n'); return; }
     wss.handleUpgrade(request, socket, head, connection => {
       connection.outbox = new Map(); connection.sending = false;
-      connection.galleryBaseline = null; connection.galleryEpoch = 0; connection.galleryPatches = false; connection.galleryPreview = false;
+      connection.patchBaselines = new Map(); connection.patchEpochs = new Map(); connection.patchTopics = new Set(); connection.galleryPreview = false;
       connection.topics = new Set(); connection.cookie = controlCookie(request.headers.cookie); connection.alive = true;
       clients.add(connection);
       send(connection, { type: 'hello', protocol: 1, observedAt: new Date().toISOString(), topics: [...topics] });
@@ -224,19 +230,26 @@ export function installStudioEvents(server) {
       connection.on('message', bytes => {
         try {
           const message = JSON.parse(bytes.toString());
-          if (message.type === 'resync' && message.topic === 'gallery' && connection.topics.has('gallery')) {
-            connection.galleryBaseline = null; connection.galleryEpoch++;
-            const state = states.get('gallery'); if (state) deliver('gallery', state, [connection]);
+          if (message.type === 'resync' && Object.hasOwn(patchWriters, message.topic) && connection.topics.has(message.topic)) {
+            connection.patchBaselines.delete(message.topic);
+            connection.patchEpochs.set(message.topic, (connection.patchEpochs.get(message.topic) || 0) + 1);
+            const state = states.get(message.topic); if (state) deliver(message.topic, state, [connection]);
             return;
           }
           if (message.type !== 'subscribe' || !Array.isArray(message.topics) || message.topics.length > topics.size || message.topics.some(topic => typeof topic !== 'string')) throw new Error('Unsupported message');
-          connection.galleryPatches = Array.isArray(message.features) && message.features.includes('gallery-patch-v1');
-          connection.galleryPreview = connection.galleryPatches && message.features.includes('gallery-preview-v1');
-          if (!connection.galleryPatches) { connection.galleryBaseline = null; connection.galleryEpoch++; }
+          const features = Array.isArray(message.features) ? message.features : [];
+          for (const topic of Object.keys(patchWriters)) {
+            if (features.includes(topic === 'gallery' ? 'gallery-patch-v1' : 'comparisons-patch-v1')) connection.patchTopics.add(topic);
+            else {
+              connection.patchTopics.delete(topic); connection.patchBaselines.delete(topic);
+              connection.patchEpochs.set(topic, (connection.patchEpochs.get(topic) || 0) + 1);
+            }
+          }
+          connection.galleryPreview = connection.patchTopics.has('gallery') && features.includes('gallery-preview-v1');
           subscribe(connection, message.topics);
         } catch { connection.close(1008); }
       });
-      connection.on('close', () => { connection.outbox.clear(); detachPrivate(connection); clients.delete(connection); });
+      connection.on('close', () => { connection.outbox.clear(); connection.patchBaselines.clear(); detachPrivate(connection); clients.delete(connection); });
       connection.on('error', () => {});
     });
   }
