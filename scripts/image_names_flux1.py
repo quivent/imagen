@@ -7,6 +7,7 @@ Existing names are immutable; SHA mismatches fail closed. No gallery/R2 writes.
 """
 import argparse
 import datetime
+import fcntl
 import hashlib
 import json
 import pathlib
@@ -56,6 +57,48 @@ def key(prompt):
     return hashlib.sha256(prompt.encode()).hexdigest()
 
 
+def study_metadata():
+    """Resolve study transport IDs through local, text-only experiment packages."""
+    corpus_path = ROOT / 'deployment/controller/docs/artwork/geographic-scenes.json'
+    corpus = {}
+    if corpus_path.exists():
+        corpus = {s['id']: s for s in json.loads(corpus_path.read_text()).get('scenes', [])}
+    requests = {}
+    for package_path in sorted((ROOT / '.runtime/research').glob('**/runs/*/package.json')):
+        try:
+            package = json.loads(package_path.read_text())
+        except (OSError, ValueError):
+            continue  # A study preparer may be atomically replacing its package.
+        source = package.get('sourceCorpus', {}).get('scene', {})
+        for request in package.get('requests', []):
+            if request.get('model') != PROFILE or not request.get('prompt'):
+                continue
+            scene = request.get('scene', '')
+            condition = next((label for label, prompt in package.get('prompts', {}).items()
+                              if prompt == request['prompt']), None)
+            metadata = {'sceneName': source.get('name'), 'sceneId': source.get('id'),
+                        'studyCondition': condition}
+            if metadata['sceneName']:
+                requests[(scene, key(request['prompt']))] = metadata
+    return corpus, requests
+
+
+def study_title(job, corpus, requests):
+    match = re.fullmatch(r'adhc-[0-9a-f]+-(scene-\d+)', job.get('scene', ''))
+    if not match:
+        return None
+    metadata = requests.get((job['scene'], key(job['prompt'])), {}).copy()
+    scene = corpus.get(match.group(1), {})
+    metadata.setdefault('sceneId', match.group(1))
+    metadata.setdefault('sceneName', scene.get('name'))
+    if not metadata.get('sceneName'):
+        raise ValueError('Cannot resolve study scene name: ' + job['scene'])
+    labels = {'A': 'Original Wording', 'B': 'Precision Wording'}
+    condition = labels.get(metadata.get('studyCondition'))
+    title = metadata['sceneName'] + (' — ' + condition if condition else '')
+    return title, metadata
+
+
 def phrases(prompts):
     instruction = '''Invent concise, evocative exhibition titles from TEXT PROMPT METADATA ONLY.
 Do not claim to see images. Never invent objects, weather, colors, locations or lighting absent from the supplied text.
@@ -97,13 +140,34 @@ No numbering or model names inside phrases. Use natural title case. Return ONLY 
     return result
 
 
-def update(base):
+def metadata_title(job, corpus):
+    scene = corpus.get(job.get('scene'), {})
+    # Reused scene IDs are not evidence that the current prompt depicts the same subject.
+    if scene.get('prompt') and subject(scene['prompt']) == subject(job['prompt']):
+        return scene['name']
+    description = re.sub(r'^Scene:\s*', '', subject(job['prompt']), flags=re.I)
+    phrase = re.split(r'[.;:]|,', description, maxsplit=1)[0]
+    phrase = ' '.join(phrase.split()[:8]).strip()
+    return phrase[:65].rstrip() or 'Landscape from the Written Prompt'
+
+
+def update(base, allow_model=False):
+    OUTPUT.parent.mkdir(parents=True, exist_ok=True)
+    with OUTPUT.with_suffix('.lock').open('a') as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX)
+        return _update(base, allow_model)
+
+
+def _update(base, allow_model):
     jobs = fetch(base)
     existing = json.loads(OUTPUT.read_text()) if OUTPUT.exists() else {'schema': 1, 'profile': PROFILE, 'source': 'prompt-metadata', 'names': {}}
     bank = json.loads(BANK.read_text()) if BANK.exists() else {}
-    prompts = list(dict.fromkeys(j['prompt'] for j in jobs.values()))
+    corpus, requests = study_metadata()
+    studies = {j['id']: study_title(j, corpus, requests) for j in jobs.values()
+               if j.get('scene', '').startswith('adhc-')}
+    prompts = list(dict.fromkeys(j['prompt'] for j in jobs.values() if j['id'] not in studies))
     missing = [p for p in prompts if key(p) not in bank]
-    for start in range(0, len(missing), 8):
+    for start in range(0, len(missing) if allow_model else 0, 8):
         batch = missing[start:start + 8]
         for attempt in range(3):
             try:
@@ -127,7 +191,26 @@ def update(base):
             if names[job['id']]['sha256'] != job['sha256']:
                 raise ValueError('Immutable gallery identity changed: ' + job['id'])
             continue
-        record = bank[key(job['prompt'])]
+        if job['id'] in studies:
+            title, metadata = studies[job['id']]
+            seed = job.get('settings', {}).get('seed')
+            if title.casefold() in used:
+                title += ' · Seed ' + str(seed)
+            if title.casefold() in used:
+                title += ' · ' + job['id'][:8]
+            names[job['id']] = {'title': title, 'sha256': job['sha256'], **metadata}
+            used.add(title.casefold())
+            continue
+        record = bank.get(key(job['prompt']))
+        if record is None:
+            title = metadata_title(job, corpus)
+            if title.casefold() in used:
+                title += ' · Seed ' + str(job.get('settings', {}).get('seed'))
+            if title.casefold() in used:
+                title += ' · ' + job['id'][:8]
+            names[job['id']] = {'title': title, 'sha256': job['sha256']}
+            used.add(title.casefold())
+            continue
         # Diagonal order varies roots and motifs together before exhausting combinations.
         candidates = [record['roots'][r] + ' — ' + record['motifs'][(r + offset) % 6]
                       for offset in range(6) for r in range(6)]
@@ -156,9 +239,10 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--base', default='http://127.0.0.1:48624')
     parser.add_argument('--watch', type=int, default=0, metavar='SECONDS', help='Refresh incrementally; cached names remain fixed.')
+    parser.add_argument('--allow-model', action='store_true', help='Opt into text-only Gemma calls for new phrase banks; default is metadata/cache only.')
     args = parser.parse_args()
     while True:
-        update(args.base.rstrip('/'))
+        update(args.base.rstrip('/'), allow_model=args.allow_model)
         if not args.watch:
             break
         time.sleep(max(args.watch, 10))

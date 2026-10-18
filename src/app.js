@@ -1,11 +1,18 @@
+import {createControlChoice} from './control-choice.js';
+import {mountComparisonPages,mountProductionAlignment} from './production-gallery.js';
+import {selectedStudy,observeStudy,selectedProductionStudy,observeProductionStudy} from './study-context.js';
+import {mountPromptStudy} from './prompt-study.js';
+import {renderTaskBoard,taskStates} from './task-board.js';
+import {recordWorkspace,belongsToStudy,scopeAgentView} from './workspace-scope.js';
 import { mountWorkspaceNavigation } from './workspace-navigation.js';
+import {mountProductionHUD} from './production-hud.js';
 import { studioTabs, studioTab, studioTabURL } from './studio-route.js';
 import { createGenerationSteps } from './generation-steps.js';
 import { mountModelStepButtons } from './model-step-buttons.js';
 import { modelRequest } from './model-parameters.js';
 import { mountStreamPagination } from './stream-pagination.js';
 import { mountPublicNavigation } from './public-navigation.js';
-import { agentView, taskAssignment } from './agent-state.js';
+import { agentView } from './agent-state.js';
 import { sitePerformance } from './site-performance.js';
 import { reconcileComparisonOptions } from './comparison-options.js';
 import { studioLive } from './live-store.js';
@@ -166,11 +173,12 @@ function renderComparisonGrid() {
   grid.setAttribute('aria-busy', 'false');
   // Keep the keyboard user's exact node until focus moves out of the gallery.
   if (grid.contains(document.activeElement)) return;
-  const ids = new Set(state.rows.map(row => row.id));
+  const visibleRows = comparisonPages.rows(state.rows, state.id);
+  const ids = new Set(visibleRows.map(row => row.id));
   for (const [id, entry] of comparisonCards) {
     if (!ids.has(id)) { entry.card.remove(); comparisonCards.delete(id); }
   }
-  state.rows.forEach((row, index) => {
+  visibleRows.forEach((row, index) => {
     const signature = JSON.stringify(row);
     let entry = comparisonCards.get(row.id);
     if (!entry || entry.signature !== signature) {
@@ -183,6 +191,7 @@ function renderComparisonGrid() {
   });
   for (const node of [...grid.children]) if (!ids.has(node.dataset.comparison)) node.remove();
 }
+const comparisonPages = mountComparisonPages({grid:$('comparison-grid'),render:renderComparisonGrid});
 $('comparison-grid').addEventListener('focusout', () => queueMicrotask(renderComparisonGrid));
 function render() {
   // Construct comparison images only when Compare is visible.
@@ -233,6 +242,7 @@ function choose(id) {
   render();
 }
 async function refresh(manual = false) {
+  if(promptStudyTab('gallery'))return;
   if (state.loading || !manual && (document.hidden || $('viewer').open)) return;
   state.loading = true;
   try {
@@ -285,6 +295,9 @@ const modelNames = { 'flux1-dev': 'FLUX.1 dev', 'flux2-dev-nf4': 'FLUX.2 dev' };
 const controlFields = ['profile', 'prompt', 'width', 'height', 'steps', 'guidance_scale', 'seed', 'max_sequence_length', 'count'];
 const controls = { authorized: false, connected: false, fetching: false, posting: false, workers: [], jobs: [], pendingLanes: new Set(), gpus: [] };
 let activeTab = 'stream';
+const promptViews=new Map();
+function promptStudyTab(tab){const root=document.documentElement;if(root.dataset.studioMode!=='studio')return false;return root.dataset.workspace==='production'?['gallery','stream','controls'].includes(tab)&&selectedProductionStudy()==='flux1-prompt-clarity':['gallery','stream'].includes(tab)&&root.dataset.workspace==='workbench'&&selectedStudy()==='flux1-prompt-clarity';}
+function syncPromptViews(){for(const tab of ['gallery','stream','controls']){let entry=promptViews.get(tab);if(!entry){const panel=$(tab+'-panel'),legacy=document.createElement('div'),study=document.createElement('div');while(panel.firstChild)legacy.append(panel.firstChild);panel.append(legacy,study);const component=mountPromptStudy({root:study,view:tab==='gallery'?'compare':tab,isActive:()=>activeTab===tab&&promptStudyTab(tab)});entry={legacy,study,component};promptViews.set(tab,entry);}const use=promptStudyTab(tab);entry.legacy.hidden=use;entry.study.hidden=!use;entry.component.setActive(use&&activeTab===tab);}}
 const tabNames = studioTabs;
 sitePerformance.registerTabs(tabNames);
 let publicNavigation;
@@ -292,7 +305,7 @@ let workspaceNavigation;
 const embeddedPanels = {};
 const liveTopics = new Map();
 function syncLiveTopics() {
-  const wanted = new Set(({ stream: ['gallery-recent'], gallery: ['comparisons','controls','winners'], tasks: ['tasks', 'monitor'], controls: ['controls', 'agents','comparisons'] }[activeTab] || []));
+  const wanted = new Set((promptStudyTab(activeTab)?[]:({ stream: ['gallery-recent'], gallery: ['comparisons','controls','winners'], tasks: ['tasks', 'monitor'], controls: ['controls', 'agents','comparisons'] }[activeTab] || [])));
   const refreshers = { comparisons: refresh, 'gallery-recent': refreshStream, tasks: refreshTasks, controls: refreshControls, agents: refreshAgentSnapshot };
   for (const [topic, stop] of liveTopics) if (!wanted.has(topic)) { stop(); liveTopics.delete(topic); }
   for (const topic of wanted) if (!liveTopics.has(topic)) liveTopics.set(topic, studioLive.subscribe(topic, observation => topic === 'monitor' ? updateTaskRuntime(observation) : topic==='winners'?updateWinnerChoices(observation):refreshers[topic]()));
@@ -327,9 +340,10 @@ function showTab(tab, focus = false, load = true) {
   for (const [name, panel] of Object.entries(embeddedPanels)) panel.setActive(name === tab);
   publicNavigation?.update();
   workspaceNavigation?.onTab(tab);
-  if (tab === 'gallery') render();
+  syncPromptViews();syncLiveTopics();
+  if (tab === 'gallery'&&!promptStudyTab(tab)) render();
   if (focus) $(`tab-${tab}`).focus();
-  if (load && tab === 'controls') refreshControls();
+  if (load && tab === 'controls'&&!promptStudyTab(tab)) refreshControls();
   if (load && tab === 'stream') refreshStream();
   if (load && tab === 'tasks') refreshTasks();
   syncTaskRuntimeClock(tab === 'tasks');
@@ -347,7 +361,6 @@ for (const name of tabNames) {
   });
 }
 
-const taskStates = { working: 'In progress', next: 'Next', ongoing: 'Ongoing', done: 'Done' };
 let tasksLoading = false;
 let tasksSignature = '';
 let taskRows = [];
@@ -370,53 +383,11 @@ function syncTaskRuntimeClock(active) {
 }
 function renderTasks(rows) {
   taskRows = rows;
-  const runtime = agentView(taskMonitorSnapshot, taskRuntimeConnected);
-  const doneOpen = $('tasks-list').querySelector('.task-group-done')?.open || false;
-  const sections = [];
-  for (const [state, heading] of Object.entries(taskStates)) {
-    const priorityRank = { urgent: 0, high: 1 };
-    const matching = rows.filter(row => row.status === state).sort((a, b) => (priorityRank[a.priority] ?? 2) - (priorityRank[b.priority] ?? 2));
-    if (!matching.length) continue;
-    const section = document.createElement(state === 'done' ? 'details' : 'section');
-    section.className = state === 'done' ? 'task-group task-group-done' : 'task-group';
-    const title = text('h2', state === 'working' ? 'Recorded in progress' : heading);
-    if (state === 'done') {
-      section.open = doneOpen;
-      const summary = document.createElement('summary');
-      const icon = text('span', '›', 'task-done-icon');
-      icon.setAttribute('aria-hidden', 'true');
-      summary.append(icon, title, text('span', String(matching.length), 'task-done-count'));
-      section.append(summary);
-    } else section.append(title);
-    const list = document.createElement('div');
-    list.className = 'task-cards';
-    for (const row of matching) {
-      const card = document.createElement('article');
-      card.className = 'task-card';
-      card.dataset.state = state;
-      const top = document.createElement('div');
-      top.className = 'task-card-top';
-      top.append(text('span', row.id, 'task-id'));
-      if (row.priority) top.append(text('span', row.priority === 'urgent' ? 'First priority' : 'High priority', 'task-priority'));
-      const assignment = taskAssignment(runtime, row);
-      top.append(text('span', state === 'working' ? assignment ? 'Running' : 'Recorded in progress' : heading, 'task-state'));
-      card.append(top, text('h3', row.title));
-      if (row.owner || assignment || state === 'working') card.append(text('p', assignment ? `Current assignment: ${assignment.name || assignment.id}` : `Recorded owner: ${row.owner || 'not recorded'} · ${runtime.fresh ? 'no matching running assignment' : 'live assignment unknown'}`, 'task-detail'));
-      if (row.difficulty || row.estimatedMinutes) {
-        const range = row.estimatedMinutes;
-        const estimate = range && Number.isFinite(range.min) && Number.isFinite(range.max) ? `${range.min}–${range.max} min estimated` : '';
-        card.append(text('p', [row.difficulty, estimate, row.estimateConfidence && `${row.estimateConfidence} confidence`].filter(Boolean).join(' · '), 'task-detail'));
-      }
-      if (row.detail) card.append(text('p', row.detail, 'task-detail'));
-      if (row.evidence) card.append(text('p', row.evidence, 'task-evidence'));
-      list.append(card);
-    }
-    section.append(list);
-    sections.push(section);
-  }
-  $('tasks-list').replaceChildren(...sections);
+  const studyId=selectedProductionStudy();
+  renderTaskBoard($('tasks-list'),rows.filter(row=>belongsToStudy(row,'production',studyId)),scopeAgentView(agentView(taskMonitorSnapshot, taskRuntimeConnected),'production',studyId));
 }
 async function refreshTasks(manual = false) {
+  if(activeTab==='tasks')renderTasks(taskRows);
   if (tasksLoading || !manual && (document.hidden || activeTab !== 'tasks')) return;
   tasksLoading = true;
   try {
@@ -424,7 +395,7 @@ async function refreshTasks(manual = false) {
     if (payload.schemaVersion !== 1 || !Array.isArray(payload.tasks)) throw new Error('Task record unreadable');
     const ids = new Set();
     const rows = payload.tasks.filter(row => {
-      if (!row || typeof row.id !== 'string' || !row.id || ids.has(row.id) || typeof row.title !== 'string' || !row.title || !taskStates[row.status]) return false;
+      if (recordWorkspace(row)!=='production' || !row || typeof row.id !== 'string' || !row.id || ids.has(row.id) || typeof row.title !== 'string' || !row.title || !taskStates[row.status]) return false;
       ids.add(row.id);
       return true;
     });
@@ -543,6 +514,7 @@ function renderJobs() {
   $('control-jobs').replaceChildren(...(cards.length ? cards : [text('p', 'Your queued images will appear here.', 'history-empty')]));
 }
 async function refreshControls(manual = false) {
+  if(promptStudyTab(activeTab))return;
   if (controls.fetching || !manual && (document.hidden || !['controls', 'gallery'].includes(activeTab))) return;
   controls.fetching = true;
   try {
@@ -629,7 +601,7 @@ function syncSelection() {
   stepButtons.refresh();
   generationField('height').value = generationField('width').value;
   generationField('max_sequence_length').value = '512';
-  for (const button of document.querySelectorAll('[data-choice-field]')) {
+  for (const button of $('parameter-choices').querySelectorAll('[data-choice-field]')) {
     const value = generationField(button.dataset.choiceField).value;
     const selected = button.dataset.choiceValue === 'random' ? !choiceOptions.seed.values.includes(Number(value)) : Number(value) === Number(button.dataset.choiceValue);
     button.setAttribute('aria-pressed', String(selected));
@@ -661,26 +633,16 @@ function selectModel(profile) {
   syncSelection();
 }
 for (const [key, option] of Object.entries(choiceOptions)) {
-  const fieldset = document.createElement('fieldset');
-  fieldset.className = 'choice-field';
-  fieldset.append(text('legend', option.label));
-  const group = document.createElement('div');
-  group.className = 'choice-buttons';
-  for (const value of [...option.values, ...(key === 'seed' ? ['random'] : [])]) {
-    const button = text('button', value === 'random' ? 'New seed ↻' : `${value}${option.suffix || ''}`);
-    button.type = 'button'; button.dataset.choiceField = key; button.dataset.choiceValue = String(value);
-    button.setAttribute('aria-pressed', 'false');
-    button.addEventListener('click', () => {
-      generationField(key).value = value === 'random' ? String(crypto.getRandomValues(new Uint32Array(1))[0] % 4294967276) : String(value);
-      if (key in modelParameters[generationField('profile').value]) modelParameters[generationField('profile').value][key] = Number(generationField(key).value);
-      if (key === 'guidance_scale') modelGuidance[generationField('profile').value] = Number(generationField(key).value);
-      if (key === 'width') modelResolution[generationField('profile').value] = Number(value);
-      if (key === 'steps') modelSteps[generationField('profile').value] = Number(value);
-      syncSelection();
-    });
-    group.append(button);
-  }
-  fieldset.append(group); $('parameter-choices').append(fieldset);
+  if(key==='seed')continue;
+  const choice=createControlChoice({document,key,label:option.label,values:option.values,suffix:option.suffix||'',onChoose:value=>{
+    generationField(key).value=String(value);
+    if(key in modelParameters[generationField('profile').value])modelParameters[generationField('profile').value][key]=Number(value);
+    if(key==='guidance_scale')modelGuidance[generationField('profile').value]=Number(value);
+    if(key==='width')modelResolution[generationField('profile').value]=Number(value);
+    if(key==='steps')modelSteps[generationField('profile').value]=Number(value);
+    syncSelection();
+  }});
+  $('parameter-choices').append(choice.element);
 }
 for (const button of document.querySelectorAll('[data-model]')) button.addEventListener('click', () => selectModel(button.dataset.model));
 for (const button of document.querySelectorAll('[data-preset]')) button.addEventListener('click', () => {
@@ -975,6 +937,7 @@ function renderStreamGrid() {
   for (const key of streamState.ready.keys()) if (!retained.has(key)) streamState.ready.delete(key);
 }
 async function refreshStream() {
+  if(promptStudyTab('stream'))return;
   if (streamState.fetching || document.hidden || activeTab !== 'stream' || $('viewer').open) return;
   streamState.fetching = true;
   try {
@@ -1005,8 +968,15 @@ refreshStream();
 
 let liveWorkbenchMount=null,liveWorkbenchMarkup=null;
 const panelLoaders={
+ qwen:()=>import('./model-chat.js').then(m=>[options=>m.mountModelChat({...options,model:'qwen'}),'']),
+ 'pixtral-chat':()=>import('./model-chat.js').then(m=>[options=>m.mountModelChat({...options,model:'pixtral'}),'']),
+ 'prompt-comparison':()=>import('./prompt-comparison.js').then(m=>[m.mountPromptComparison,'']),
+ archive:()=>import('./archive-gallery.js').then(m=>[m.mountArchiveGallery,'']),
+ 'workbench-controls':()=>import('./study-panel.js').then(m=>[options=>m.mountStudyPanel({...options,kind:'controls'}),'']),
+ 'workbench-tasks':()=>Promise.all([import('./workbench-tasks.js'),import('./workbench-tasks-panel.html?raw')]).then(([m,h])=>[m.mountWorkbenchTasks,h.default]),
+ 'workbench-agents':()=>Promise.all([import('./agents.js'),import('./agents-panel.html?raw')]).then(([m,h])=>[options=>m.mountAgents({...options,workspace:'workbench'}),h.default]),
  research:()=>Promise.all([import('./research.js'),import('./research-panel.html?raw')]).then(([m,h])=>[m.mountResearch,h.default]),
- workbench:()=>Promise.all([import('./workbench.js'),import('./workbench-panel.html?raw')]).then(([component,markup])=>{liveWorkbenchMount=component.mountWorkbench;liveWorkbenchMarkup=markup.default;return [liveWorkbenchMount,liveWorkbenchMarkup];}),
+ workbench:()=>import('./study-panel.js').then(m=>{liveWorkbenchMount=options=>m.mountStudyPanel({...options,kind:'experiment'});return [liveWorkbenchMount,''];}),
  performance:()=>Promise.all([import('./performance.js'),import('./performance-panel.html?raw')]).then(([m,h])=>[m.mountPerformance,h.default]),
  models:()=>Promise.all([import('./models.js'),import('./models-panel.html?raw')]).then(([m,h])=>[m.mountModels,h.default]),
  seers:()=>Promise.all([import('./seers.js'),import('./seers-panel.html?raw')]).then(([m,h])=>[m.mountSeers,h.default]),
@@ -1020,31 +990,52 @@ const panelLoaders={
  protocol:()=>import('./protocol-panel.html?raw').then(h=>[null,h.default]),
 };
 function lazyPanel(name,loader){
- const root=$(name+'-panel');let active=false,disposed=false,pending=null,controller=null;
+ const root=$(name+'-panel');let active=false,disposed=false,pending=null,controller=null,generation=0,failure=null,baseline=null;
+ function clearContent(){if(baseline)for(const child of [...root.childNodes])if(!baseline.has(child))child.remove();baseline=null;failure=null;}
+ function stopController(){const previous=controller;controller=null;try{previous?.destroy();}catch{/* Cleanup continues if a partial mount cannot dispose itself. */}}
+ function failed(ticket){
+  if(disposed||ticket!==generation)return;
+  stopController();clearContent();root.removeAttribute('aria-busy');root.dataset.loadError='true';
+  failure=document.createElement('div');failure.className='panel-load-error';failure.setAttribute('role','alert');
+  const message=document.createElement('p');message.textContent='This panel could not load.';
+  const retry=document.createElement('button');retry.type='button';retry.textContent='Retry';retry.onclick=()=>{if(disposed||!active)return;failure?.remove();failure=null;delete root.dataset.loadError;start();};
+  failure.append(message,retry);root.append(failure);
+ }
+ function mount(ticket,mount,markup){
+  if(disposed||ticket!==generation)return;
+  baseline=new Set(root.childNodes);
+  // Retain containers installed by public navigation, including nested Seers.
+  root.insertAdjacentHTML('afterbegin',markup);
+  controller=mount?mount({root,isActive:()=>active&&!document.hidden}):{setActive(){},destroy(){}};
+  controller.setActive(active);root.removeAttribute('aria-busy');delete root.dataset.loadError;publicNavigation?.update();
+ }
+ function start(){
+  const ticket=++generation;root.setAttribute('aria-busy','true');
+  try{pending=Promise.resolve(loader()).then(([component,markup])=>mount(ticket,component,markup)).catch(()=>failed(ticket)).finally(()=>{if(ticket===generation)pending=null;});}
+  catch{failed(ticket);pending=null;}
+ }
  const proxy={
-  setActive(value){active=value;if(controller){controller.setActive(value);return;}if(!value||pending||disposed)return;
-   root.setAttribute('aria-busy','true');
-   pending=loader().then(([mount,markup])=>{if(disposed)return;
-    // Public navigation may already have attached the nested Seers container.
-    root.insertAdjacentHTML('afterbegin',markup);
-    controller=mount?mount({root,isActive:()=>active&&!document.hidden}):{setActive(){},destroy(){}};
-    controller.setActive(active);root.removeAttribute('aria-busy');delete root.dataset.loadError;publicNavigation?.update();
-   }).catch(()=>{pending=null;root.removeAttribute('aria-busy');root.dataset.loadError='true';});
-  },
-  destroy(){disposed=true;controller?.destroy();},
-  remount(mount,markup){if(!controller||disposed)return;controller.destroy();root.innerHTML=markup;controller=mount({root,isActive:()=>active&&!document.hidden});controller.setActive(active);},
+  setActive(value){if(disposed)return;active=value;if(controller){controller.setActive(value);return;}if(!value||pending||failure)return;start();},
+  destroy(){if(disposed)return;disposed=true;generation++;pending=null;stopController();failure?.remove();clearContent();root.removeAttribute('aria-busy');delete root.dataset.loadError;},
+  remount(component,markup){if(disposed||!controller&&!pending&&!failure)return;const ticket=++generation;pending=null;loader=()=>Promise.resolve([component,markup]);stopController();failure?.remove();clearContent();try{mount(ticket,component,markup);}catch{failed(ticket);}},
  };
  return proxy;
 }
 for(const [name,loader] of Object.entries(panelLoaders))embeddedPanels[name]=lazyPanel(name,loader);
 publicNavigation = mountPublicNavigation({ select: showTab, activeTab: () => activeTab, panels: embeddedPanels });
 workspaceNavigation = mountWorkspaceNavigation({select:showTab,activeTab:()=>activeTab});
+const productionHUD=mountProductionHUD({root:document.getElementById('production-hud')});
+const releaseStudyContext=observeStudy(id=>{const url=new URL(location.href);if(activeTab==='workbench'){if(id==='flux1-prompt-clarity'){const saved=new URLSearchParams();for(const key of ['experiment','method','page'])if(url.searchParams.has(key))saved.set(key,url.searchParams.get(key));if(saved.size)try{localStorage.setItem('imagen:experiment-selection',saved.toString());}catch{}for(const key of ['experiment','study','method','page'])url.searchParams.delete(key);}else{try{const saved=new URLSearchParams(localStorage.getItem('imagen:experiment-selection')||'');for(const [key,value] of saved)url.searchParams.set(key,value);}catch{}}history.replaceState(null,'',url);}showTab(activeTab,false);});
+const releaseProductionStudy=observeProductionStudy(()=>showTab(activeTab,false));
+syncPromptViews();syncLiveTopics();
 for(const [name,panel] of Object.entries(embeddedPanels))panel.setActive(activeTab===name||name==='seers'&&activeTab==='models'&&document.documentElement.dataset.studioMode==='public');
 if(import.meta.hot)import.meta.hot.accept(['./workbench.js','./workbench-panel.html?raw'],([component,markup])=>{
- if(component)liveWorkbenchMount=component.mountWorkbench;if(markup)liveWorkbenchMarkup=markup.default;
- if(liveWorkbenchMount&&liveWorkbenchMarkup)embeddedPanels.workbench.remount(liveWorkbenchMount,liveWorkbenchMarkup);
+ if(liveWorkbenchMount)embeddedPanels.workbench.remount(liveWorkbenchMount,'');
 });
 if (import.meta.hot) import.meta.hot.dispose(() => {
+  productionHUD.destroy();
+  productionAlignment.destroy();comparisonPages.destroy();
+  releaseStudyContext();releaseProductionStudy();for(const entry of promptViews.values())entry.component.destroy();
   workspaceNavigation.destroy();
   publicNavigation.destroy();
   stepButtons.destroy();
@@ -1054,6 +1045,7 @@ if (import.meta.hot) import.meta.hot.dispose(() => {
   clearInterval(taskRuntimeTimer);
 });
 
+const productionAlignment = mountProductionAlignment();
 window.dispatchEvent(new Event('artwork-ready'));
 
 function updateWinnerChoices(observation){

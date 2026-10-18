@@ -1,7 +1,8 @@
-export const studioTabs=['stream','gallery','controls','tasks','performance','models','seers','worlds','workbench','research','metrics','winners','agents','daemons','rules','protocol','monitor'];
+export const studioTabs=['stream','gallery','controls','tasks','performance','models','seers','worlds','workbench','research','metrics','winners','agents','daemons','rules','protocol','monitor','workbench-controls','workbench-tasks','workbench-agents','archive','qwen','pixtral-chat','prompt-comparison'];
 export const studioPaths=Object.fromEntries(studioTabs.map(tab=>[tab,tab==='gallery'?'/compare':'/'+tab]));
+Object.assign(studioPaths,{'workbench-controls':'/workbench/controls','workbench-tasks':'/workbench/tasks','workbench-agents':'/workbench/agents','archive':'/gallery/studio'});
 const routeTabs=Object.fromEntries(Object.entries(studioPaths).map(([tab,path])=>[path,tab]));
-Object.assign(routeTabs,{'/gallery':'gallery','/collections':'winners','/active':'stream','/metrics.html':'metrics','/monitor.html':'monitor'});
+Object.assign(routeTabs,{'/collections':'winners','/active':'stream','/metrics.html':'metrics','/monitor.html':'monitor'});
 export function studioTab(value){
  const url=new URL(value,'http://localhost'),path=url.pathname.replace(/\/$/,'')||'/';
  if(routeTabs[path])return routeTabs[path];

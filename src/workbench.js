@@ -1,13 +1,16 @@
 import './workbench.css';
 import './workbench-results.css';
+import fittingMarkup from './workbench-fitting-controls.html?raw';
+import {setFittingSelection} from './workbench-selection.js';
 import resultsMarkup from './workbench-results.html?raw';
 import { mountWorkbenchResults } from './workbench-results.js';
 import { mountWorkbenchControls } from './workbench-controls.js';
 export function mountWorkbench({root,isActive=()=>true}){
  const $=id=>root.querySelector('#wb-'+id);
  $('output-panel').innerHTML=resultsMarkup;
+ root.querySelector('.wb-control-content').innerHTML=fittingMarkup;
  const controls=mountWorkbenchControls({root,isActive:()=>false});
- const results=mountWorkbenchResults({root:$('output-panel'),isActive,onMethodChange:method=>controls.setMethod(method),onStudyChange:study=>controls.setStudy(study)});
+ const results=mountWorkbenchResults({root:$('output-panel'),isActive,onMethodChange:method=>{controls.setMethod(method);setFittingSelection({method});},onStudyChange:study=>{controls.setStudy(study);if(study)setFittingSelection({studyId:study.id});}});
  let active=isActive(),open=!matchMedia('(max-width:950px)').matches;
  try{const saved=sessionStorage.getItem('imagen:workbench-controls');if(saved!==null)open=saved==='true';}catch{}
  function update(){

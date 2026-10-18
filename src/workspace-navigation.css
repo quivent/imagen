@@ -1,1 +1,29 @@
-#workspace-navigation{display:flex;gap:0;border-bottom:1px solid #414b4c;margin:0 0 14px}#workspace-navigation button{font:20px Georgia,serif;color:#adb2ac;background:transparent;border:0;border-bottom:2px solid transparent;border-radius:0;padding:10px 24px 13px;min-height:48px}#workspace-navigation button[aria-pressed=true]{color:#e0bb83;border-bottom-color:#e0bb83}#workspace-navigation button:focus-visible{outline:2px solid #e0bb83;outline-offset:-3px}#workspace-navigation[hidden],.studio-tab-buttons [data-workspace-hidden=true]{display:none!important}html:not([data-studio-mode=studio]) #workspace-navigation,html:not([data-studio-mode=studio]) #tab-research{display:none}html[data-studio-mode=studio][data-workspace=production] :is(#tab-workbench,#tab-research,#tab-seers,#tab-tasks,#tab-performance,#tab-metrics,#tab-agents,#tab-daemons,#tab-rules,#tab-protocol,#tab-monitor){display:none}html[data-studio-mode=studio][data-workspace=workbench] #tab-controls{display:none}
+#workspace-navigation{display:flex;gap:0;border-bottom:1px solid #414b4c;margin:0 0 14px}#workspace-navigation button{font:20px Georgia,serif;color:#adb2ac;background:transparent;border:0;border-bottom:2px solid transparent;border-radius:0;padding:10px 24px 13px;min-height:48px}#workspace-navigation button[aria-pressed=true]{color:#e0bb83;border-bottom-color:#e0bb83}#workspace-navigation button:focus-visible{outline:2px solid #e0bb83;outline-offset:-3px}#workspace-navigation[hidden],.studio-tab-buttons [data-workspace-hidden=true]{display:none!important}html:not([data-studio-mode=studio]) #workspace-navigation,html:not([data-studio-mode=studio]) :is(#tab-research,#tab-workbench-controls,#tab-workbench-tasks,#tab-workbench-agents){display:none}html[data-studio-mode=studio][data-workspace=production] :is(#tab-workbench,#tab-research,#tab-workbench-controls,#tab-workbench-tasks,#tab-workbench-agents){display:none}html[data-studio-mode=studio][data-workspace=workbench] :is(#tab-controls,#tab-tasks,#tab-models,#tab-seers,#tab-winners,#tab-worlds,#tab-agents,#tab-performance,#tab-metrics,#tab-daemons,#tab-protocol,#tab-rules,#tab-monitor){display:none}
+#study-navigation{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 20px}#study-navigation button{font:14px system-ui,sans-serif;padding:10px 16px;border:1px solid #414b4c;border-radius:8px;background:#1b2325;color:#adb2ac;cursor:pointer}#study-navigation [aria-pressed=true]{color:#141719;background:#b8ceb9;border-color:#b8ceb9}#study-navigation[hidden],html:not([data-studio-mode=studio]) #study-navigation{display:none!important}
+html[data-studio-mode=studio] :is(.studio-tab-buttons[hidden],.studio-tab-buttons #tab-archive[data-workspace-hidden=true]){display:none!important}html:not([data-studio-mode=studio]) #tab-archive{display:none}
+html[data-workspace=gallery] .masthead .header-actions{display:none}
+html[data-studio-mode=studio][data-workspace=gallery] .studio-tab-buttons{display:none!important}
+html[data-studio-mode=studio][data-workspace=gallery] .studio-tabs{display:none!important}
+.studio-context-navigation{display:flex;align-items:center;justify-content:space-between;gap:8px 20px;flex-wrap:wrap;margin:0 0 12px}
+html[data-studio-mode=studio] .work-mode .masthead{min-height:56px;padding:6px 3vw}
+html[data-studio-mode=studio] .work-mode .brand{min-height:40px}
+html[data-studio-mode=studio] .masthead :is(.studio-door-trigger,#show-details){min-height:40px;height:40px}
+html[data-studio-mode=studio] .work-mode main{padding-top:12px}
+html[data-studio-mode=studio] #workspace-navigation{margin:0;border:0}
+html[data-studio-mode=studio] #workspace-navigation button{min-height:40px;padding:6px 15px;font-size:17px}
+html[data-studio-mode=studio] #study-navigation{margin:0;gap:6px}
+html[data-studio-mode=studio] #study-navigation button{min-height:34px;padding:6px 11px;font-size:12px}
+.studio-tab-buttons>.studio-workflow-tabs,.studio-tab-buttons>.studio-system-tabs{display:contents}
+.studio-tab-buttons>[hidden]{display:none!important}
+html[data-studio-mode=studio] .work-mode .studio-tabs{margin:0 0 12px;padding:4px}
+html[data-studio-mode=studio] .studio-tab-buttons{display:flex;flex-wrap:nowrap;align-items:center;gap:4px;overflow-x:auto;overflow-y:hidden;max-width:100%;overscroll-behavior-inline:contain;scrollbar-width:thin}
+html[data-studio-mode=studio] .studio-tabs .studio-workflow-tabs button{min-height:36px;min-width:max-content;padding:0 9px;font-size:12px;flex:1 0 auto}
+html[data-studio-mode=studio] .studio-tabs .studio-system-tabs{border:0;padding:0}
+html[data-studio-mode=studio] .studio-tabs .studio-system-tabs button{min-height:36px;min-width:max-content;padding:0 9px;font-size:12px;flex:1 0 auto}
+html:not([data-studio-mode=studio]) .studio-context-navigation{display:none}
+@media(max-width:650px){.studio-context-navigation{gap:7px;margin-bottom:10px}html[data-studio-mode=studio] #workspace-navigation button{padding:6px 12px}html[data-studio-mode=studio] .studio-tabs .studio-workflow-tabs button{padding:0 10px!important}html[data-studio-mode=studio] .studio-tabs .studio-system-tabs button{padding:0 9px!important}}
+#tab-monitor{display:none!important}
+
+html[data-studio-mode=studio][data-workspace=worlds] :is(.studio-tabs,#study-navigation){display:none!important}
+html[data-studio-mode=studio][data-workspace=production] #tab-worlds{display:none!important}
+@media(min-width:651px) and (max-width:1150px){html[data-studio-mode=studio] .studio-tabs :is(.studio-workflow-tabs,.studio-system-tabs) button{font-size:11px;padding:0 6px}}

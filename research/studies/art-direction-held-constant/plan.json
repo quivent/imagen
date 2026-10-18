@@ -2,24 +2,27 @@
   "schema": 1,
   "id": "ADHC-001",
   "title": "Art Direction, Held Constant",
-  "status": "planned",
+  "status": "continuous-dual-gpu-production",
   "researchNote": "WHERE-THE-IMAGE-QUALITY-COMES-FROM",
   "design": {
-    "briefs": 3,
+    "scenes": 150,
     "promptConditions": [
-      "short",
-      "directed"
+      "production",
+      "precision"
     ],
-    "repetitions": 2,
-    "plannedImages": 36,
-    "unit": "workflow \u00d7 brief \u00d7 condition \u00d7 repetition",
-    "review": "blinded paired human review in Imagen; ties allowed"
+    "repetitions": 1,
+    "plannedImages": 900,
+    "initialWorkflowPlannedImages": 300,
+    "startingImages": 2,
+    "unit": "workflow × production scene × prompt condition × repetition",
+    "review": "blinded paired human review in Imagen; ties allowed",
+    "scopePolicy": "Jay authorized the FLUX1 scene flow to continue through the frozen production pool on 18 October 2026. No other model workflow is scheduled."
   },
   "requestedOutput": {
     "width": 1024,
     "height": 1024,
     "transparentBackground": false,
-    "actualDimensionsPolicy": "Validate originals; separate mismatched dimensions, never silently rescale or regenerate."
+    "actualDimensionsPolicy": "Freeze actual output dimensions before execution and hold them equal within pairs. Keep existing dimension prose unchanged in both conditions; resolve wrapper differences equally."
   },
   "workflows": [
     {
@@ -41,7 +44,35 @@
       "settingsPolicy": "Historical profile ID; record actual FP8/NF4 encoder and transformer precision rather than infer them from its name."
     }
   ],
-  "briefs": [
+  "execution": {
+    "state": ".runtime/research/art-direction-held-constant/factory",
+    "enqueueNow": false,
+    "generateNow": false,
+    "concurrency": 2,
+    "scheduling": "One GPU; production then precision for the same scene and seed, followed by the next scene. No condition batches.",
+    "firstReview": "Reviews are optional and never stop generation.",
+    "settingsPolicy": "Freeze one runtime settings profile before starting; identical model, dimensions, seed, steps, guidance, precision and conditioning limit within each pair. Do not inherit the obsolete single-scene pilot settings implicitly.",
+    "draftsReady": true,
+    "gpuReady": true,
+    "notes": "Two persistent FLUX1 worker lanes run disjoint scenes through one scheduler implementation and shared reservations. Each scene’s production and precision conditions stay serial on the same GPU. Repeat with new paired seeds; neither app closure nor reviews stop generation.",
+    "firstPackage": "21bf9b28502171330db5f6a522fca521b7ebee1027e576482ac4e0598e4f9490",
+    "frozenFirstPairSettings": {
+      "width": 512,
+      "height": 512,
+      "steps": 28,
+      "guidance_scale": 3.5,
+      "max_sequence_length": 512,
+      "seed": 42
+    },
+    "volume": "V.56453901 mounted at /workspace; verified live before execution",
+    "continuous": true,
+    "repeatPasses": true,
+    "imagesPerWorker": 1,
+    "workerLanes": 2
+  },
+  "revision": 2,
+  "corpus": "corpus.json",
+  "archivedPilotBriefs": [
     {
       "id": "oasis",
       "name": "Draa Valley oasis",
@@ -61,11 +92,12 @@
       "directed": "Use case: application icon for Imagen, an artist studio that turns images into explorable worlds. Center one luminous miniature landscape emerging from an ivory geometric picture frame into shallow three-dimensional terraces. Use a strong silhouette that remains readable at small sizes, restrained ochre and sage terrain, a small warm sun, tactile sculptural surfaces and precise edges. Place it on an opaque midnight-charcoal rounded-square tile with generous safe margin. Show only the icon itself, without a surrounding desktop or mockup. No words, letters, watermark, extra symbols or tiny decorative clutter."
     }
   ],
-  "execution": {
-    "state": ".runtime/research/art-direction-held-constant/factory",
-    "enqueueNow": false,
-    "runner": "tools/artwork/builtin_runner.js",
-    "protocol": "PROTOCOL.md",
-    "notes": "No one-command complete-study launcher or automatic Compare import is asserted."
+  "initialWorkflow": "flux1",
+  "additionalWorkflows": "builtin-openai and flux2 remain comparison candidates; do not schedule them automatically.",
+  "promptPolicy": {
+    "production": "Exact catalog prompt bytes, including existing style wording and dimension requests.",
+    "precision": "Draft from the same production scene and intent. Preserve content, style, exclusions and requested framing; make relationships and instructions clearer. No new subjects, visual enhancements or hidden suffixes.",
+    "drafter": "Imagen assistant; preserve each final rewrite alongside its production source before generation.",
+    "originalAuthor": "Not established; do not attribute the source corpus to a model without evidence."
   }
 }

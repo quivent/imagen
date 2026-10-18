@@ -38,12 +38,13 @@ try:
     # cannot be lost. Existing resident GPU services remain untouched.
     if p.get('wait'):
         match = re.fullmatch(r'/jobs/([A-Za-z0-9_-]{1,128})', p['path'])
-        profile = {18761: 'flux1-dev', 18762: 'flux2-dev-nf4'}.get(p['port'])
+        profile = {18761: 'flux1-dev', 18763: 'flux1-dev', 18762: 'flux2-dev-nf4'}.get(p['port'])
         if not match or not profile or p['method'] != 'GET':
             raise ValueError('Invalid completion wait')
         libc = ctypes.CDLL(None, use_errno=True)
         descriptor = libc.inotify_init1(os.O_CLOEXEC | os.O_NONBLOCK)
-        directory = ('/workspace/artwork/jobs/' + profile + '/' + match[1]).encode()
+        worker_root = '/workspace/artwork-flux1-gpu1' if p['port'] == 18763 else '/workspace/artwork'
+        directory = (worker_root + '/jobs/' + profile + '/' + match[1]).encode()
         if descriptor < 0 or libc.inotify_add_watch(descriptor, directory, 0x00000008 | 0x00000080) < 0:
             raise OSError('Completion watch unavailable')
     try:
@@ -215,6 +216,12 @@ def run(packet):
     profile = spec.get('model')
     if profile not in PROFILES:
         raise AdapterError('Choose model flux1-dev or flux2-dev-nf4; no request was sent')
+    worker_port = PROFILES[profile]
+    if profile == 'flux1-dev':
+        configured = os.environ.get('ARTWORK_FLUX1_PORT', '18761')
+        if configured not in ('18761', '18763'):
+            raise AdapterError('ARTWORK_FLUX1_PORT must be 18761 or 18763; no request was sent')
+        worker_port = int(configured)
     host = os.environ.get('ARTWORK_SSH_HOST', '')
     if not re.fullmatch(r'(?:[A-Za-z0-9_][A-Za-z0-9_.-]*@)?[A-Za-z0-9][A-Za-z0-9.-]*', host):
         raise AdapterError('ARTWORK_SSH_HOST must be a hostname with an optional SSH user')
@@ -229,20 +236,21 @@ def run(packet):
         raise AdapterError('Factory outputDirectory must be an absolute path')
     output = Path(output).resolve()
     output.mkdir(parents=True, exist_ok=True)
-    result = request(host, ssh_port, PROFILES[profile], 'POST', '/jobs',
+    result = request(host, ssh_port, worker_port, 'POST', '/jobs',
                      {'id': job, 'spec': spec}, deadline)
     while result.get('status') != 'done':
         if result.get('status') in ('failed', 'uncertain'):
             raise AdapterError('Remote job is %s; reconcile the same ID' % result['status'])
         if result.get('status') not in ('queued', 'running', 'loading'):
             raise AdapterError('Remote job has an unknown status; reconcile the same ID')
-        result = request(host, ssh_port, PROFILES[profile], 'GET', '/jobs/' + job,
+        result = request(host, ssh_port, worker_port, 'GET', '/jobs/' + job,
                          None, deadline, wait=True)
     receipt_observed_at = time.time()
     receipt = result.get('receipt')
     if not isinstance(receipt, dict):
         raise AdapterError('Completed remote job has no receipt')
-    source = '/workspace/artwork/jobs/%s/%s/result.png' % (profile, job)
+    worker_root = '/workspace/artwork-flux1-gpu1' if worker_port == 18763 else '/workspace/artwork'
+    source = '%s/jobs/%s/%s/result.png' % (worker_root, profile, job)
     if receipt.get('source') != source:
         raise AdapterError('Remote image path does not match this job and model')
     expected_hash = receipt.get('sha256', '')
@@ -252,7 +260,7 @@ def run(packet):
     download_started_at = time.time()
     download(host, ssh_port, source, local_source, expected_hash, deadline)
     complete = {'source': str(local_source), 'generation': receipt,
-                'remote': {'job': job, 'profile': profile, 'host': host, 'port': ssh_port},
+                'remote': {'job': job, 'profile': profile, 'host': host, 'port': ssh_port, 'workerPort': worker_port},
                 'delivery': {'receiptObservedAt': receipt_observed_at,
                              'downloadStartedAt': download_started_at,
                              'downloadFinishedAt': time.time(),

@@ -40,6 +40,7 @@ class ReconcileTests(unittest.TestCase):
         self.tmp = tempfile.TemporaryDirectory(); self.addCleanup(self.tmp.cleanup)
         m.ROOT = Path(self.tmp.name) / 'r2'; m.ROOT.mkdir()
         m.JOBS = (Path(self.tmp.name) / 'jobs').resolve()
+        m.EXTRA_JOBS = (Path(self.tmp.name) / 'gpu1-jobs',)
         self.ident = 'flux1-dev/ordinary-existing-job'
         self.path = m.JOBS / self.ident / 'result.png'; self.path.parent.mkdir(parents=True)
         self.path.write_bytes(b'opaque archived byte fixture, not an image')
@@ -54,6 +55,19 @@ class ReconcileTests(unittest.TestCase):
     def retry(self):
         self.r.entries[self.ident]['nextAttemptAt'] = 0
         return self.r.cycle()
+    def test_second_lane_uses_same_logical_profile_and_single_index(self):
+        import os
+        image=m.EXTRA_JOBS[0]/'flux1-dev/gpu1-unique-job/result.png';image.parent.mkdir(parents=True)
+        image.write_bytes(b'second opaque fixture')
+        digest=m.upstream.sha256_file(image)
+        (image.parent/'receipt.json').write_text(json.dumps({'id':image.parent.name,'profile':'flux1-dev','source':str(image),'sha256':digest}))
+        (image.parent/'job.json').write_text(json.dumps({'status':'done','finished':time.time()-100,'receipt':{'sha256':digest}}))
+        os.utime(image,(time.time()-10,time.time()-10))
+        status=self.r.cycle()
+        self.assertEqual(status['completedJobs'],2);self.assertEqual(status['pendingJobs'],0)
+        self.assertIn('flux1-dev/gpu1-unique-job',self.index.jobs)
+        self.assertEqual(self.index.jobs['flux1-dev/gpu1-unique-job']['profile'],'flux1-dev')
+        self.assertIn(m.PREFIX+'flux1-dev/gpu1-unique-job/result.png',self.s3.data)
     def test_partial_upload_retries_without_replacing_image(self):
         self.s3.fail_key = self.receipt_key
         status = self.r.cycle(); self.assertEqual(status['pendingJobs'],1); self.assertEqual(status['status'],'degraded')

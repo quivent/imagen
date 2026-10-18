@@ -7,7 +7,7 @@ export function mountStreamPagination({ profiles, jobs, render }) {
     if (page.busy) return;
     page.busy = true; update(profile);
     try {
-      const params = new URLSearchParams({ profile, limit: '18' });
+      const params = new URLSearchParams({ profile, limit: '18', collection:'legacy-production' });
       if (cursor) params.set('cursor', cursor);
       const response = await fetch('/api/gallery?' + params, { signal: AbortSignal.timeout(20000), cache: 'no-store' });
       if (!response.ok) throw new Error();

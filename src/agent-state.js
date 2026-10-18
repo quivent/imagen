@@ -23,13 +23,13 @@ export function agentView(snapshot, connected = true) {
     return { ...agent, status, currentTaskId: status === 'running' && typeof agent.currentTaskId === 'string' && agent.currentTaskId ? agent.currentTaskId : null };
   };
   const agents = workers.map(normalize);
-  const coordinator = normalize({ id: '/root', name: 'Coordinator', status: section?.coordinator, task: section?.coordinatorTask, currentTaskId: section?.coordinatorCurrentTaskId, startedAt: section?.coordinatorStartedAt, lastTransitionAt: section?.coordinatorLastTransitionAt });
+  const coordinator = normalize({ id: '/root', name: 'Coordinator', workspace: section?.coordinatorWorkspace, status: section?.coordinator, task: section?.coordinatorTask, currentTaskId: section?.coordinatorCurrentTaskId, startedAt: section?.coordinatorStartedAt, lastTransitionAt: section?.coordinatorLastTransitionAt });
   return { fresh, agents, coordinator, running: agents.filter(agent => agent.status === 'running').length, available: agents.filter(agent => agent.status === 'available').length };
 }
 const ownerId = owner => typeof owner === 'string' ? (owner === 'root' || owner === '/root' ? '/root' : owner.startsWith('/root/') ? owner : '/root/' + owner) : null;
 export function taskAssignment(view, task) {
   if (!view.fresh || task.status && task.status !== 'working') return null;
-  return [...view.agents, view.coordinator].find(agent => agent.status === 'running' && agent.currentTaskId === task.id && (!task.owner || agent.id === ownerId(task.owner))) || null;
+  return [...view.agents, view.coordinator].find(agent => agent?.status === 'running' && agent.currentTaskId === task.id && (!task.owner || agent.id === ownerId(task.owner))) || null;
 }
 export function dispatchView(snapshot, connected = true) {
   const rule = snapshot?.enforcement;

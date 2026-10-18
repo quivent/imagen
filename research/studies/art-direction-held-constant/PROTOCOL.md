@@ -1,128 +1,58 @@
 # Art Direction, Held Constant
 
-Study plan · Planned · ADHC-001
+ADHC-001 · Revision 2 · Production parity · First pair ready for review
 
-Related research note: **Where the Image Quality Comes From**.
+## Question
 
-## Question and hypothesis
+Does precision in prompt drafting improve the artwork when the scene and image-generation setup are held constant? Begin with our existing production formula, even though that formula is not Jay's preferred long-term approach.
 
-How much does deliberate art direction improve our image-generation workflows,
-and does that improvement transfer to self-hosted FLUX?
+This revision replaces the earlier three-brief, 36-image proposal. That proposal's sample texts remain in `plan.json` as `archivedPilotBriefs`; they are not the current workload. The separate FPC-001 single-scene, three-seed draft is also not this study.
 
-Primary hypothesis: a structured art-directed brief improves judged adherence
-and visual quality over the short-brief condition within each FLUX profile.
-Secondary question: how do the three workflows compare when supplied the same
-frozen brief? Because the built-in tool's underlying model and internal prompt
-processing are not exposed, this is a workflow-level comparison, not a clean
-ablation of model weights or architecture.
+## Where the thousands came from
 
-## Pilot design
+The preserved production refiller reads 150 prompts from `deployment/controller/docs/artwork/geographic-scenes.json`. It cycles through them for FLUX1 and FLUX2, then repeats with a new seed on each pass. Thousands of generated images therefore do not establish thousands of independently drafted prompts. The catalog does not identify the original drafting model or author; that provenance remains unknown.
 
-- Three briefs: a Draa Valley oasis, a restrained architectural courtyard, and
-  an opaque Imagen app icon. These sample our actual landscape, architecture
-  and design uses without requiring unsupported transparency from FLUX.
-- Two prompt conditions: the short brief and one frozen structured brief.
-- Three workflows: built-in OpenAI image generation, self-hosted FLUX1-dev,
-  and the currently installed FLUX2 profile. Record actual model and encoder
-  precision; the historical NF4 profile name alone does not establish precision.
-- Two independent repetitions per cell: 36 planned images in total.
-- Write each structured prompt before viewing any output. Supply identical
-  prompt bytes to all workflows within its condition; do not give one provider
-  extra art direction, references or unrecorded edits.
+`corpus.json` freezes all 150 source scenes, their exact production prompts, the catalog file hash and individual prompt hashes. The first precision rewrite is saved as an assistant-authored draft; the remaining 149 are explicitly undrafted. Never substitute the three example briefs for this source pool.
 
-The brief expansion is the intervention, so it adds explicit visual decisions.
-Both conditions retain the same central subject and intended use. Evaluation
-uses the original core brief for common requirements and records the added
-constraints separately, rather than rewarding verbosity by definition.
+## Conditions
 
-## Instructions before generation
+- **Production:** the exact saved production prompt, including the original style formula, exclusions and dimension prose.
+- **Precision:** an assistant-drafted rewrite of that same scene. Clarify composition, spatial relationships, materials, light and instructions already present. Preserve the scene's content, intended style, exclusions and framing. Do not add subjects or silently improve the artistic concept.
 
-1. Review and freeze `plan.json`. It contains all six prompt texts and the design.
-2. Capture each worker's actual checkpoint, encoder type, precision, steps,
-   guidance, conditioning limit and output dimensions. Reconcile worker readiness
-   and available memory; do not alter production settings to run the study.
-3. Request 1024×1024 for the matched-resolution cohort if all workflows support it.
-   Record actual output dimensions. A prompt request is not a size guarantee in
-   the built-in tool. Keep mismatches as a separate cohort; never silently resize
-   an original or regenerate it merely because processing rejected its size.
-4. Freeze justified profile-specific settings before the batch. Equal step counts
-   are not equal computation across models; seeds are reproducibility controls
-   within a workflow, not matched noise between different generators.
-5. Check conditioning length against each profile. If a structured brief is
-   truncated, record the effective input and treat that cell as a different
-   conditioning condition. Do not assume a longer prompt reached the model.
-   Audit complete outgoing payloads too: the captured built-in packet appends an
-   output-dimensions sentence. Normalize that noncreative suffix across the
-   workflows before execution, or explicitly report the wrapper difference.
-   Equal stored brief hashes alone do not establish equal outgoing prompts.
-6. Generate the execution order and anonymous review IDs. Keep paired conditions
-   distributed across order so warm-up and changing service conditions are visible.
-7. Use a new explicit study state under `.runtime/research/art-direction-held-constant`.
-   Queue only these reviewed study requests; keep existing production jobs isolated.
+Freeze the precision draft beside its source before generating either condition. Prompt drafting is the intervention. Save its author and final text; do not silently change it in response to output.
 
-## Execution tools
+Both prompts must receive the same noncreative runner suffix, if any. Preserve existing dimension wording consistently in both conditions and use identical actual output dimensions. Correcting an aspect-ratio conflict in only the precision condition would confound that comparison.
 
-Use `tools/artwork/artwork.py --state STUDY_STATE ...` for durable factory jobs.
-For the built-in lane, use the functions.exec orchestration in
-`tools/artwork/builtin_runner.js`, after setting functions.exec's
-`store('artwork-runner-state', '/absolute/Imagen/.runtime/research/art-direction-held-constant/factory')`
-to that same study state. The runner passes it explicitly on every CLI operation;
-replace the checkout prefix with the actual path.
-Do not run the orchestration in Node: its tools exist in the agent environment.
+## One GPU, alternating conditions
 
-Use existing authorized FLUX adapters with a dedicated study queue and explicit
-model filter when their private workers are ready. Do not start a second consumer
-against the production queue, change an existing daemon's state root, or create
-another R2 index writer. A command adapter must save the original and its receipt
-inside its assigned work directory before completing the factory request.
+Start with FLUX.1 dev on one available GPU:
 
-The runner and queue support claims, heartbeats, idempotent requests, receipts,
-originals and review. This plan does not claim that a one-command 36-image study
-launcher or automatic Compare import has already been implemented. Integrate
-those handoffs against the preserved factory IDs when the pilot is scheduled.
+1. Select one production scene and freeze its precision counterpart.
+2. Freeze the shared model/runtime settings and paired seed.
+3. Generate its production condition, then its precision condition, serially.
+4. Present that pair in Imagen for Jay to compare. Pause after this first pair.
+5. When continuing, move to the next scene and repeat the pair sequence. Do not generate all production conditions first or batch all precision conditions together.
 
-## Record each attempt
+The 150 scenes are the source pool, not an instruction to enqueue everything now. One pass through FLUX1 would produce 300 images. The built-in OpenAI and FLUX2 workflows remain comparison candidates; running all three would produce 900 images at one repetition. Neither additional workflow nor the full pool is automatically scheduled.
 
-Keep study/cell/repetition IDs, short and effective prompts and their hashes,
-workflow identity, known model revision or explicitly unknown identity, actual
-settings, references, requested and actual dimensions, original SHA256, queue
-wait, provider generation duration when known, total wall time, processing time,
-measured cost when known, and completion/uncertainty status. Missing cost or
-provider-internal timing remains unknown. Never infer either from elapsed time.
+## Parity
 
-No automatic best-of selection, enhancement, post-generation editing or image
-discarding in the primary cohort. Preserve failed and uncertain attempts as
-outcomes. Retry only after reconciling whether a source and receipt already exist.
+Within every FLUX pair, hold checkpoint, transformer and encoder precision, output dimensions, seed, steps, guidance and conditioning limits constant. Freeze the settings actually selected for the available GPU before execution; do not silently reuse the unrelated FPC-001 pilot's 512-square settings.
 
-## Review in Imagen
+Check effective conditioning and complete outgoing prompts. If either caption is truncated, expose that difference rather than assuming both reached the model intact. Seeds match within FLUX pairs; they do not imply matched noise across unrelated generators.
 
-Use Compare for blinded, randomized pairs. Jay is the primary visual reviewer;
-agents do not view images. The jurors may provide separately recorded feedback
-when explicitly included in the study execution, but do not substitute their
-opinions for the blinded preference outcome.
+Cross-workflow comparisons must use the same frozen prompt conditions and actual dimensions where supported. OpenAI's hidden prompt processing makes that a workflow comparison. Do not claim a clean comparison of model weights alone.
 
-Rate core-brief adherence, composition, spatial coherence, material/light
-plausibility, distinctive details and overall preference. Permit ties and
-record notes. Review at matched display size while keeping access to originals.
-Record raw-versus-directed wins within each workflow first, then cross-workflow
-comparisons under the frozen supplied brief. With six images per prompt condition
-per workflow, results are exploratory; report counts and paired changes rather
-than claiming a general winner.
+## Review and operation
 
-## Separate throughput experiment
+Jay compares blinded left/right results; labels can be revealed after the choice. Permit ties and neither, and keep comments brief. Agents do not view images. No automatic juror calls or creative rewrite loop is implied.
 
-After the quality pilot, compare serial versus up-to-six-call scheduling using
-a separate declared workload and provider limits. Report throughput, queue wait,
-per-image latency and recovery independently. A concurrency improvement is not
-an image-quality improvement. Do not mix additional throughput-study images into
-the primary pilot without recording their distinct purpose.
+Keep minimal job bookkeeping in the background to prevent duplicate submissions after interruption. Do not make routine hashes, receipts or execution records a user-facing ceremony. Stop on an uncertain submission rather than generating it again.
 
-## Completion and next decision
+Reuse the existing single R2 uploader. Never create a second index writer, alter production queues, start paid hardware or schedule the full corpus merely by opening this study.
 
-Produce the immutable attempt ledger, original/receipt inventory, blinded review
-record and a short findings document. State which art-direction improvements
-transfer to FLUX and which remain unresolved. Consider a larger follow-up only
-after reviewing the pilot's actual variation and failure modes.
+## Implementation and current readiness
 
-Current status: planned. No requests have been enqueued, no images generated,
-and no workers or remote services started by documenting this study.
+The source pool and revised design are recorded in `corpus.json` and `plan.json`. All 150 production prompt hashes have been checked against the preserved catalog. The first precision draft is saved and its two-image pair has been generated and imported automatically into Stream and Compare. It is waiting for Jay’s review. Remaining scenes are not scheduled. The first pair explicitly uses the live native profile’s 512 × 512 output, 28 steps, guidance 3.5, conditioning limit 512 and seed 42 for both conditions. Volume V.56453901 was verified mounted at /workspace before generation.
+
+`tools/artwork/prompt_clarity.py` now supports schema-2 corpus packages through `prepare-corpus`, with explicit settings supplied as JSON on stdin. The shared `tools/artwork/study_controller.py` runs these packages with a one-pair budget, reusing the existing isolated factory and native command adapter. Older FPC-001 packages remain separate and unchanged. The built-in runner remains available at `tools/artwork/builtin_runner.js` for a separately scheduled reference lane.

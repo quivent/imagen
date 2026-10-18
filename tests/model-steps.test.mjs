@@ -5,8 +5,8 @@ import vm from 'node:vm';
 
 test('step presets update only the selected model and survive selection synchronization', async () => {
   const source = await readFile(new URL('../src/app.js', import.meta.url), 'utf8');
-  const start = source.indexOf("      generationField(key).value = value === 'random'");
-  const end = source.indexOf('\n    });', start);
+  const start = source.indexOf('    generationField(key).value=String(value);');
+  const end = source.indexOf('\n  }});', start);
   assert.ok(start > 0 && end > start);
   const fields = { profile: { value: 'flux1-dev' }, steps: { value: '28' } };
   const modelSteps = { 'flux1-dev': 28, 'flux2-dev-nf4': 50 };

@@ -3,12 +3,14 @@ const timestamp = row => typeof row.created === 'number' ? row.created : Date.pa
 const identity = row => `${row.profile}:${row.id}`;
 const compare = (a, b) => timestamp(b) - timestamp(a) || identity(b).localeCompare(identity(a));
 export function galleryPage(collection, params) {
+  const selectedCollection = params.get('collection') || 'all';
+  if (!['all','production-precision','legacy-production'].includes(selectedCollection)) throw new Error('Invalid collection');
   const profile = params.get('profile');
   if (profile && !['flux1-dev', 'flux2-dev-nf4'].includes(profile)) throw new Error('Invalid profile');
   const rawLimit = params.get('limit');
   const limit = rawLimit === null ? 36 : Number(rawLimit);
   if (!Number.isInteger(limit) || limit < 1 || limit > 100) throw new Error('Invalid limit');
-  const rows = collection.jobs.filter(row => !profile || row.profile === profile).sort(compare);
+  const rows = collection.jobs.filter(row => (!profile || row.profile === profile) && (selectedCollection === 'all' || selectedCollection === 'production-precision'?(selectedCollection==='all'||typeof row.scene==='string'&&row.scene.startsWith('adhc-')):!(typeof row.scene==='string'&&row.scene.startsWith('adhc-')))).sort(compare);
   let cursor;
   if (params.has('cursor')) {
     try {

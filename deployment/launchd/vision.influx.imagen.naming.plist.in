@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><dict>
+<key>Label</key><string>vision.influx.imagen.naming</string>
+<key>ProgramArguments</key><array><string>{{PYTHON}}</string><string>-B</string><string>{{REPO}}/scripts/image_names_daemon.py</string><string>run</string><string>--base</string><string>{{BASE}}</string><string>--interval</string><string>{{INTERVAL}}</string><string>--flux2-interval</string><string>{{FLUX2_INTERVAL}}</string></array>
+<key>WorkingDirectory</key><string>{{REPO}}</string>
+<key>RunAtLoad</key><true/><key>KeepAlive</key><true/><key>ThrottleInterval</key><integer>10</integer>
+<key>Umask</key><integer>63</integer>
+<key>StandardOutPath</key><string>{{RUNTIME}}/daemon.log</string>
+<key>StandardErrorPath</key><string>{{RUNTIME}}/daemon-error.log</string>
+</dict></plist>

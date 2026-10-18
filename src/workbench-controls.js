@@ -1,5 +1,5 @@
-export function mountWorkbenchControls({root,isActive=()=>true}){
-const $=id=>root.querySelector('#wb-'+id);
+export function mountWorkbenchControls({root,isActive=()=>true,prefix='wb-'}){
+const $=id=>root.querySelector('#'+prefix+id);
 let panelVisible=isActive(),active=panelVisible,selectedControlMethod=1,disposed=false;
 const methods=['Pixel fitting','Contour fitting','Structure search','3D hypotheses','Neural field'];
 let selectedStudy=null,activeStudy=null;
@@ -55,7 +55,7 @@ async function refresh(){
  if(disposed||document.hidden||!active||polling)return;polling=true;
  try{
   const response=await fetch('/api/world-algorithms',{cache:'no-store',signal:AbortSignal.timeout(10000)});const data=await response.json();if(disposed||!active)return;if(!response.ok)throw new Error();
-  if(!initialized){settings=data.settings;revision=data.revision;editable=data.canEdit;controls();initialized=true;for(const input of $('settings').querySelectorAll('button,input'))input.disabled=!editable;}
+  if(!initialized||!saving&&!timer&&!queued&&revision!==data.revision){settings=data.settings;revision=data.revision;editable=data.canEdit;controls();initialized=true;for(const input of $('settings').querySelectorAll('button,input'))input.disabled=!editable;}
   const state=data.state;activeStudy=state?.experimentId||'experiment-1';context();const pending=state?.revision!==data.revision;
   const status=state?.status||'Not started';
   $('resolution').textContent='Search: '+(state?.searchSize||256)+' × '+(state?.searchSize||256)+'; validation: 512 × 512. Compare the same source and objective version.';

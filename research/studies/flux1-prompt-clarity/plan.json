@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "id": "FPC-001",
+  "title": "FLUX.1 · Prompt Clarity",
+  "status": "draft",
+  "sourceExperiment": "experiment-2",
+  "sourceJobId": "bd704f7d9a3e4cd29d14d39695fab4cf",
+  "model": "flux1-dev",
+  "precisionPolicy": "BF16 historical; verify actual transformer and encoder before execution",
+  "settings": {
+    "width": 512,
+    "height": 512,
+    "steps": 28,
+    "guidance_scale": 3.5,
+    "max_sequence_length": 512
+  },
+  "seeds": [
+    47,
+    1047,
+    2047
+  ],
+  "arms": {
+    "A": {
+      "name": "Original",
+      "source": "Exact historical prompt from Experiment 2"
+    },
+    "B": {
+      "name": "Precise art direction",
+      "prompt": "Create one original landscape illustration for a dignified travel atlas, framed as a square image. Depict a Draa Valley oasis in southern Morocco in sophisticated painterly realism. Composition: a narrow, calm, shallow irrigation channel begins in the foreground, with earthen banks and date palms along its sides. Irregular small cultivated plots occupy the middle distance. Beyond them, an earth-built settlement sits against dry ochre foothills. Keep these near, middle and far layers spatially distinct and proportionate, so the channel and cultivated land lead the eye toward the settlement. Preserve the contrast between scarce water and the surrounding arid earth; the water is an irrigation channel, not a broad tropical lake. Materials: tactile mud banks, earthen walls, cultivated soil, believable palm trunks and foliage; use delicately softened painted edges while retaining distinctive local building and landscape forms. Light and palette: dappled evening shade, a restrained warm/cool balance, warm ochre earth and readable cooler shadow detail. Keep a coherent scene with convincing depth and quiet, dignified atmosphere. Do not add unrelated subjects or substitute generic forms for recognizable local architecture. No collage, captions, interface, lettering, logos, watermark, border, exaggerated fantasy, giant moon or plastic rendering."
+    }
+  },
+  "execution": {
+    "enqueueNow": false,
+    "generateNow": false,
+    "backend": "command",
+    "model": "flux1-dev",
+    "concurrency": 1,
+    "firstReview": "One paired seed before continuing the pilot"
+  },
+  "knownDiscrepancies": [
+    "A retains its original 1536x1024 prose request despite the historical 512x512 worker output; B resolves the framing conflict."
+  ],
+  "timing": "Similar denoising time is expected; measure actual encoding, generation and queue time separately."
+}

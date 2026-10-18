@@ -56,3 +56,8 @@ test('a recent preview contains the newest rows of each lane and accurate comple
   assert.equal(preview.jobs.find(row => row.profile === 'flux2-dev-nf4').created, 98);
   assert.equal(data.jobs.length, 100, 'preview construction does not truncate the archive');
 });
+
+test('legacy model comparison stream excludes precision-study arrivals while the archive stays intact',()=>{
+ const jobs=[{id:'old1',profile:'flux1-dev',scene:'scene-001',created:1},{id:'old2',profile:'flux2-dev-nf4',scene:'scene-001',created:2},{id:'new',profile:'flux1-dev',scene:'adhc-abcdef012345-scene-001',created:3}];
+ const preview=recentGallery({jobs});assert.deepEqual(preview.jobs.map(row=>row.id),['old1','old2']);assert.equal(preview.totalJobs,2);assert.equal(jobs.length,3);
+});

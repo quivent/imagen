@@ -2,8 +2,16 @@ import {readFileSync} from 'node:fs';
 import {fileURLToPath} from 'node:url';
 const request='virtual:imagen-research-text',resolved='\0imagen-research-text';
 const files={
+ promptAutonomy:new URL('../research/studies/flux1-prompt-clarity/AUTONOMY.md',import.meta.url),
+ promptSpecification:new URL('../research/studies/flux1-prompt-clarity/SPECIFICATION.md',import.meta.url),
+ promptImplementation:new URL('../research/studies/flux1-prompt-clarity/IMPLEMENTATION.md',import.meta.url),
+ promptProtocol:new URL('../research/studies/flux1-prompt-clarity/GENERATION-PROTOCOL.md',import.meta.url),
+ promptPlan:new URL('../research/studies/flux1-prompt-clarity/plan.json',import.meta.url),
+ promptRunner:new URL('../tools/artwork/prompt_clarity.py',import.meta.url),
+ builtinRunner:new URL('../tools/artwork/builtin_runner.js',import.meta.url),
  explanation:new URL('../docs/research/WHERE-THE-IMAGE-QUALITY-COMES-FROM.md',import.meta.url),
  protocol:new URL('../research/studies/art-direction-held-constant/PROTOCOL.md',import.meta.url),
+ productionImplementation:new URL('../research/studies/art-direction-held-constant/IMPLEMENTATION.md',import.meta.url),
  portability:new URL('../tools/artwork/PORTABILITY.md',import.meta.url),
  plan:new URL('../research/studies/art-direction-held-constant/plan.json',import.meta.url),
 };

@@ -1,0 +1,28 @@
+.production-study-controls{display:grid;gap:18px;max-width:960px}
+.production-study-controls p{margin:0}
+.production-study-protocol,.production-study-status{color:var(--muted,#888);font-size:13px;line-height:1.5}
+.production-study-settings{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:7px 22px;margin:0;font-size:14px}
+.production-study-settings dt{color:var(--muted,#888)}
+.production-study-settings dd{margin:0;font-variant-numeric:tabular-nums}
+.production-study-lanes{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:18px}
+.production-study-lane{display:grid;align-content:start;gap:9px;border-top:1px solid var(--line,#333);padding-top:14px;min-width:0}
+.production-study-lane h2{font-size:15px;line-height:1.4;margin:0}
+.production-study-lane>p{font-size:13px;color:var(--muted,#888)}
+.production-study-prompts{display:grid;gap:8px;font-size:13px}
+.production-study-prompts summary{cursor:pointer}
+.production-study-prompts details p{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.5;padding-top:8px}
+.production-study-actions{display:flex;align-items:center;flex-wrap:wrap;gap:14px}
+.production-study-actions button{font:inherit;cursor:pointer;padding:8px 14px}
+.production-study-actions button:disabled{cursor:wait;opacity:.55}
+.production-study-controls .setting-library{border:0;padding:0}
+.production-study-controls .parameter-choices{grid-template-columns:repeat(3,minmax(0,1fr));margin:14px 0}
+.production-study-controls .choice-buttons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+.production-study-controls .choice-buttons button{min-width:0;min-height:40px;padding:7px 5px;white-space:nowrap}
+@media(max-width:650px){.production-study-controls .parameter-choices{grid-template-columns:1fr}}
+.production-study-controls{max-width:1120px;gap:20px;padding:4px 0 24px}
+.production-control-header{display:grid;gap:7px}.production-control-eyebrow{color:#d3b587;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase}.production-control-header h2{font:28px Georgia,serif;margin:0;color:#e6e0d5}.production-control-header p{color:#a6afa9;font-size:13px}
+.production-study-controls .setting-library{background:#1b2222;border:1px solid #35413e;border-radius:12px;padding:22px;min-width:0}.production-study-controls .setting-library h3{margin:0;font-size:15px;font-weight:500;color:#e0d8c9}
+.production-study-controls .parameter-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 24px;margin:22px 0}.production-study-controls .choice-field{border:0;padding:0;margin:0;min-width:0}.production-study-controls .choice-field legend{font-size:12px;color:#adb7af;padding:0 0 9px}.production-study-controls .choice-buttons{gap:5px;padding:4px;background:#131919;border:1px solid #303c38;border-radius:8px}.production-study-controls .choice-buttons button{font-family:inherit;font-size:12px;border:1px solid transparent;border-radius:5px;background:transparent;color:#aab3ad;min-height:36px;cursor:pointer}.production-study-controls .choice-buttons button[aria-pressed=true]{background:#354740;border-color:#627c6c;color:#e9f0e6}.production-study-controls button:focus-visible{outline:2px solid #d3b587;outline-offset:3px}
+.production-control-dimensions{font-size:13px;color:#d3b587;font-variant-numeric:tabular-nums}.production-control-toolbar{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 10px}.production-control-toolbar button,.production-study-actions button{border:1px solid #4d6256;border-radius:7px;background:#293b32;color:#e0eadf;padding:10px 16px;font-size:13px;cursor:pointer}.production-control-toolbar button+button{background:transparent;color:#b2bcb4;border-color:#3e4b44}.production-control-toolbar button:disabled{opacity:.4;cursor:default}
+.production-study-protocol{font-size:11px;color:#84938a}.production-study-actions{justify-content:space-between;background:#1a211e;border:1px solid #344139;padding:12px 16px;border-radius:10px}.production-study-lane{border:1px solid #34403b;background:#191f1d;border-radius:10px;padding:18px;gap:12px}.production-study-prompts summary{color:#bcb6a8;font-size:12px;padding:7px 0}.production-study-prompts details p{color:#a9b1ab;font-size:12px}
+@media(max-width:700px){.production-study-controls .parameter-choices{grid-template-columns:1fr}.production-study-controls .setting-library{padding:16px}.production-study-actions{align-items:flex-start}.production-control-header h2{font-size:24px}}

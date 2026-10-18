@@ -36,3 +36,33 @@ Publication reuses already prepared immutable candidate records and hashes each 
 - The launchd fitter was signaled gracefully during cycle 55. It completed and saved cycle 56, then resumed cycle 56 under a new process with the improved seed and Experiment 2 native 512 resolution. No stop marker, extra inference workload, or generation-worker change was introduced.
 
 The local CGL fitting renderer and the browser still share the Mac's GPU. These UI/server fixes do not establish how much GPU contention affects interaction. No browser performance trace, heap snapshot, visual QA or GPU benchmark was performed, and no claim of measured interactive speedup follows from these changes.
+
+### Production archive check (2026-10-18)
+
+A local source/HTTP check found 358 comparison pairs (716 original PNGs,
+297.94 MiB in total; median 440,034 bytes). Of those local files, 714 are
+512 × 512 and two are 1536 × 1024. The comparison metadata response was
+1.96 MB / 240 ms in one local sample. These are observations from this archive,
+not a general performance benchmark or proof that resolution causes the delay.
+
+Compare previously constructed every pair's cards and image nodes immediately.
+It now renders twenty pairs per page, retains focused cards, opens a deep-linked
+selection's page, and anchors older pages while new generations arrive. This
+bounds mounted comparison image nodes to forty, plus the selected detail pair.
+The full metadata snapshot and scene selector still include the archive.
+
+Stream already has eighteen-image pages per model and a six-request preload
+limit. It still loads full PNG originals and reveals each card after its load
+completes; cold remote image requests and decoding can therefore dominate the
+visible wait. A local eighteen-record gallery metadata request took 345 ms in
+one sample. No remote cold-load time, native memory improvement, or thumbnail
+speedup has been claimed. No new thumbnail endpoint or R2 writer was added.
+
+Comparison image frames share a square, contained viewport. Stream model lanes
+share row heights, recalculated for viewport changes, arriving cards, and expanded
+caption details. This keeps subsequent left/right rows aligned even when caption
+lengths differ, without cropping images. Narrow windows retain two model lanes.
+A hidden WebKit geometry probe (metadata-only Stream fixtures, no screenshot or
+image viewing) measured zero pixels of row boundary difference; it also checked
+twenty-pair pagination and matched Compare image bounds. Focused pagination and
+existing comparison DOM-reuse tests pass.

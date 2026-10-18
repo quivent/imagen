@@ -57,3 +57,28 @@ The linked study is a plan, not a queued batch:
 For a dedicated study, set functions.exec storage key `artwork-runner-state` to
 an absolute study factory directory before running the source. That explicit
 state is passed to every CLI operation. Without it, the wrapper default applies.
+
+## FLUX.1 prompt-clarity study
+
+`prompt_clarity.py preview` reads the frozen design without writing anything.
+`prompt_clarity.py prepare` saves the paired package and command-adapter argument
+file, with no queue, network request or generation. A separate explicit
+`enqueue PACKAGE_HASH` operation targets only the run's isolated factory. No
+command in this script starts inference; later execution uses the existing
+bounded command worker. The preparation command never starts inference. Separate app controls can explicitly start the guided runner described below.
+
+Read the [specification](../../research/studies/flux1-prompt-clarity/SPECIFICATION.md),
+[implementation](../../research/studies/flux1-prompt-clarity/IMPLEMENTATION.md) and
+[generation protocol](../../research/studies/flux1-prompt-clarity/GENERATION-PROTOCOL.md)
+before executing anything. The built-in OpenAI runner above is a different
+backend and must not claim the FLUX.1-only study jobs.
+
+## Guided study controller
+
+`study_controller.py` supplies durable status, guidance, start, pause, review,
+local receipt reconciliation and bounded execution for a prepared package.
+The app starts `advance` only after an explicit Start or review-and-continue
+request. The controller calls the captured native FLUX adapter, never the
+built-in OpenAI runner. A lock fences each package; validated receipts and
+originals precede pair publication. No ambiguous job is retried automatically.
+Read the Research autonomy protocol before live execution.

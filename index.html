@@ -31,7 +31,11 @@
     <div class="header-actions"><button id="show-details" type="button" class="quiet" aria-label="Expand details" title="Expand details" aria-expanded="false" aria-controls="gallery-introduction stream-introduction"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button></div>
   </header>
   <main id="main" tabindex="-1">
-    <nav id="workspace-navigation" aria-label="Studio workspace"><button type="button" data-workspace="production" aria-pressed="false">Production</button><button type="button" data-workspace="workbench" aria-pressed="true">Workbench</button></nav>
+    <div class="studio-context-navigation">
+    <nav id="workspace-navigation" aria-label="Studio workspace"><button type="button" data-workspace="gallery" aria-pressed="false">Gallery</button><button type="button" data-workspace="production" aria-pressed="false">Production</button><button type="button" data-workspace="workbench" aria-pressed="true">Workbench</button><button type="button" data-workspace="worlds" aria-pressed="false">Worlds</button></nav>
+    <nav id="study-navigation" aria-label="Workbench study" hidden></nav>
+    </div>
+    <aside id="production-hud" hidden></aside>
     <div class="studio-tabs"><div class="studio-tab-buttons" role="tablist" aria-label="Imagen">
       <button id="tab-stream" type="button" role="tab" aria-selected="true" aria-controls="stream-panel">Stream</button>
       <button id="tab-gallery" type="button" role="tab" aria-selected="false" aria-controls="gallery-panel" tabindex="-1">Compare</button>
@@ -40,18 +44,32 @@
       <button id="tab-performance" type="button" role="tab" aria-selected="false" aria-controls="performance-panel" tabindex="-1">Performance</button>
       <button id="tab-models" type="button" role="tab" aria-selected="false" aria-controls="models-panel" tabindex="-1">Models</button>
       <button id="tab-seers" type="button" role="tab" aria-selected="false" aria-controls="seers-panel" tabindex="-1">Seers</button>
+      <button id="tab-archive" type="button" role="tab" aria-selected="false" aria-controls="archive-panel" tabindex="-1">Gallery</button>
+      <button id="tab-workbench-controls" type="button" role="tab" aria-selected="false" aria-controls="workbench-controls-panel" tabindex="-1">Controls</button>
+      <button id="tab-workbench-tasks" type="button" role="tab" aria-selected="false" aria-controls="workbench-tasks-panel" tabindex="-1">Tasks</button>
+      <button id="tab-workbench-agents" type="button" role="tab" aria-selected="false" aria-controls="workbench-agents-panel" tabindex="-1">Agents</button>
       <button id="tab-workbench" type="button" role="tab" aria-selected="false" aria-controls="workbench-panel" tabindex="-1">Experiments</button>
       <button id="tab-research" type="button" role="tab" aria-selected="false" aria-controls="research-panel" tabindex="-1">Research</button>
       <button id="tab-worlds" type="button" role="tab" aria-selected="false" aria-controls="worlds-panel" tabindex="-1">Worlds</button>
       <button id="tab-metrics" type="button" role="tab" aria-selected="false" aria-controls="metrics-panel" tabindex="-1">Metrics</button>
-      <button id="tab-winners" type="button" role="tab" aria-selected="false" aria-controls="winners-panel" tabindex="-1">Winners</button>
+      <button id="tab-winners" type="button" role="tab" aria-selected="false" aria-controls="winners-panel" tabindex="-1">Collections</button>
       <button id="tab-agents" type="button" role="tab" aria-selected="false" aria-controls="agents-panel" tabindex="-1">Agents</button>
       <button id="tab-daemons" type="button" role="tab" aria-selected="false" aria-controls="daemons-panel" tabindex="-1">Daemons</button>
       <button id="tab-protocol" type="button" role="tab" aria-selected="false" aria-controls="protocol-panel" tabindex="-1">Protocol</button>
       <button id="tab-rules" type="button" role="tab" aria-selected="false" aria-controls="rules-panel" tabindex="-1">Rules</button>
-      <button id="tab-monitor" type="button" role="tab" aria-selected="false" aria-controls="monitor-panel" tabindex="-1">Monitor</button>
+      <button id="tab-prompt-comparison" type="button" role="tab" aria-selected="false" aria-controls="prompt-comparison-panel" tabindex="-1">Prompts</button>
+      <button id="tab-qwen" type="button" role="tab" aria-selected="false" aria-controls="qwen-panel" tabindex="-1">Qwen</button>
+      <button id="tab-pixtral-chat" type="button" role="tab" aria-selected="false" aria-controls="pixtral-chat-panel" tabindex="-1">Pixtral</button>
+      <button id="tab-monitor" type="button" role="tab" aria-selected="false" aria-controls="monitor-panel" tabindex="-1" hidden aria-hidden="true">Monitor</button>
     </div>
     </div>
+    <section id="qwen-panel" role="tabpanel" aria-labelledby="tab-qwen" hidden></section>
+    <section id="pixtral-chat-panel" role="tabpanel" aria-labelledby="tab-pixtral-chat" hidden></section>
+    <section id="prompt-comparison-panel" role="tabpanel" aria-labelledby="tab-prompt-comparison" hidden></section>
+    <section id="archive-panel" role="tabpanel" aria-labelledby="tab-archive" hidden></section>
+    <section id="workbench-controls-panel" role="tabpanel" aria-labelledby="tab-workbench-controls" hidden></section>
+    <section id="workbench-tasks-panel" role="tabpanel" aria-labelledby="tab-workbench-tasks" hidden></section>
+    <section id="workbench-agents-panel" role="tabpanel" aria-labelledby="tab-workbench-agents" hidden></section>
     <section id="workbench-panel" role="tabpanel" aria-labelledby="tab-workbench" hidden></section>
     <section id="research-panel" role="tabpanel" aria-labelledby="tab-research" hidden></section>
     <section id="worlds-panel" role="tabpanel" aria-labelledby="tab-worlds" hidden></section>
@@ -122,7 +140,7 @@
       <p id="control-status" class="status" role="status"></p>
     </section>
     <section id="tasks-panel" role="tabpanel" aria-labelledby="tab-tasks" hidden>
-      <div class="tasks-heading"><div><p class="eyebrow">STUDIO RECORD</p><h1>Tasks</h1><p>This is the artwork work recorded in the project. It is kept with the site, so it does not depend on a chat or this browser.</p></div></div>
+      <div class="tasks-heading"><div><p class="eyebrow">PRODUCTION RECORD</p><h1>Tasks</h1><p>This is the artwork work recorded in the project. It is kept with the site, so it does not depend on a chat or this browser.</p></div></div>
       <p id="tasks-updated" class="snapshot-time"></p>
       <div id="tasks-list" class="tasks-list"></div>
       <p id="tasks-status" class="status" role="status" aria-live="polite"></p>

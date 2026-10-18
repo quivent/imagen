@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import vm from 'node:vm';
 import test from 'node:test';
+import {createComparisonPages} from '../src/comparison-pages.js';
 import { reconcileComparisonOptions } from '../src/comparison-options.js';
 
 class Node {
@@ -28,6 +29,7 @@ test('growing Compare reuses options and selected image nodes, preserves rating 
   const counts = { options: 0, cards: 0, inspectorImages: 0, noteReads: 0 };
   const document = { activeElement: null };
   const context = vm.createContext({ state, activeTab: 'stream', document, $, current: () => state.rows.find(row => row.id === state.id), comparisonCards: new Map(),
+    mountComparisonPages: () => { const pages=createComparisonPages(); return {rows:(rows,id)=>pages.update(rows,id)}; },
     createComparisonCard: row => { counts.cards++; const card = new Node(); card.dataset.comparison = row.id; return card; },
     modelCard: side => { counts.inspectorImages++; const card = new Node(); card.side = side; return card; },
     detailPanel: () => new Node(),
@@ -38,7 +40,7 @@ test('growing Compare reuses options and selected image nodes, preserves rating 
   vm.runInContext('render()', context);
   assert.deepEqual(counts, { options: 0, cards: 0, inspectorImages: 0, noteReads: 0 }, 'hidden Compare creates no card, option or inspector DOM');
   context.activeTab = 'gallery'; vm.runInContext('render()', context);
-  assert.deepEqual(counts, { options: 261, cards: 261, inspectorImages: 2, noteReads: 1 });
+  assert.deepEqual(counts, { options: 261, cards: 20, inspectorImages: 2, noteReads: 1 });
   const selectedImages = [...$('pair').children];
   const selectedOption = $('scene').children[0];
   const focusedCard = $('comparison-grid').children[10];
@@ -46,14 +48,14 @@ test('growing Compare reuses options and selected image nodes, preserves rating 
   state.rows = [{ id: 'new-pair', title: 'Newest pair', left: {}, right: {} }, ...state.rows];
   vm.runInContext('render()', context);
   assert.equal(counts.options, 262, 'one new pair creates one option, not a new set of 262');
-  assert.equal(counts.cards, 261, 'focused rating/card stays attached while grid updates wait');
+  assert.equal(counts.cards, 20, 'focused rating/card stays attached while grid updates wait');
   assert.equal($('scene').children[1], selectedOption);
   assert.equal($('pair').children[0], selectedImages[0]);
   assert.equal(counts.inspectorImages, 2);
   assert.equal(counts.noteReads, 1);
   assert.ok($('comparison-grid').contains(document.activeElement));
   document.activeElement = null; vm.runInContext('renderComparisonGrid()', context);
-  assert.equal(counts.cards, 262);
+  assert.equal(counts.cards, 21);
   assert.equal($('comparison-grid').children[11], focusedCard, 'existing card survives the prepend');
   state.swapped = true; vm.runInContext('render()', context);
   assert.equal(counts.inspectorImages, 4, 'swapping still updates the inspector');

@@ -1,9 +1,11 @@
+import {scopeAgentView} from './workspace-scope.js';
 import { studioLive } from './live-store.js';
 import './agents.css';
-import { agentView, dispatchView } from './agent-state.js';
+import { agentView } from './agent-state.js';
 
-export function mountAgents({ root, isActive = () => true }) {
-  const $ = id => root.querySelector('#agents-' + id);
+export function mountAgents({ root, isActive = () => true, workspace = 'production' }) {
+  const $ = id => root.querySelector('[data-agents-id="' + id + '"]');
+  $('scope').textContent=workspace==='workbench'?'WORKBENCH':'PRODUCTION';
   const statuses = new Set(['running', 'available', 'waiting', 'failed', 'interrupted', 'assigned', 'stopped', 'closed', 'unknown']);
   const names = {
     '/root': 'Coordinator',
@@ -73,15 +75,15 @@ export function mountAgents({ root, isActive = () => true }) {
   function render() {
     const observation = snapshot?.agents;
     const observed = timestamp(observation?.observedAt);
-    const view = agentView(snapshot, connected);
+    const view = scopeAgentView(agentView(snapshot, connected),workspace);
     const fresh = view.fresh;
-    const enforcement = dispatchView(snapshot, connected);
+    const label=workspace==='workbench'?'Workbench':'Production';
     $('connection').textContent = fresh ? 'Live' : connected ? 'Unknown · stale source' : 'Disconnected';
     $('connection').dataset.state = fresh ? 'running' : 'unknown';
-    $('summary').textContent = fresh ? `${view.running} running · ${view.available} available · ${view.agents.length} agents in this session${enforcement.state === 'violation' ? ' · dispatch violation: ready work is not being dispatched' : ''}` : 'Current activity is unknown until a fresh session observation arrives.';
-    $('capacity').textContent = Number.isInteger(observation?.capacity) && observation.capacity >= 0 ? `· ${observation.capacity} slots observed` : '';
-    $('coordinator').replaceChildren(card(view.coordinator, fresh, true));
-    $('workers').replaceChildren(...(view.agents.length ? view.agents.map(agent => card(agent, fresh)) : [text('p', fresh ? 'No workers are currently recorded in this session.' : 'Worker activity is not available yet.', 'agents-source')]));
+    $('summary').textContent = fresh ? `${view.running} running · ${view.available} available · ${view.agents.length} agents assigned to ${label}` : 'Current activity is unknown until a fresh session observation arrives.';
+    $('capacity').textContent = `· ${view.agents.length} assigned`;
+    $('coordinator').replaceChildren(view.coordinator?card(view.coordinator, fresh, true):text('p','No coordinator is explicitly assigned to '+label+'.','agents-source'));
+    $('workers').replaceChildren(...(view.agents.length ? view.agents.map(agent => card(agent, fresh)) : [text('p', fresh ? 'No workers are assigned to this workspace.' : 'Worker activity is not available yet.', 'agents-source')]));
     $('observed').textContent = observed === null ? 'Source observation is not available yet.' : `Session source observed ${stamp(observed)}${fresh ? '' : ' · current states are unknown'}`;
   }
   function sync() {

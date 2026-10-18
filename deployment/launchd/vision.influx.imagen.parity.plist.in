@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><dict>
+<key>Label</key><string>vision.influx.imagen.parity</string>
+<key>ProgramArguments</key><array><string>{{PYTHON}}</string><string>-B</string><string>{{REPO}}/tools/artwork/parity_daemon.py</string><string>--root</string><string>{{DAEMON_ROOT}}</string><string>--study-root</string><string>{{STUDY_ROOT}}</string><string>run</string></array>
+<key>WorkingDirectory</key><string>{{REPO}}</string>
+<key>EnvironmentVariables</key><dict><key>PATH</key><string>{{PATH}}</string><key>ARTWORK_SSH_HOST</key><string>{{SSH_HOST}}</string><key>ARTWORK_SSH_PORT</key><string>{{SSH_PORT}}</string></dict>
+<key>RunAtLoad</key><true/><key>KeepAlive</key><true/><key>ThrottleInterval</key><integer>10</integer>
+<key>StandardOutPath</key><string>{{DAEMON_ROOT}}/daemon.log</string>
+<key>StandardErrorPath</key><string>{{DAEMON_ROOT}}/daemon-error.log</string>
+</dict></plist>

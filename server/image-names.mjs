@@ -4,6 +4,7 @@ const root = fileURLToPath(new URL('../.runtime/image-names/', import.meta.url))
 let observedAt = 0;
 let pending;
 let names = new Map();
+let sceneNames = new Map();
 async function refreshNames() {
  if (Date.now()-observedAt<2000) return;
  if (!pending) pending=Promise.all(['flux1-dev','flux2-dev-nf4'].map(async profile=>{
@@ -17,8 +18,12 @@ async function refreshNames() {
 }
 export async function withImageNames(collection) {
  await refreshNames();
+ if(!sceneNames.size){try{const corpus=JSON.parse(await readFile(new URL('../research/studies/art-direction-held-constant/corpus.json',import.meta.url),'utf8'));sceneNames=new Map(corpus.scenes.map(scene=>[scene.id,scene]));}catch{}}
  return {...collection,jobs:collection.jobs.map(row=>{
   const name=names.get(row.profile+':'+row.id);
-  return name&&name.sha256===row.sha256?{...row,title:name.title,titleSource:'prompt-metadata'}:row;
+  if(name&&name.sha256===row.sha256)return {...row,title:name.title,titleSource:'prompt-metadata'};
+  const match=/^adhc-[a-f0-9]{12}-(scene-[0-9]{3})$/.exec(row.scene||''),scene=match&&sceneNames.get(match[1]);
+  if(scene){const condition=row.prompt===scene.precisionPrompt?'Precision Wording':row.prompt===scene.prompt?'Original Wording':null;return {...row,title:scene.name+(condition?' — '+condition:''),titleSource:'study-metadata'};}
+  return row;
  })};
 }

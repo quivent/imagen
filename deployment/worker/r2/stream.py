@@ -16,8 +16,14 @@ import chorus_r2sync as upstream
 
 ROOT = Path('/workspace/artwork/r2')
 JOBS = Path('/workspace/artwork/jobs')
+EXTRA_JOBS = (Path('/workspace/artwork-flux1-gpu1/jobs'),)
 PREFIX = 'artwork-comparison/2026-10-17-flux-study/'
 INDEX_KEY = PREFIX + 'index.json'
+
+
+def job_stores():
+    """Both native lanes feed the same lock-holding archive/index writer."""
+    return (JOBS, *EXTRA_JOBS)
 
 
 def atomic_json(path, value):
@@ -161,7 +167,7 @@ class StudyIndex:
 
 def prepare_archive(client, bucket, image, ident):
     parts = ident.split('/')
-    if image.is_symlink() or not image.resolve().is_relative_to(JOBS):
+    if image.is_symlink() or not any(image.resolve().is_relative_to(root.resolve()) for root in job_stores()):
         raise ValueError('Image path escapes job store')
     record = json.loads((image.parent / 'job.json').read_text())
     receipt_path = image.parent / 'receipt.json'
@@ -228,9 +234,9 @@ class Reconciler:
         current, waiting, young = {}, 0, 0
         # Enumerate done job records rather than images: a lost/missing local
         # image or receipt must become an explicit backlog item, not disappear.
-        for record_path in JOBS.glob('*/*/job.json'):
+        for job_root, record_path in ((root, path) for root in job_stores() for path in root.glob('*/*/job.json')):
             image = record_path.parent / 'result.png'
-            parts = image.relative_to(JOBS).parts
+            parts = image.relative_to(job_root).parts
             if parts[0] not in ('flux1-dev', 'flux2-dev-nf4'):
                 continue
             try:
@@ -242,6 +248,8 @@ class Reconciler:
                     young += 1
                     continue
                 ident = '/'.join(parts[:2])
+                if ident in current and current[ident].resolve()!=image.resolve():
+                    raise ValueError('Conflicting lane job identity retained without replacement')
                 current[ident] = image
                 entry = self.entries.get(ident)
                 complete_local = image.is_file() and receipt.is_file()

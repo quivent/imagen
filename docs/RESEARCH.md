@@ -51,18 +51,21 @@ adding the notebook.
 
 ## Production and Workbench
 
-The first navigation level is Production, then Workbench. Production contains
-Stream, Compare, Controls, Models, Winners and Worlds. Workbench contains
-Experiments, Research and the operational/research tools; Stream, Compare,
-Models and Worlds are shared. Shared tabs reuse the same controllers and data.
-The former inner Workbench tab is labeled Experiments. The selected workspace,
-last tab in each and experiment query are remembered locally. Private tools stay
-out of public mode. This is a local Imagen change; no Vercel deployment occurred.
+The first navigation level is Production, then Workbench.
 
-Verification includes the Vite build, ten focused Node checks, source-surface
-layout checks and a hidden WKWebView DOM check. The WebKit check switched both
-workspaces, verified the six Production tabs, preserved the Experiment4 query,
-and loaded all38 research cards. No screenshots or image viewing were used.
+- Shared views: Stream and Compare reuse the same controllers and data.
+- Production: Controls (FLUX generation), Tasks, Models, Seers, Collections, Worlds, Agents, Performance, Metrics, Daemons, Protocol, Rules and Monitor.
+- Workbench: Experiments, Research, Controls (GLSL fitting), Tasks and Agents, plus the shared views.
+
+The same display names for Controls, Tasks and Agents identify different panels and routes. Workbench routes are `/workbench/controls`, `/workbench/tasks` and `/workbench/agents`; Production retains its existing routes. Workbench Controls reuses the fitting controls inside Experiments, not the generation form. Both fitting views share one HTML template, controller and current experiment/method context. Inactive views stop their live observations; an external settings revision refreshes the other fitting view on return.
+
+Tasks share the existing card/group renderer and collapsed Done format, with independent records. Production retains `tasks.json`; untagged legacy tasks belong to Production. Workbench uses the ignored `.runtime/workbench/tasks.json`, served through `/api/workbench-tasks`. Its Add task and state buttons save local records only; they do not dispatch workers. Writes require matching-origin loopback access and are serialized and atomic.
+
+Agents share the component and canonical runtime evidence, filtered by the explicit `workspace` field on assignments. The monitor propagates this field from its existing private assignment registry; legacy untagged assignments belong to Production. A worker belongs to one workspace at a time. Coordinator scope is recorded separately. An empty Workbench assignment list remains empty, rather than rebranding the Production team. Stale activity remains unknown. No agent messages are sent by this navigation work.
+
+Worlds currently contains the Draa Valley procedural GLSL trial and an overview of the image-to-world workflow. Collections retains saved Compare selections; the rename does not create a collection editor or alter saved data. Models, Seers, Performance, Metrics and Daemons remain in Production pending a separate placement request.
+
+The selected workspace, last tab in each and experiment query are remembered locally. Early boot and mounted navigation agree on scope, including nested routes. Private tools stay out of public mode. This is a local Imagen change; no Vercel deployment occurred.
 
 ## Documents and study plans
 
@@ -110,3 +113,23 @@ Choose **Design experiment** on a pipeline to open Research → Plans. The desig
 Saving writes a new immutable plan into the existing ignored workstation notebook (`.runtime/research/notes.json`). The server resolves the source from the registered experiment catalog rather than accepting client-supplied source metadata. It snapshots the source, baseline identity and pipeline recipe so future catalog edits do not rewrite the design. Export experiment includes those snapshots. There are no fabricated results: new plans are marked Planned, with empty evidence and no conclusion. A source-surface match remains distinct from evidence of correct 3D geometry.
 
 Older notebooks migrate on read with an empty plans collection. Same-origin loopback authorization, atomic serialized writes and field bounds apply. The notebook holds at most 100 plans. Existing saved experiments, fit loops and archives are separate; saving a plan does not launch a run or change their data.
+
+### Study contexts
+
+Workbench has two adjacent study buttons: **Image → World** and **FLUX.1 · Prompt Clarity**. Selection is saved locally; explicit historical `/workbench?experiment=…` links still select Image → World. Switching studies changes no queues or worker state. Experiments and Workbench Controls swap their mounted components; the original GLSL query and artifacts remain available on return. Production remains independent of this selector.
+
+Prompt Clarity's Research area presents its specification, implementation, generation protocol and actual preparation-script source. Its Stream and Compare have separate empty states until verified study results are imported; they never substitute the previous model-comparison archive. The guided controller imports receipt-verified pairs and saves blind human choices. The six-image pilot remains unstarted until an explicit Start action. The actual imported built-in tool runner is also readable in the original Research documents, separate from the FLUX.1 command adapter.
+
+`/api/prompt-study` previews the compiled paired design and saves immutable JSON packages through a local, same-origin preparation action. Preparation alone exposes no implicit enqueue or inference; separate authenticated Start/review-and-continue actions control the bounded runner. `tools/artwork/prompt_clarity.py` provides the exact historical prompt, paired controls, alternating submission order, deterministic blind slots and explicit isolated factory enqueue for later authorized execution. Preparation does not call the built-in image tool, contact Vast, create a factory database, invoke Seers or change R2's writer.
+
+### Gallery workspace
+
+Gallery is a third top-level area alongside Production and Workbench, with no inner tool tabs or study selector. It shows the archive through the shared `archive-gallery` component. The separate `/gallery` entry serves this component without loading the studio application at all; `/gallery/studio` keeps the native top-level navigation available. Study-specific Stream/Compare views remain independent from this public artwork archive.
+
+### Guided study controller
+
+The FLUX.1 Prompt Clarity study now has a bounded execution controller rather than manual per-image handoffs. Research → Autonomy describes the implemented behavior. Controls holds the editable pair limit, review cadence and short review focus. Start is explicit; ordinary preparation, tab switching, polling and guidance saves never launch it. A detached bounded runner uses the existing native adapter, imports only receipt-verified pairs, waits at review checkpoints and respects pause requests. Compare provides Left/Right/Tie/Neither and explicit save-and-pause or save-and-continue actions.
+
+The ignored per-package journal and factory store retain request IDs and evidence. A runner lock prevents parallel owners. Local receipt reconciliation never makes a generation request. Unknown submissions and changed controls/identities stop for attention. The read-only archive observer checks matching job/hash records in R2; it does not add another uploader or make review wait for a storage call. Guidance edits preserve the frozen prompts; a prompt change belongs to a new study revision.
+
+Tests use synthetic numerical fixtures and injected launchers. The live GPU pilot is still unstarted. CLIP's native short-context behavior is explicitly recorded alongside T5's frozen conditioning limit; the earlier blanket no-truncation wording has been qualified in the study specification and protocol.

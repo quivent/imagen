@@ -13,6 +13,10 @@ REPO = Path(__file__).resolve().parents[1]
 ARTWORK = REPO
 CODEX = Path.home() / '.codex'
 ROOT_THREAD = os.environ.get('ARTWORK_MONITOR_ROOT_THREAD', '')
+try:
+    configured_team=json.loads((REPO/'.runtime/monitor/team.json').read_text())
+    if isinstance(configured_team.get('rootThread'),str):ROOT_THREAD=configured_team['rootThread']
+except (OSError,ValueError):pass
 CACHE = REPO / '.runtime' / 'monitor' / 'lifecycle.json'
 MAX_READ = 8 * 1024 * 1024
 
@@ -78,7 +82,7 @@ def lifecycle(file, prior):
 
 def agents():
     source = 'Own-session task lifecycle events, scoped to this studio team'
-    result = {'ok': False, 'live': False, 'source': source, 'observedAt': None, 'capacity': None, 'coordinator': 'unknown', 'agents': []}
+    result = {'ok': False, 'live': False, 'source': source, 'rootThread': ROOT_THREAD, 'observedAt': None, 'capacity': None, 'coordinator': 'unknown', 'agents': []}
     try:
         daemon = daemon_alive()
         if not daemon:
@@ -117,12 +121,13 @@ def agents():
                 result['coordinatorStartedAt'] = state.get('lastTransitionAt') if state['status'] == 'running' else None
                 result['coordinatorTask'] = assignments.get('/root', {}).get('task', 'Coordinate current work')
                 result['coordinatorCurrentTaskId'] = assignments.get('/root', {}).get('taskId')
+                result['coordinatorWorkspace'] = assignments.get('/root', {}).get('workspace', 'production')
             else:
                 # Publish only team paths, states and event timestamps. No task text.
                 path = row['agent_path']
                 if not isinstance(path, str) or not path.startswith('/root/') or len(path) > 100:
                     path = 'Studio worker'
-                output.append({'id': path, 'task': assignments.get(path, {}).get('task', 'Studio team worker'), 'name': assignments.get(path, {}).get('name'), 'currentTaskId': assignments.get(path, {}).get('taskId'), 'startedAt': state.get('lastTransitionAt') if state['status'] == 'running' else None, 'status': state['status'], 'lastTransitionAt': state.get('lastTransitionAt'), 'lastEventAt': state.get('lastEventAt')})
+                output.append({'id': path, 'workspace': assignments.get(path, {}).get('workspace', 'production'), 'task': assignments.get(path, {}).get('task', 'Studio team worker'), 'name': assignments.get(path, {}).get('name'), 'currentTaskId': assignments.get(path, {}).get('taskId'), 'startedAt': state.get('lastTransitionAt') if state['status'] == 'running' else None, 'status': state['status'], 'lastTransitionAt': state.get('lastTransitionAt'), 'lastEventAt': state.get('lastEventAt')})
         CACHE.parent.mkdir(parents=True, exist_ok=True)
         with tempfile.NamedTemporaryFile(mode='w', dir=CACHE.parent, delete=False) as cache_file:
             json.dump(current, cache_file)
@@ -141,10 +146,11 @@ def generation():
 from pathlib import Path
 from urllib.request import urlopen
 workers=[]
-for port in [18761,18762]:
- with urlopen('http://127.0.0.1:'+str(port)+'/health',timeout=2) as response:
-  data=json.load(response)
- workers.append({key:data.get(key) for key in ['profile','phase','running','current','paused','queued']})
+for port,profile,gpu in [(18761,'flux1-dev',0),(18763,'flux1-dev',1),(18762,'flux2-dev-nf4',1)]:
+ try:
+  with urlopen('http://127.0.0.1:'+str(port)+'/health',timeout=2) as response:data=json.load(response)
+ except Exception:data={'profile':profile,'phase':'unavailable','running':0,'current':None,'paused':True,'queued':None}
+ workers.append({**{key:data.get(key) for key in ['profile','phase','running','current','paused','queued']},'port':port,'gpuIndex':gpu})
 observed=datetime.datetime.now(datetime.timezone.utc).isoformat()
 gpus=[]
 try:
@@ -166,6 +172,12 @@ try:
  archive['observedAt']=datetime.datetime.fromtimestamp(archive.get('heartbeatAt') or archive.get('sweptAt') or 0,datetime.timezone.utc).isoformat()
 except Exception:pass
 items=[]
+judge_ready=None
+try:
+ with urlopen('http://127.0.0.1:8002/health',timeout=0.5) as response:judge_healthy=response.status==200
+ with urlopen('http://127.0.0.1:8002/v1/models',timeout=0.5) as response:judge_models=json.load(response)
+ if judge_healthy and any(model.get('id')=='pixtral-critic' for model in judge_models.get('data',[])):judge_ready=True
+except Exception:pass
 for filename,kind in [('/workspace/artwork/models/manifest.json','generation'),('/workspace/artwork/judges/download-receipt.json','judge')]:
  try:
   receipt=json.loads(Path(filename).read_text())
@@ -173,10 +185,12 @@ for filename,kind in [('/workspace/artwork/models/manifest.json','generation'),(
    target=Path(entry['path'])
    verified=target.is_dir() and (kind=='generation' and (target/'.download-complete.json').is_file() or kind=='judge' and receipt.get('complete') is True)
    lane=0 if ident=='flux1' else 1 if ident.startswith('flux2') else None
-   worker=workers[lane] if lane is not None else {}
+   worker=next((w for w in workers if w['profile']==('flux1-dev' if ident=='flux1' else 'flux2-dev-nf4')), {}) if lane is not None else {}
    loaded=worker.get('phase')=='ready' if worker.get('phase') else None
+   phase=worker.get('phase')
+   if ident=='pixtral' and judge_ready is True:loaded,phase=True,'ready'
    precision={'flux1':'BF16','flux2':'BF16','flux2-nf4':'NF4 text encoder','pixtral':'W4A16','dinov2':'BF16'}.get(ident)
-   items.append({'id':ident,'name':{'flux1':'FLUX.1 DEV','flux2':'FLUX.2 DEV','flux2-nf4':'FLUX.2 text encoder','pixtral':'Pixtral 12B','dinov2':'DINOv2 Giant'}.get(ident,ident),'repo':entry.get('repo'),'revision':entry.get('revision'),'precision':precision,'bytes':entry.get('bytes'),'downloaded':verified,'loaded':loaded,'phase':worker.get('phase'),'gpuIndex':lane,'problem':None if lane is not None else 'GPU residency has not been verified by this monitor.'})
+   items.append({'id':ident,'name':{'flux1':'FLUX.1 DEV','flux2':'FLUX.2 DEV','flux2-nf4':'FLUX.2 text encoder','pixtral':'Pixtral 12B','dinov2':'DINOv2 Giant'}.get(ident,ident),'repo':entry.get('repo'),'revision':entry.get('revision'),'precision':precision,'bytes':entry.get('bytes'),'downloaded':verified,'loaded':loaded,'phase':phase,'gpuIndex':lane,'problem':None})
  except Exception:pass
 print(json.dumps({'workers':workers,'gpus':gpus,'models':{'observedAt':observed,'items':items},'archive':archive,'observedAt':observed}))
 """
@@ -186,7 +200,7 @@ print(json.dumps({'workers':workers,'gpus':gpus,'models':{'observedAt':observed,
         command = ['ssh', '-o', 'BatchMode=yes', '-o', 'StrictHostKeyChecking=yes', '-o', 'ConnectTimeout=3', '-p', port, host, 'python3 -']
         process = subprocess.run(command, input=code, text=True, capture_output=True, timeout=7, check=True)
         data = json.loads(process.stdout)
-        if len(data['workers']) != 2:
+        if len(data['workers']) != 3:
             return result
         result.update(ok=True, workers=data['workers'], gpus=data.get('gpus',[]), models=data.get('models'), archive=data.get('archive'), observedAt=data['observedAt'])
     except Exception:
@@ -244,6 +258,9 @@ def daemons(performance=None):
         ('inbox', 'Task inbox', 'Durably stores incoming requests and notifies the coordinator for Task Keeper.', 'vision.influx.artwork.task-inbox'),
         ('enforcer', 'Enforcer', 'Checks ready work against observed assignments, records penalties and escalates dispatch gaps.', 'vision.influx.artwork.enforcer'),
         ('performance', 'Performance', 'Watches the Performance engineer lifecycle and asks the coordinator to reactivate the engineer after a newly observed idle episode.', 'vision.influx.artwork.performance'),
+        ('production0', 'Production · GPU 0', 'Continuously generates paired production and precision prompts on the first GPU.', 'vision.influx.imagen.parity'),
+        ('production1', 'Production · GPU 1', 'Continuously generates disjoint paired scenes on the second GPU.', 'vision.influx.imagen.parity.gpu1'),
+        ('naming', 'Image naming', 'Names new arrivals automatically without image viewing or model calls.', 'vision.influx.imagen.naming'),
     ]
     items = []
     for ident, name, description, label in descriptions:
@@ -255,7 +272,15 @@ def daemons(performance=None):
                 except ValueError: pass
         alive = process.returncode == 0 and pid is not None and 'state = running' in process.stdout
         item = {'id':ident, 'name':name, 'description':description, 'alive':alive, 'pid':pid, 'errorCode':None}
-        if ident == 'studio':
+        if ident in ('production0','production1','naming'):
+            try:
+                relative={'production0':'.runtime/research/production-parity-daemon/state.json','production1':'.runtime/research/production-parity-daemon-gpu1/state.json','naming':'.runtime/image-names/daemon-status.json'}[ident]
+                state=json.loads((REPO/relative).read_text());heartbeat=state.get('heartbeatAt')
+                stamp=heartbeat if isinstance(heartbeat,(float,int)) else datetime.datetime.fromisoformat(heartbeat.replace('Z','+00:00')).timestamp()
+                fresh=-2<=time.time()-stamp<=12
+                item.update(alive=alive and fresh,observedAt=datetime.datetime.fromtimestamp(stamp,datetime.timezone.utc).isoformat(),heartbeatAt=heartbeat,lastActivityAt=state.get('updatedAt',heartbeat),activityCount=state.get('completedPairs'),activityLabel='Completed study pairs' if ident!='naming' else 'Automatic naming',stage=state.get('stage',state.get('status')),enabled=state.get('enabled'),sceneId=state.get('sceneId'))
+            except Exception:item['alive']=False
+        elif ident == 'studio':
             try:
                 state=json.loads((REPO/'.runtime/monitor/status.json').read_text())
                 item['lastActivityAt']=state.get('observedAt')

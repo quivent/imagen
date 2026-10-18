@@ -10,6 +10,22 @@
   },
   "rewrites": [
     {
+      "source": "/gallery",
+      "destination": "/gallery.html"
+    },
+    {
+      "source": "/gallery/",
+      "destination": "/gallery.html"
+    },
+    {
+      "source": "/gallery/studio",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/workbench/:panel(controls|tasks|agents)",
+      "destination": "/index.html"
+    },
+    {
       "source": "/api/:path*",
       "destination": "/api/studio?__studio_path=/api/:path*"
     },

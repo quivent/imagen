@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
-"""Watch ready work and real agents; persist penalties and escalate once.
+"""Persist ready-work penalties and directly dispatch existing available children.
 
-The Enforcer never fabricates activity or assigns/spawns agents directly. It
-queues ID-only notices to the full coordinator, which owns tool assignment.
-Only explicitly authorized, locally ready tasks are eligible.
+Team configuration selects the root. Assignment decisions belong to this daemon;
+the root is only a mechanical tool adapter when child input is prohibited.
 """
 import argparse
 import contextlib
@@ -13,11 +12,14 @@ import os
 from pathlib import Path
 import shutil
 import signal
+import sqlite3
 import sys
 import time
 import uuid
 
-from task_inbox import DEFAULT_DB, MONITOR, REPO, connect, dispatch_once, enforcement_tick, install, now
+from task_inbox import DEFAULT_DB, MONITOR, REPO, connect, enforcement_tick, install, now
+
+from agent_dispatch import dispatch_tick, initialize
 
 LABEL = 'vision.influx.artwork.enforcer'
 
@@ -31,6 +33,7 @@ def run(args):
         # Never replay an interrupted queue attempt: acceptance may have
         # happened before the process died. The coordinator reconciles it.
         db.execute("UPDATE inbox SET state='uncertain',outcome='interrupted_delivery_requires_reconciliation',updated_at=? WHERE state='sending' AND dedupe_key LIKE 'enforcement:%'", (now(),))
+        initialize(db)
         stop = False
 
         def stopping(*_):
@@ -44,11 +47,12 @@ def run(args):
             try:
                 enforcement_tick(db, args.monitor, args.tasks,
                                  Path(args.db).parent / 'enforcement.json', run_id)
-                outcome = dispatch_once(db, args.db, args.thread, args.codex, enforcement_only=True)
-                if outcome:
+                outcomes = dispatch_tick(db, args.monitor, args.tasks, args.team, args.codex,
+                                         assignments_path=args.monitor.parent / 'assignments.json')
+                for outcome in outcomes:
                     print(json.dumps(outcome), flush=True)
                 db.execute('INSERT OR REPLACE INTO daemon_state VALUES(?,?)', ('enforcer_heartbeat', now()))
-            except (OSError, ValueError) as exc:
+            except (OSError, ValueError, KeyError, TypeError, sqlite3.Error) as exc:
                 # Payload-free logs: never include raw snapshots or errors.
                 print(json.dumps({'event': 'enforcement_observation_failed', 'type': type(exc).__name__}), flush=True)
             time.sleep(args.interval)
@@ -61,11 +65,12 @@ def main():
     sub = parser.add_subparsers(dest='command', required=True)
     for name in ('daemon', 'install'):
         p = sub.add_parser(name)
-        p.add_argument('--thread', required=True, help='full coordinator session; child session input is prohibited')
+        p.add_argument('--thread', required=True, help='legacy service identity; team.json rootThread controls child dispatch')
         p.add_argument('--codex', default=shutil.which('codex') or 'codex')
         if name == 'daemon':
             p.add_argument('--monitor', type=Path, default=MONITOR)
             p.add_argument('--tasks', type=Path, default=REPO / 'tasks.json')
+            p.add_argument('--team', type=Path, default=REPO / '.runtime/monitor/team.json')
             p.add_argument('--interval', type=float, default=2)
     sub.add_parser('status')
     args = parser.parse_args()

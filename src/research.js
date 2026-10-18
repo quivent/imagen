@@ -1,4 +1,5 @@
 import './research.css';
+import {selectedStudy,observeStudy,selectStudy} from './study-context.js';
 import {mountExperimentPlanner} from './research-experiment-planner.js';
 import {mountPipelinePicker} from './research-pipeline-picker.js';
 import {researchCatalog} from './research-catalog.js';
@@ -11,6 +12,11 @@ export function mountResearch({root,isActive=()=>true}){
  let documentId=new URL(location.href).searchParams.get('document');
  let section=researchDocuments.find(item=>item.id===documentId)?.section||'Methods';
  const drafts=new Map();
+ const promptContext=()=>selectedStudy()==='flux1-prompt-clarity';
+ const contextDocuments=()=>researchDocuments.filter(item=>promptContext()?item.study==='flux1-prompt-clarity':!item.study);
+ if(documentId&&researchDocuments.some(d=>d.id===documentId))selectStudy(researchDocuments.find(d=>d.id===documentId).study==='flux1-prompt-clarity'?'flux1-prompt-clarity':'glsl-worlds');
+ if(promptContext()&&!documentId){documentId='production-parity';section='Studies';}
+
  const element=(tag,text,className)=>{const node=document.createElement(tag);if(text)node.textContent=text;if(className)node.className=className;return node;};
  const entries=()=>[...researchCatalog,...state.ideas];
  const message=text=>{$('status').textContent=text;};
@@ -22,10 +28,10 @@ export function mountResearch({root,isActive=()=>true}){
   if(record){
    if($('document-content').dataset.id!==record.id){$('document-content').replaceChildren(researchDocumentBody(record.content));$('document-content').dataset.id=record.id;}
    const related=researchDocuments.find(item=>item.id===record.related);$('related').hidden=!related;
-   if(related){$('related').textContent=related.section==='Studies'?'Open study plan':'Read the explanation';$('related').onclick=()=>openDocument(related.id);}
+   if(related){$('related').textContent=related.title;$('related').onclick=()=>openDocument(related.id);}
    $('back').textContent='Back to '+section.toLowerCase();return;
   }
-  $('documents').replaceChildren(...researchDocuments.filter(item=>item.section===section).map(item=>{
+  $('documents').replaceChildren(...contextDocuments().filter(item=>item.section===section).map(item=>{
    const card=element('article',null,'research-card');card.append(element('span',item.kind+' · '+item.status,'research-kind'),element('h2',item.title),element('p',item.description));
    const open=element('button',section==='Studies'?'Read study plan':'Read document');open.type='button';open.onclick=()=>openDocument(item.id);card.append(open);return card;
   }));
@@ -40,6 +46,9 @@ export function mountResearch({root,isActive=()=>true}){
  const pipelines=mountPipelinePicker($('pipelines'),{save:change,message,design:id=>{section='Plans';planner.design(id);render();}});
  function render(){
   if(disposed||!active)return;
+  $('sections').hidden=promptContext();$('prompt-documents').hidden=!promptContext();
+  if(promptContext()){$('prompt-documents').replaceChildren(...contextDocuments().map(item=>{const b=element('button',item.kind);b.type='button';b.setAttribute('aria-pressed',String(item.id===documentId));b.onclick=()=>openDocument(item.id);return b;}));}
+  const heading=root.querySelector('.research-heading');heading.querySelector('h1').textContent=promptContext()?'FLUX.1 · Prompt Clarity':'Many ways into a world.';heading.querySelector('p:last-child').textContent=promptContext()?'Specification, implementation and protocol for one paired prompt experiment.':'Methods, models, representations and renderers we can combine, test and question.';
   for(const button of $('sections').children)button.setAttribute('aria-pressed',String(button.dataset.section===section));
   const methods=section==='Methods';$('method-tools').hidden=!methods;$('families').hidden=!methods;$('grid').hidden=!methods;
   root.querySelector('.research-protocol').hidden=!methods;
@@ -70,7 +79,7 @@ export function mountResearch({root,isActive=()=>true}){
  }
  async function load(){
   if(loaded||loading||!active||disposed)return;loading=true;const version=stateVersion;
-  try{const response=await fetch('/api/research-notes',{cache:'no-store'});if(!response.ok)throw new Error();const fetched=await response.json();if(version===stateVersion)state=fetched;loaded=true;message('Notes and ideas are saved on this workstation. Model and pipeline candidates have not been benchmarked here.');}
+  try{const response=await fetch('/api/research-notes',{cache:'no-store'});if(!response.ok)throw new Error();const fetched=await response.json();if(version===stateVersion)state=fetched;loaded=true;message(promptContext()?'Study notes are saved here. Execution status and light guidance are in Controls.':'Notes and ideas are saved on this workstation. Model and pipeline candidates have not been benchmarked here.');}
   catch{message('Showing the research catalog; the local notebook is unavailable.');}
   finally{loading=false;render();}
  }
@@ -80,6 +89,7 @@ export function mountResearch({root,isActive=()=>true}){
  $('shortlist').onclick=()=>{shortlist=!shortlist;$('shortlist').setAttribute('aria-pressed',String(shortlist));render();};
  $('add').onclick=()=>{const open=$('idea-form').hidden;$('idea-form').hidden=!open;$('add').setAttribute('aria-expanded',String(open));if(open)$('idea-form').elements.title.focus();};
  $('idea-form').onsubmit=async event=>{event.preventDefault();const form=event.currentTarget,button=form.querySelector('button');button.disabled=true;try{await change({type:'idea',title:form.elements.title.value,description:form.elements.description.value});form.reset();form.hidden=true;$('add').setAttribute('aria-expanded','false');family='Open ideas';shortlist=false;$('shortlist').setAttribute('aria-pressed','false');$('search').value='';render();message('Research idea saved.');}catch(error){message(error.message);}finally{button.disabled=false;}};
+ const releaseStudy=observeStudy(()=>{documentId=promptContext()?'production-parity':null;section=promptContext()?'Studies':'Methods';$('idea-form').hidden=true;if(active)updateDocumentURL();render();});
  render();void load();
- return {setActive(value){active=value;if(active){render();void load();}},destroy(){disposed=true;active=false;drafts.clear();planner.destroy();}};
+ return {setActive(value){active=value;if(active){render();void load();}},destroy(){releaseStudy();disposed=true;active=false;drafts.clear();planner.destroy();}};
 }
