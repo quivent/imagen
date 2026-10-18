@@ -11,6 +11,13 @@ from parity_daemon import ParityDaemon,atomic
 from test_parity_daemon import FakeController
 SETTINGS={'width':512,'height':512,'steps':28,'guidance_scale':3.5,'max_sequence_length':512}
 class StudySettingsTests(unittest.TestCase):
+ def test_inflight_pair_never_recompiles_when_new_prompt_revisions_arrive(self):
+  with tempfile.TemporaryDirectory() as t:
+   root=Path(t);study_root=root/'study';current=study.prepare_corpus(study_root,SETTINGS,'scene-001',42)
+   def changed_prepare(*args,**kwargs):raise AssertionError('An in-flight package must not be recompiled')
+   FakeController.states={};daemon=ParityDaemon(root/'daemon',study_root,FakeController,changed_prepare)
+   atomic(daemon.root/'config.json',{'settings':SETTINGS});daemon.update(enabled=True,currentPackage=current['id'])
+   result=daemon.tick();self.assertEqual(result['completedPairs'],1);self.assertIsNone(result['currentPackage'])
  def test_landscape_and_portrait_choices(self):
   for width,height in [(1536,1024),(1024,1536),(768,512)]:
    value={**SETTINGS,'width':width,'height':height,'max_sequence_length':512}

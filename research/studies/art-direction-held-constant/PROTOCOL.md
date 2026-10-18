@@ -1,58 +1,51 @@
 # Art Direction, Held Constant
 
-ADHC-001 · Revision 2 · Production parity · First pair ready for review
+ADHC-001 · Revision 3 · Continuous two-GPU production
 
-## Question
+## Research question
 
-Does precision in prompt drafting improve the artwork when the scene and image-generation setup are held constant? Begin with our existing production formula, even though that formula is not Jay's preferred long-term approach.
+Does explicit art direction change and improve an image compared with a substantive baseline describing the same scene? Text differences alone do not establish a visible difference or an improvement. Jay judges the generated artwork; agents do not view images or screenshots.
 
-This revision replaces the earlier three-brief, 36-image proposal. That proposal's sample texts remain in `plan.json` as `archivedPilotBriefs`; they are not the current workload. The separate FPC-001 single-scene, three-seed draft is also not this study.
+The scene pool contains 150 geographic scenes. Preserve their identities and original source prompts in `corpus.json`. Thousands of archived images came from repeated scenes and seeds, not thousands of independently authored prompts. Original catalog authorship is unknown.
 
-## Where the thousands came from
+## Current prompt revision
 
-The preserved production refiller reads 150 prompts from `deployment/controller/docs/artwork/geographic-scenes.json`. It cycles through them for FLUX1 and FLUX2, then repeats with a new seed on each pass. Thousands of generated images therefore do not establish thousands of independently drafted prompts. The catalog does not identify the original drafting model or author; that provenance remains unknown.
+`baselines-40.json` records revision `ADHC-001-baseline40-qwen77-v1`:
 
-`corpus.json` freezes all 150 source scenes, their exact production prompts, the catalog file hash and individual prompt hashes. The first precision rewrite is saved as an assistant-authored draft; the remaining 149 are explicitly undrafted. Never substitute the three example briefs for this source pool.
+- **A — assistant baseline:** a substantive assistant-written prompt, targeting roughly 40 CLIP tokens, preserving the scene and painterly style. A scene title or five-word label is insufficient. Small overruns are accepted; do not damage content to satisfy a cosmetic count.
+- **B — Qwen revision:** Qwen revises that exact assistant baseline with explicit composition, spatial relationships, lighting, material or anatomy instructions. Ground additional art direction in the preserved source scene. Do not introduce unrelated subjects, lose defining counts/exclusions, or substitute punctuation/synonyms for a meaningful intervention. Target at most 77 CLIP tokens.
 
-## Conditions
+Record actual text, authorship, baseline/revision hashes, actual CLIP and T5 token counts, and exact lexical changes. Record Qwen's explanation separately: it can misdescribe its own changes. Independent text review must approve a revision before production can select it. Rejected or unreviewed text is visible as such and is not applied. A text audit does not establish image quality.
 
-- **Production:** the exact saved production prompt, including the original style formula, exclusions and dimension prose.
-- **Precision:** an assistant-drafted rewrite of that same scene. Clarify composition, spatial relationships, materials, light and instructions already present. Preserve the scene's content, intended style, exclusions and framing. Do not add subjects or silently improve the artistic concept.
+FLUX1 uses both CLIP (77 tokens including special tokens) and T5 (up to 512 tokens). T5 can use text beyond CLIP's window. These are different tokenizers and counts; neither limit refers to image dimensions. The native worker keeps T5 conditioning at 512. Do not truncate strings silently or add a hidden suffix after measuring them.
 
-Freeze the precision draft beside its source before generating either condition. Prompt drafting is the intervention. Save its author and final text; do not silently change it in response to output.
+Historical packages remain immutable. Earlier pairs used the preserved full catalog prompt and an assistant rewrite; their sources are retained. New baseline/Qwen packages have explicit `promptRevision` and author metadata and preserve the historical source text. Do not aggregate their results as one unchanged intervention. Until an individual scene has an approved revision, its historical prompt flow may continue; this transition is incremental, not a claim that all 150 Qwen revisions are ready.
 
-Both prompts must receive the same noncreative runner suffix, if any. Preserve existing dimension wording consistently in both conditions and use identical actual output dimensions. Correcting an aspect-ratio conflict in only the precision condition would confound that comparison.
+## Execution and parity
 
-## One GPU, alternating conditions
+Two existing FLUX1 workers operate on the persistent volume. GPU0 uses HTTP 18761; GPU1 uses HTTP 18763. Both use the same original native FLUX1 source and model. One authoritative scheduler implementation, `tools/artwork/parity_daemon.py`, runs in two persistent launchd lanes with shared scene/seed reservations. No separate refiller or competing scheduler.
 
-Start with FLUX.1 dev on one available GPU:
+For each pair, freeze A/B, checkpoint, runtime precision, dimensions, seed, steps, guidance and conditioning. Generate A then B serially on the same GPU. Different scenes can run concurrently on different GPUs. Later passes use new paired seeds. Reviews, ratings, app closure and navigation MUST NOT stop continuous generation; honor an explicit user pause.
 
-1. Select one production scene and freeze its precision counterpart.
-2. Freeze the shared model/runtime settings and paired seed.
-3. Generate its production condition, then its precision condition, serially.
-4. Present that pair in Imagen for Jay to compare. Pause after this first pair.
-5. When continuing, move to the next scene and repeat the pair sequence. Do not generate all production conditions first or batch all precision conditions together.
+Controls changes apply to the next complete pair on each GPU. An in-flight pair finishes its saved package even if settings or prompt revisions change meanwhile. No automatic replay of uncertain submissions: reconcile the recorded job ID.
 
-The 150 scenes are the source pool, not an instruction to enqueue everything now. One pass through FLUX1 would produce 300 images. The built-in OpenAI and FLUX2 workflows remain comparison candidates; running all three would produce 900 images at one repetition. Neither additional workflow nor the full pool is automatically scheduled.
+Keep actual output dimensions equal within a pair. Current settings are observed at runtime, not inferred from prose or an old plan. The UI supports square, landscape and portrait; landscape 1024 short edge yields 1536 × 1024. Historical dimension wording remains historical provenance, not an instruction to alter only one arm.
 
-## Parity
+## Feedback, review and storage
 
-Within every FLUX pair, hold checkpoint, transformer and encoder precision, output dimensions, seed, steps, guidance and conditioning limits constant. Freeze the settings actually selected for the available GPU before execution; do not silently reuse the unrelated FPC-001 pilot's 512-square settings.
+Pixtral observes and provides feedback. It does not independently rewrite prompts, alter settings or direct generation. Qwen may revise assistant prompts under this explicit protocol. No automatic feedback-to-prompt crosstalk is enabled. A later feedback-driven study needs its own recorded intervention and revision.
 
-Check effective conditioning and complete outgoing prompts. If either caption is truncated, expose that difference rather than assuming both reached the model intact. Seeds match within FLUX pairs; they do not imply matched noise across unrelated generators.
+Compare retains paired results and human choices, including ties/neither. Prompts shows assistant baseline and Qwen revision side by side, actual counts, exact changes and independent review state. The compact Production HUD distinguishes observed rendering, between-image work, stale observations and upload state; a loaded model is not proof of generation.
 
-Cross-workflow comparisons must use the same frozen prompt conditions and actual dimensions where supported. OpenAI's hidden prompt processing makes that a workflow comparison. Do not claim a clean comparison of model weights alone.
+Keep models and originals on the verified persistent volume. Use the existing single R2 uploader/index writer for both job roots. The naming daemon reads metadata and preserves image IDs/hashes. Never expose secrets or create local model/backup copies in Git. Never deploy Vercel merely by changing the local app.
 
-## Review and operation
+## Sources and verification
 
-Jay compares blinded left/right results; labels can be revealed after the choice. Permit ties and neither, and keep comments brief. Agents do not view images. No automatic juror calls or creative rewrite loop is implied.
+- `tools/artwork/prompt_revisions.py`: hash/authorship/token/independent-approval gate.
+- `tools/artwork/prompt_clarity.py`: immutable paired packages and provenance.
+- `tools/artwork/study_controller.py`: existing per-package execution and reconciliation.
+- `tools/artwork/revise_assistant_baselines.py`: resumable Qwen drafting with exact-baseline hashes.
+- `docs/PRODUCTION-DAEMON.md`: two-lane operation and safe recovery.
+- `docs/LIVE-STATUS-MATRIX.md`: timestamped observations; not permanent guarantees.
 
-Keep minimal job bookkeeping in the background to prevent duplicate submissions after interruption. Do not make routine hashes, receipts or execution records a user-facing ceremony. Stop on an uncertain submission rather than generating it again.
-
-Reuse the existing single R2 uploader. Never create a second index writer, alter production queues, start paid hardware or schedule the full corpus merely by opening this study.
-
-## Implementation and current readiness
-
-The source pool and revised design are recorded in `corpus.json` and `plan.json`. All 150 production prompt hashes have been checked against the preserved catalog. The first precision draft is saved and its two-image pair has been generated and imported automatically into Stream and Compare. It is waiting for Jay’s review. Remaining scenes are not scheduled. The first pair explicitly uses the live native profile’s 512 × 512 output, 28 steps, guidance 3.5, conditioning limit 512 and seed 42 for both conditions. Volume V.56453901 was verified mounted at /workspace before generation.
-
-`tools/artwork/prompt_clarity.py` now supports schema-2 corpus packages through `prepare-corpus`, with explicit settings supplied as JSON on stdin. The shared `tools/artwork/study_controller.py` runs these packages with a one-pair budget, reusing the existing isolated factory and native command adapter. Older FPC-001 packages remain separate and unchanged. The built-in runner remains available at `tools/artwork/builtin_runner.js` for a separately scheduled reference lane.
+OpenAI image generation and the older FLUX2 workflow remain separate candidates. They are not scheduled by this protocol or by opening a tab. The old FPC-001 pilot and archived three-brief proposal are not the active workload.

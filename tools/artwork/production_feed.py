@@ -160,7 +160,7 @@ class ProductionFeed:
                           'requestPair': pair_id, 'package': identity,
                           'sceneName': scene.get('name') or scene.get('id') or 'Scene',
                           'sceneId': scene.get('id'), 'seed': pair.get('seed'),
-                          'completedAt': completed_at})
+                          'completedAt': completed_at,'promptRevision':package.get('promptRevision','historical-production')})
             if current is None:
                 current = public
         completed = max(0, int(daemon.get('completedPairs', 0)))

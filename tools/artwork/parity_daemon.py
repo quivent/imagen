@@ -123,10 +123,12 @@ class ParityDaemon:
         settings=study_settings.read(self.study_root,self.config()['settings'])['settings']
         if state.get('currentPackage') and (self.study_root/'runs'/state['currentPackage']/'package.json').is_file():
             settings=study.load_package(state['currentPackage'],self.study_root)['settings']
-        package=self.prepare(self.study_root,settings,scene['id'],state['seed'])
+        # Prompt revisions may arrive while A/B is in flight. Finish the exact
+        # saved package before considering any new wording for the next pair.
+        package=study.load_package(state['currentPackage'],self.study_root) if state.get('currentPackage') and (self.study_root/'runs'/state['currentPackage']/'package.json').is_file() else self.prepare(self.study_root,settings,scene['id'],state['seed'])
         if state['currentPackage'] and state['currentPackage']!=package['id']:
             return self.attention('Current frozen scene changed; existing work retained without replay')
-        self.update(currentPackage=package['id'],stage='running',problem=None,activeSettings=settings)
+        self.update(currentPackage=package['id'],stage='running',problem=None,activeSettings=settings,activePromptRevision=package.get('promptRevision','historical-production'))
         c=self.controller(package['id'],self.study_root);control=c.status()
         # A complete pair is a durable scheduling checkpoint, regardless of its review state.
         if len(control.get('pairs',{}))<len(package['pairs']):

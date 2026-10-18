@@ -1,29 +1,27 @@
-# Production parity implementation
+# Production study implementation
 
-The current preparation source is `plan.json` revision 2 plus `corpus.json`. This supersedes the three-brief workload while retaining its archived drafts.
+The active system is continuous dual-GPU FLUX1 production, with immutable per-scene A/B packages and optional human review. It is not a one-pair pilot that pauses for review.
 
-## Recorded
+## Prompt sources and authorship
 
-- Exact 150-scene production corpus, source-file SHA-256 and per-prompt SHA-256.
-- Explicit production/precision condition definitions and unknown original-author provenance.
-- First precision draft saved with assistant authorship; remaining 149 explicitly undrafted.
-- One active workflow, FLUX1; one GPU; serial condition pairs.
-- One pair as the starting checkpoint. The full pool and other workflows are not automatically authorized workloads.
+`corpus.json` preserves all 150 historical catalog prompts and assistant rewrites. `baselines-40.json` contains 150 substantive assistant-written compact baselines, their source hashes and actual installed-tokenizer counts. Qwen drafts revisions of those exact baselines; it does not author the baseline. The resumable runner stores responses and exact text diffs, with independent approval separate from Qwen self-reported claims.
 
-## Connected execution
+`prompt_revisions.ready_revision` checks source identity, baseline hash, revision's baseline hash, revision hash, named authors, measured CLIP/T5 counts, token-verified status and independent approval. Only matching approved rows override a future package. Original source text is preserved in package provenance. Unready rows retain the historical flow so production continues. Do not equate a completed baseline corpus with 150 completed Qwen revisions.
 
-`prompt_clarity.py` supports immutable schema-2 corpus packages via `compile_corpus_package` and `prepare_corpus`. The shared controller, isolated factory and native adapter generated the first production/precision pair and imported it into study Stream and Compare. The local API selects the latest ADHC package automatically. Older FPC-001 packages remain unchanged.
+`compile_corpus_package` freezes the selected texts and explicit settings into its package identity. Loading a package reconstructs it from its frozen contents, without consulting today's mutable revision file. Requests, arm order, seed, settings and hashes are integrity checked. The scheduler loads an existing in-flight package rather than re-compiling it when revisions arrive.
 
-The first pair uses explicit live-profile settings: 512 × 512, 28 steps, guidance 3.5, conditioning limit 512 and seed 42. Its one-pair budget stops for review. The persistent volume was verified before execution.
+## Runtime and display
 
-Remaining work is to draft and schedule further scenes as directed, rather than silently expanding the first-pair authorization.
+- `parity_daemon.py` is the one scheduler implementation; launchd runs independent GPU0/GPU1 lane roots and shared reservations. Both native worker endpoints use FLUX1.
+- `study_controller.py` handles each immutable pair. Reviews remain optional and never gate the scheduler.
+- `server/prompt-study.mjs` exposes bounded study pages, shared settings, actual frozen current scenes, the prompt comparison data and compact HUD observations.
+- `src/production-study-controls.js` shares the actual choice template with legacy Controls. Frame, resolution, steps and guidance persist for the next pair; reset affects only unsaved edits. Context is fixed 512 by the native worker.
+- `src/prompt-comparison.js` shows both texts, real counts, independent lexical differences and review status.
+- `src/production-hud.js` uses fresh worker observations, actual recent render durations and archive observations. No simulated progress percentage.
+- `server/model-chat.mjs` and `src/model-chat.js` provide real local Qwen/Pixtral text/code chat, separate saved histories and cancellation. They do not execute generated code or automatically change prompts.
 
-The pair scheduler must complete production and precision for the same scene and seed before moving to another scene. App navigation must not start inference. Keep background bookkeeping minimal and invisible during normal use, and reuse the single R2 uploader.
+Actual settings, readiness and counts belong to the live endpoints and task ledger. Use the status matrix for the last explicit verification, not as a permanent status claim.
 
-## Verification
+## Validation
 
-The source validator checks all 150 exact prompt strings and hashes, stable scene order and IDs, accurate precision draft status and authorship, and serial execution policy. It makes no network calls and queues no jobs:
-
-```sh
-python3 -B tools/artwork/production_parity.py
-```
+Historical source identity is checked offline by `python3 -B tools/artwork/production_parity.py`. Targeted tests cover immutable prompt revisions, independent approval/hash gates, paired settings, in-flight preservation, the two-lane feed, HUD freshness and chat authorization/stream cancellation. Native hidden-WebKit checks cover navigation, side-by-side prompts, no-overflow tabs, the HUD and actual chat Send→model→reply. Agents must never view artwork or screenshots.

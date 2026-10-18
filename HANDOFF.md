@@ -1,5 +1,22 @@
 # Imagen handoff — 2026-10-18
 
+## Superseding update — work completed after the original handoff
+
+The original notes below describe an earlier incomplete state. Current state supersedes them:
+
+- Qwen is LIVE on TP2 across both GPUs, NVFP4 with integrated MTP3 verified by actual accepted-token metrics.768MiB KV perGPU, context4096, seq1, prefill512, eager/text-only; FlashInfer autotuning disabled after an oversized warmup workspace failed. Actual128-token response4.32s. Pixtral is loaded and answered real native chat.
+- Qwen/Pixtral chat tabs are working in the native app; real Send→model→stream→savedreply tests passed at1.8s/2.0s.
+- All150 substantive assistant baselines are written and actualCLIP/T5-counted, roughly40tokens with painterly style retained (small overruns accepted by Jay). Qwen is REVISING those assistant baselines, not authoring them. Its runner and independent text reviewer are still working; latest counts are visible in Prompts. Do not claim all150Qwen revisions complete.
+- Prompts tab shows the two texts side-by-side, exact highlights/counts, Qwen selfclaims separately from independent audit, pending/rejected status. Only independently approved matching hash/authorship/token rows enter a new production package.
+- New rollout is live: first2approved baseline/Qwen pairs completed on the EXISTING GPU0/GPU1 production daemons. Historical packages/source unchanged. A running pair loads its immutable saved package, so text updates never recompile or stop it. Unready scenes retain historical generation during incremental transition.
+- Compact Production HUD is implemented and native-DOM verified: actual worker rendering/between-image/stale states, actual recent40-image render average and pipeline stages. Tabs expand to one row fitting1024px. Worlds top-level; Monitor hidden.
+- Checkpointdd39bf4 commits168app/server/source files and sanitized current supervisor/launcher configs. Final follow-up commit covers rollout guards, docs and final chat/UI changes. No Verceldeploy or Gitpush requested/performed.
+- Jay says complete all open tasks EXCEPT Qwen's work. Non-Qwen tasks (protocol docs, fresh-arrival naming, live-status matrix, rollout) are now finished/being final-committed. Qwen drafting and semantic review remain open; do not interrupt them. docs/LIVE-STATUS-MATRIX.md contains dated observations.
+- Fresh names:12post-baseline arrivals,6from eachGPU, exact SHA/receipt/reservation/model-condition proof; all named and inGallery. Namingdaemon PID39323 active,3859/3859covered at latest check.
+- Current user instructions remain: noimage/screenshotviewing, noChrome, no secrets, no generation stopping, no automatic Pixtral→prompt crosstalk.
+
+## Original handoff snapshot (historical)
+
 ## Immediate user requests — unfinished, priority
 
 Jay is replacing this agent. Stop unrelated work. The immediate request is substantive baseline prompts and Qwen revisions of those prompts, with a visible comparison and a compact truthful Production HUD. Jay explicitly says Qwen must write a revision of the assistant-written prompt. Do not substitute Qwen-authored baselines for that division of authorship.

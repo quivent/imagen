@@ -46,6 +46,7 @@ export function reviewPairs({workflow,post,el,disabled=false,stream=false,drafts
   const existing=cache.get(pair.id);
   if(existing?.signature===signature){nodes.push(existing.card);continue;}
   const card=el('article');card.append(el('h2',pair.sceneName||pair.id));
+  if(pair.promptRevision&&pair.promptRevision!=='historical-production')card.append(el('p','Assistant baseline → Qwen revision','prompt-summary'));
   const imageSignature=JSON.stringify(['left','right'].map(slot=>pair.images[slot].url));
   const grid=existing?.imageSignature===imageSignature?existing.grid:el('div',null,'prompt-arms');
   if(grid!==existing?.grid){

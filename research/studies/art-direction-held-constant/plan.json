@@ -2,13 +2,13 @@
   "schema": 1,
   "id": "ADHC-001",
   "title": "Art Direction, Held Constant",
-  "status": "continuous-dual-gpu-production",
+  "status": "continuous-dual-gpu-with-audited-qwen-revisions",
   "researchNote": "WHERE-THE-IMAGE-QUALITY-COMES-FROM",
   "design": {
     "scenes": 150,
     "promptConditions": [
-      "production",
-      "precision"
+      "assistant-baseline",
+      "qwen-revision"
     ],
     "repetitions": 1,
     "plannedImages": 900,
@@ -16,13 +16,13 @@
     "startingImages": 2,
     "unit": "workflow × production scene × prompt condition × repetition",
     "review": "blinded paired human review in Imagen; ties allowed",
-    "scopePolicy": "Jay authorized the FLUX1 scene flow to continue through the frozen production pool on 18 October 2026. No other model workflow is scheduled."
+    "scopePolicy": "Continuous FLUX1 on two existing GPUs. Approved compact baseline/Qwen revisions roll out per scene; historical pairs and unready-scene flow are preserved. Other generator workflows remain unscheduled."
   },
   "requestedOutput": {
     "width": 1024,
     "height": 1024,
     "transparentBackground": false,
-    "actualDimensionsPolicy": "Freeze actual output dimensions before execution and hold them equal within pairs. Keep existing dimension prose unchanged in both conditions; resolve wrapper differences equally."
+    "actualDimensionsPolicy": "Read actual shared settings; both conditions use identical actual dimensions. New compact prompts do not contain output dimensions or hidden wrappers."
   },
   "workflows": [
     {
@@ -45,11 +45,11 @@
     }
   ],
   "execution": {
-    "state": ".runtime/research/art-direction-held-constant/factory",
+    "state": ".runtime/research/flux1-prompt-clarity",
     "enqueueNow": false,
     "generateNow": false,
     "concurrency": 2,
-    "scheduling": "One GPU; production then precision for the same scene and seed, followed by the next scene. No condition batches.",
+    "scheduling": "Two GPU lanes; baseline then revision serially for the same scene/seed/settings on one GPU. Reviews never gate generation.",
     "firstReview": "Reviews are optional and never stop generation.",
     "settingsPolicy": "Freeze one runtime settings profile before starting; identical model, dimensions, seed, steps, guidance, precision and conditioning limit within each pair. Do not inherit the obsolete single-scene pilot settings implicitly.",
     "draftsReady": true,
@@ -70,7 +70,7 @@
     "imagesPerWorker": 1,
     "workerLanes": 2
   },
-  "revision": 2,
+  "revision": 3,
   "corpus": "corpus.json",
   "archivedPilotBriefs": [
     {
@@ -95,9 +95,12 @@
   "initialWorkflow": "flux1",
   "additionalWorkflows": "builtin-openai and flux2 remain comparison candidates; do not schedule them automatically.",
   "promptPolicy": {
-    "production": "Exact catalog prompt bytes, including existing style wording and dimension requests.",
-    "precision": "Draft from the same production scene and intent. Preserve content, style, exclusions and requested framing; make relationships and instructions clearer. No new subjects, visual enhancements or hidden suffixes.",
-    "drafter": "Imagen assistant; preserve each final rewrite alongside its production source before generation.",
-    "originalAuthor": "Not established; do not attribute the source corpus to a model without evidence."
+    "production": "Substantive assistant-authored baseline targeting roughly40 actual CLIP tokens; preserved historical source remains unchanged.",
+    "precision": "Qwen revises that exact assistant baseline with source-grounded explicit art direction. Target<=77CLIPtokens; retain defining subjects/counts/style/exclusions.",
+    "drafter": "Imagen assistant writes baselines; Qwen writes revisions; independent text approval is required before applying.",
+    "originalAuthor": "Historical catalog authorship unknown.",
+    "revisionFile": "baselines-40.json",
+    "revisionId": "ADHC-001-baseline40-qwen77-v1",
+    "rollout": "Per-scene hash/authorship/token/independent-approval gate; in-flight packages remain immutable; unready scenes retain historical flow."
   }
 }

@@ -26,7 +26,7 @@ export function mountModelChat({root,model,isActive=()=>true,storage=globalThis.
    if(!response.body)throw Error('Streaming is unavailable in this app.');
    const reader=response.body.getReader(),decoder=new TextDecoder();let pending='',done=false;
    while(true){const part=await reader.read();if(ticket!==request)break;pending+=decoder.decode(part.value||new Uint8Array(),{stream:!part.done});let at;while((at=pending.indexOf('\n'))!==-1){const line=pending.slice(0,at);pending=pending.slice(at+1);if(!line.trim())continue;const value=JSON.parse(line);if(value.error)throw Error(value.error);if(typeof value.delta==='string'){const follow=log.scrollHeight-log.scrollTop-log.clientHeight<80;answer.content+=value.delta;output.textContent=answer.content;if(follow)log.scrollTop=log.scrollHeight;status.textContent=models[model].name+' is replying…';}if(value.done)done=true;}if(part.done)break;}
-   if(ticket===request){if(!done)throw Error('The connection ended before the reply completed.');status.textContent='Reply complete · saved locally.';}
+   if(ticket===request){if(!done)throw Error('The connection ended before the reply completed.');if(!answer.content.trim())throw Error('The model returned no text. Try again when it is ready.');status.textContent='Reply complete · saved locally.';}
   }catch(error){if(ticket===request&&error.name!=='AbortError'){status.textContent=error.message||'The model is unavailable.';if(!answer.content){history=history.filter(row=>row!==answer);output.parentNode?.remove();}}}
   finally{if(ticket===request){controller=null;busy(false);persist();if(active&&isActive())input.focus();}}
  };

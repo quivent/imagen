@@ -2,7 +2,7 @@
 
 `tools/artwork/parity_daemon.py` is the **single authoritative scheduler** for the production/precision study, ADHC-001. Do not launch `production_flow.py`, a competing scheduler implementation, or a second uploader. Two GPU lanes use this same daemon implementation with separate lane roots and a shared reservation directory. The daemon reuses the existing native FLUX.1 worker and per-package controller. It does not rent hardware, alter precision, or start a replacement model server.
 
-For each of the 150 preserved production scenes, it generates the exact production prompt, then its saved precision rewrite, on one GPU with the same seed and explicit settings. Pass one uses seed 42, pass two 43, and so on. Each pair is an immutable package. A missing precision draft waits for its saved draft; it never substitutes a placeholder. Completed pairs remain available for review, but **review never stops the next scene**.
+For each of the 150 preserved scenes, it generates the frozen baseline, then its saved precision revision, on one GPU with the same seed and explicit settings. Pass one uses seed 42, pass two 43, and so on. Each pair is an immutable package. A missing precision draft waits for its saved draft; it never substitutes a placeholder. Completed pairs remain available for review, but **review never stops the next scene**.
 
 ## Install and start
 
@@ -69,7 +69,7 @@ Normal startup does not require manual reconciliation, human review, or restarti
 
 ## Two GPU lanes
 
-The native GPU1 deployment is in `deployment/worker/second-flux1-gpu1/`. Its worker uses HTTP18763 and a separate native socket/job root. It shares the existing volume models and unchanged source with GPU0. The single uploader discovers both roots under the normal `flux1-dev` archive profile.
+The native GPU1 deployment is in `deployment/worker/second-flux1-gpu1/`. Its worker uses HTTP 18763 and a separate native socket/job root. It shares the existing volume models and unchanged source with GPU0. The single uploader discovers both roots under the normal `flux1-dev` archive profile.
 
 For a fresh two-lane installation, supply `laneCount: 2`, `laneIndex: 0`, `workerPort: 18761`, `initialRange: [0, 75]` in GPU0's installation JSON. Supply `laneCount: 2`, `laneIndex: 1`, `workerPort: 18763`, `initialRange: [75, 150]` for GPU1, with the same settings and SSH endpoint. Install GPU1 using:
 
@@ -82,3 +82,9 @@ python3 -B tools/artwork/parity_daemon.py --root .runtime/research/production-pa
 GPU1's launchd label is `vision.influx.imagen.parity.gpu1`. Its heartbeat, logs, enabled state, and cursor persist in its separate root. Both lanes use the same immutable study-package store and reservation records. First-pass ranges partition the corpus; later passes use disjoint alternating scene indices. Each lane keeps production then precision serially paired on its own GPU. Review remains optional and never gates either lane.
 
 Do not reconfigure a live lane's endpoint or settings halfway through a pair. Existing in-flight work and reservations must be reconciled before changing lane partitioning. Never remove a reservation to make an uncertain job run again.
+
+## Audited prompt revision rollout
+
+The historical catalog and completed packages remain unchanged. `prompt_revisions.py` can select an independently approved assistant baseline/Qwen revision from `baselines-40.json` for the next package. The compiler verifies authors, source/baseline/revision hashes and actual tokenizer counts, records prompt revision metadata and preserves the original source. Unreviewed or rejected drafts are not selected. Unready scenes retain historical generation during the incremental transition; do not claim all 150 new revisions are complete.
+
+An active package is loaded from its immutable saved data until both conditions finish, even if newer text or settings arrive. Reload changed scheduler source only at a checkpoint with no active package, while holding its state lock. Do not kill an in-flight image or delete a reservation. Shared Controls changes also wait for the next pair.

@@ -51,8 +51,9 @@ def compile_package(plan=None,catalog=None):
             requests.append({'scene':f'fpc-{identity[:12]}-{pair["id"]}','name':f'Prompt Clarity · {pair["id"]} · {arm}','backend':'command','model':'flux1-dev','prompt':prompts[arm],'width':settings['width'],'height':settings['height'],'settings':{k:v for k,v in settings.items() if k not in ('width','height')}|{'seed':pair['seed']},'variant':identity+'-'+arm,'family':'landscape'})
     return {'id':identity,**design,'status':'prepared','execution':{'started':False,'backend':'command','concurrency':1,'liveIdentityVerified':False,'tokenizationVerified':False},'pairs':pairs,'requests':requests,'plannedImages':len(requests)}
 
-def compile_corpus_package(settings,scene_id='scene-001',corpus=None,seed=42):
+def compile_corpus_package(settings,scene_id='scene-001',corpus=None,seed=42,revision_path=None):
     """Freeze one exact production scene and its saved precision rewrite, offline."""
+    use_revision=corpus is None or revision_path is not None
     if corpus is None:
         corpus=json.loads(CORPUS.read_text())
         source=(REPO/corpus['source']).read_bytes()
@@ -85,11 +86,26 @@ def compile_corpus_package(settings,scene_id='scene-001',corpus=None,seed=42):
     if not re.fullmatch('[a-f0-9]{64}',corpus['sourceSha256']):raise ValueError('Invalid corpus source identity')
     # Copy through JSON so callers cannot mutate the returned frozen source indirectly.
     frozen_scene=json.loads(canonical(scene))
+    revision=None
+    if use_revision:
+        from prompt_revisions import ready_revision,DEFAULT
+        revision=ready_revision(scene,revision_path or DEFAULT)
+        if revision:
+            prompts={'A':revision['baselinePrompt'],'B':revision['precisionPrompt']}
+            frozen_scene.update(prompt=prompts['A'],precisionPrompt=prompts['B'],
+                productionPromptSha256=sha(prompts['A']),precisionAuthor='Qwen',
+                historicalProductionPrompt=scene['prompt'],sourcePromptSha256=scene['productionPromptSha256'],
+                promptRevision=revision['promptRevision'],baselineAuthor='Imagen assistant',
+                baselineTokens=revision['baselineTokens'],precisionTokens=revision['precisionTokens'])
     design={'schema':2,'study':'ADHC-001','model':'flux1-dev',
         'sourceCorpus':{'source':corpus['source'],'sourceSha256':corpus['sourceSha256'],'scene':frozen_scene},
         'precisionPolicy':'Hold the actual checkpoint and runtime precision identical within the pair; verify live identity before execution.',
         'settings':settings,'seeds':[seed],'prompts':prompts,'promptHashes':{k:sha(v) for k,v in prompts.items()},
         'knownDiscrepancies':['Production and precision prompts retain the original 1536x1024 prose; explicit runtime dimensions apply equally.']}
+    if revision or frozen_scene.get('promptRevision'):
+        design['promptRevision']=frozen_scene['promptRevision']
+        design['promptAuthors']={'A':'Imagen assistant','B':'Qwen'}
+        design['knownDiscrepancies']=['Compact assistant baseline versus its audited Qwen revision; original source prompt retained in provenance.']
     identity=sha(canonical(design));left='A' if int(sha(identity+':'+str(seed))[0],16)%2==0 else 'B'
     pair={'id':'pair-01','sceneId':scene_id,'seed':seed,'submissionOrder':['A','B'],'reviewSlots':{'left':left,'right':'B' if left=='A' else 'A'}}
     requests=[{'scene':f'adhc-{identity[:12]}-{scene_id}','name':f'Production parity · {scene["name"]} · {arm}',

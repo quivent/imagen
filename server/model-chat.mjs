@@ -63,7 +63,7 @@ export function installModelChat(server,{authorize=authorized,launch=remote}={})
   void(async()=>{
    if(!await authorize(req)){fail(401,'Workstation session required.');return;}
    if(!String(req.headers['content-type']||'').startsWith('application/json')){fail(415,'JSON required.');return;}
-   let raw='';for await(const chunk of req){raw+=chunk;if(Buffer.byteLength(raw)>65536){fail(413,'Conversation is too long.');return;}}
+   req.setEncoding('utf8');let raw='';for await(const chunk of req){raw+=chunk;if(Buffer.byteLength(raw)>65536){fail(413,'Conversation is too long.');return;}}
    let messages;try{messages=validateChat(JSON.parse(raw));}catch{fail(400,'Use text messages and keep the conversation short.');return;}
    if(busy.has(model)){fail(409,'This model is already answering. Stop or wait for that reply.');return;}
    if(res.destroyed)return;

@@ -83,8 +83,13 @@ export function installPromptStudy(server,{root=defaultRoot,launch,archive=colle
    const productionPlan=JSON.parse(await readFile(new URL('../research/studies/art-direction-held-constant/plan.json',import.meta.url),'utf8'));
    const corpus=JSON.parse(await readFile(new URL('../research/studies/art-direction-held-constant/corpus.json',import.meta.url),'utf8'));
    const sceneId=productionFlow?.daemon?.sceneId||productionFlow?.pairs?.[0]?.sceneId;
-   const currentScene=corpus.scenes.find(scene=>scene.id===sceneId)||corpus.scenes[0];
-   const currentScenes=(productionFlow?.daemon?.lanes||[]).map(lane=>({...lane,scene:corpus.scenes.find(scene=>scene.id===lane.sceneId)||null}));
+   const fallbackScene=corpus.scenes.find(scene=>scene.id===sceneId)||corpus.scenes[0];
+   const currentScenes=await Promise.all((productionFlow?.daemon?.lanes||[]).map(async lane=>{
+    let scene=corpus.scenes.find(scene=>scene.id===lane.sceneId)||null;
+    if(/^[a-f0-9]{64}$/.test(lane.currentPackage||''))try{const pkg=JSON.parse(await readFile(path.join(root,'runs',lane.currentPackage,'package.json'),'utf8'));scene=pkg.sourceCorpus?.scene||scene;}catch{}
+    return {...lane,scene};
+   }));
+   const currentScene=currentScenes.find(row=>row.scene)?.scene||fallbackScene;
    let savedSettings;try{savedSettings=JSON.parse(await readFile(path.join(root,'settings.json'),'utf8'));}catch{savedSettings={settings:productionPlan.execution.frozenFirstPairSettings};}
    const productionStudy={id:productionPlan.id,revision:productionPlan.revision,sceneCount:corpus.scenes.length,precisionDrafts:corpus.scenes.filter(scene=>scene.precisionPrompt).length,startingImages:productionPlan.design.startingImages,firstScene:corpus.scenes[0],currentScene,currentScenes,settings:savedSettings.settings,settingsRevision:savedSettings.revision||null};
    send(200,{ok:true,preview,status,workflow,productionStudy,daemon:productionFlow?.daemon||null,productionFlow:productionFlow?{page:productionFlow.page,pages:productionFlow.pages,totalPairs:productionFlow.totalPairs}:null});
