@@ -1,0 +1,132 @@
+{
+  "schema": 1,
+  "defaultExperiment": "experiment-4",
+  "experiments": [
+    {
+      "id": "experiment-1",
+      "number": 1,
+      "label": "Experiment 1 \u00b7 FLUX.2",
+      "title": "Draa Valley \u00b7 FLUX.2",
+      "source": {
+        "id": "1ebd04ec5f1d4eb8bee09bde90c4a206",
+        "profile": "flux2-dev-nf4",
+        "scene": "scene-008",
+        "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. A Draa Valley oasis in southern Morocco: a narrow calm irrigation channel in the foreground bordered by mud banks and date palms, irregular small cultivated plots in the middle distance, dry ochre foothills and earth-built settlement beyond. Emphasize precious shallow water meeting arid earth, dappled evening shade, no tropical lake. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place.",
+        "width": 1024,
+        "height": 1024,
+        "settings": {
+          "seed": 47,
+          "steps": 28,
+          "guidance_scale": 3.5,
+          "max_sequence_length": 512
+        },
+        "seconds": 33.41064109900617,
+        "sha256": "4750bc169d8d8f66e1f19176904c783d458121bfe8929c959180475f70e35218",
+        "imageKey": "artwork-comparison/2026-10-17-flux-study/flux2-dev-nf4/1ebd04ec5f1d4eb8bee09bde90c4a206/result.png",
+        "imageUrl": "/api/gallery/image?key=artwork-comparison%2F2026-10-17-flux-study%2Fflux2-dev-nf4%2F1ebd04ec5f1d4eb8bee09bde90c4a206%2Fresult.png",
+        "created": 1792280853.5324557
+      },
+      "searchSize": 256,
+      "validationSize": 512
+    },
+    {
+      "id": "experiment-2",
+      "number": 2,
+      "label": "Experiment 2 \u00b7 FLUX.1",
+      "title": "Draa Valley \u00b7 FLUX.1",
+      "source": {
+        "id": "bd704f7d9a3e4cd29d14d39695fab4cf",
+        "profile": "flux1-dev",
+        "scene": "scene-008",
+        "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. A Draa Valley oasis in southern Morocco: a narrow calm irrigation channel in the foreground bordered by mud banks and date palms, irregular small cultivated plots in the middle distance, dry ochre foothills and earth-built settlement beyond. Emphasize precious shallow water meeting arid earth, dappled evening shade, no tropical lake. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place.",
+        "width": 512,
+        "height": 512,
+        "settings": {
+          "seed": 47,
+          "steps": 28,
+          "guidance_scale": 3.5,
+          "max_sequence_length": 512
+        },
+        "seconds": 3.1255664589989465,
+        "sha256": "9416c4ea4a2a9767d5025cedbd0887600c4618d2eb49f76b5d7bde0fe5a0c897",
+        "imageKey": "artwork-comparison/2026-10-17-flux-study/flux1-dev/bd704f7d9a3e4cd29d14d39695fab4cf/result.png",
+        "imageUrl": "/api/gallery/image?key=artwork-comparison%2F2026-10-17-flux-study%2Fflux1-dev%2Fbd704f7d9a3e4cd29d14d39695fab4cf%2Fresult.png",
+        "created": 1792275152.7101195,
+        "title": "Cultivated Plots \u2014 Ochre Earth",
+        "titleSource": "prompt-metadata"
+      },
+      "searchSize": 512,
+      "validationSize": 512
+    },
+    {
+      "id": "experiment-3",
+      "number": 3,
+      "label": "Experiment 3 \u00b7 Source initialized",
+      "title": "Draa Valley \u00b7 Source initialized",
+      "source": {
+        "id": "bd704f7d9a3e4cd29d14d39695fab4cf",
+        "profile": "flux1-dev",
+        "scene": "scene-008",
+        "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. A Draa Valley oasis in southern Morocco: a narrow calm irrigation channel in the foreground bordered by mud banks and date palms, irregular small cultivated plots in the middle distance, dry ochre foothills and earth-built settlement beyond. Emphasize precious shallow water meeting arid earth, dappled evening shade, no tropical lake. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place.",
+        "width": 512,
+        "height": 512,
+        "settings": {
+          "seed": 47,
+          "steps": 28,
+          "guidance_scale": 3.5,
+          "max_sequence_length": 512
+        },
+        "seconds": 3.1255664589989465,
+        "sha256": "9416c4ea4a2a9767d5025cedbd0887600c4618d2eb49f76b5d7bde0fe5a0c897",
+        "imageKey": "artwork-comparison/2026-10-17-flux-study/flux1-dev/bd704f7d9a3e4cd29d14d39695fab4cf/result.png",
+        "imageUrl": "/api/gallery/image?key=artwork-comparison%2F2026-10-17-flux-study%2Fflux1-dev%2Fbd704f7d9a3e4cd29d14d39695fab4cf%2Fresult.png",
+        "created": 1792275152.7101195,
+        "title": "Cultivated Plots \u2014 Ochre Earth",
+        "titleSource": "prompt-metadata"
+      },
+      "searchSize": 512,
+      "validationSize": 512,
+      "initialization": {
+        "version": 1,
+        "strategy": "camera-composition then joint source-RGB appearance fit",
+        "comparisonExperiment": "experiment-2",
+        "startsFrom": "authored scaffold; no fitted Experiment2 parameters",
+        "visualInspectionByAgent": false
+      }
+    },
+    {
+      "id": "experiment-4",
+      "number": 4,
+      "label": "Experiment 4 \u00b7 Source surface",
+      "title": "Draa Valley \u00b7 Source surface",
+      "source": {
+        "id": "bd704f7d9a3e4cd29d14d39695fab4cf",
+        "profile": "flux1-dev",
+        "scene": "scene-008",
+        "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. A Draa Valley oasis in southern Morocco: a narrow calm irrigation channel in the foreground bordered by mud banks and date palms, irregular small cultivated plots in the middle distance, dry ochre foothills and earth-built settlement beyond. Emphasize precious shallow water meeting arid earth, dappled evening shade, no tropical lake. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place.",
+        "width": 512,
+        "height": 512,
+        "settings": {
+          "seed": 47,
+          "steps": 28,
+          "guidance_scale": 3.5,
+          "max_sequence_length": 512
+        },
+        "seconds": 3.1255664589989465,
+        "sha256": "9416c4ea4a2a9767d5025cedbd0887600c4618d2eb49f76b5d7bde0fe5a0c897",
+        "imageKey": "artwork-comparison/2026-10-17-flux-study/flux1-dev/bd704f7d9a3e4cd29d14d39695fab4cf/result.png",
+        "imageUrl": "/api/gallery/image?key=artwork-comparison%2F2026-10-17-flux-study%2Fflux1-dev%2Fbd704f7d9a3e4cd29d14d39695fab4cf%2Fresult.png",
+        "created": 1792275152.7101195,
+        "title": "Cultivated Plots \u2014 Ochre Earth",
+        "titleSource": "prompt-metadata"
+      },
+      "searchSize": 512,
+      "validationSize": 512,
+      "defaultMethod": 3,
+      "initialization": {
+        "strategy": "source-colored GLSL surface",
+        "depthVerified": false
+      }
+    }
+  ]
+}

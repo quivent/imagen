@@ -1,0 +1,20 @@
+[package]
+name = "imagen-desktop"
+version = "0.1.0"
+edition = "2021"
+description = "Native desktop host for the Imagen artwork research studio"
+
+[lib]
+name = "imagen_desktop_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+
+[profile.release]
+strip = true
+lto = true
+codegen-units = 1

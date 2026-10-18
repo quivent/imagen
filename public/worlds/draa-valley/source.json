@@ -1,0 +1,19 @@
+{
+  "id": "1ebd04ec5f1d4eb8bee09bde90c4a206",
+  "profile": "flux2-dev-nf4",
+  "scene": "scene-008",
+  "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. A Draa Valley oasis in southern Morocco: a narrow calm irrigation channel in the foreground bordered by mud banks and date palms, irregular small cultivated plots in the middle distance, dry ochre foothills and earth-built settlement beyond. Emphasize precious shallow water meeting arid earth, dappled evening shade, no tropical lake. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place.",
+  "width": 1024,
+  "height": 1024,
+  "settings": {
+    "seed": 47,
+    "steps": 28,
+    "guidance_scale": 3.5,
+    "max_sequence_length": 512
+  },
+  "seconds": 33.41064109900617,
+  "sha256": "4750bc169d8d8f66e1f19176904c783d458121bfe8929c959180475f70e35218",
+  "imageKey": "artwork-comparison/2026-10-17-flux-study/flux2-dev-nf4/1ebd04ec5f1d4eb8bee09bde90c4a206/result.png",
+  "imageUrl": "/api/gallery/image?key=artwork-comparison%2F2026-10-17-flux-study%2Fflux2-dev-nf4%2F1ebd04ec5f1d4eb8bee09bde90c4a206%2Fresult.png",
+  "created": 1792280853.5324557
+}

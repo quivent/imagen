@@ -1,0 +1,69 @@
+{
+  "sourceRepository": "kinship-of-cancer",
+  "sourceDirectory": "tools/artwork",
+  "strategy": "Reuse portable core already captured in deployment/controller/tools/artwork; add missing runner and isolated entry point.",
+  "imported": {
+    "builtin_runner.js": {
+      "sourceSha256": "8835052d2f8ffe7ed087cf424f60b497764d414bf2f14f2abe2dee631688a782",
+      "changes": [
+        "Resolve checkout at execution time",
+        "Preserve no-image-viewing rule for deferred reference jobs",
+        "Reject reference/edit queues before claiming new work",
+        "Support explicit per-study state through functions.exec storage",
+        "Verify Imagen import marker before opening any queue"
+      ],
+      "imagenSha256": "c6492d4ec74662a52babb93c3df2957d06a4bd19ff941b1434424ab9419072cd"
+    },
+    "tests/test_factory.py": {
+      "sourceSha256": "f9a509c53907b11c93afade63e41ea92b7b8da497ddeaadf71ebd8f5139b0f20",
+      "changes": [
+        "Resolve existing Imagen deployment core for test imports"
+      ],
+      "imagenSha256": "27214d8ac86c06732d6d5d8f56b4c6d88d8b62c1bdd378c7b5586468cf019178"
+    }
+  },
+  "reusedCore": {
+    "store.py": {
+      "sourceSha256": "e9a362c14c371492313ac38abfbebe841ce0fdfbd53364413c999d1c0767fab6",
+      "imagenSha256": "e9a362c14c371492313ac38abfbebe841ce0fdfbd53364413c999d1c0767fab6"
+    },
+    "images.py": {
+      "sourceSha256": "39e01cd263161353019d032a8ba108effe4b694301ffec10b1a991e5d6cc8a2b",
+      "imagenSha256": "39e01cd263161353019d032a8ba108effe4b694301ffec10b1a991e5d6cc8a2b"
+    },
+    "workers.py": {
+      "sourceSha256": "5af958493d8a1cd5da38dd056ae983df3dde51a5bf6c866a4645b4572c77739a",
+      "imagenSha256": "5af958493d8a1cd5da38dd056ae983df3dde51a5bf6c866a4645b4572c77739a"
+    },
+    "service.py": {
+      "sourceSha256": "1965ab16eab6be4e4f88da2291661e144bc4e49efae5b7ffd64db08ec73d89fb",
+      "imagenSha256": "1965ab16eab6be4e4f88da2291661e144bc4e49efae5b7ffd64db08ec73d89fb"
+    },
+    "desk.html": {
+      "sourceSha256": "d2da00aaab2e53102b0befd67bdf8fc87f0d768e25595badf121bb06974c2389",
+      "imagenSha256": "d2da00aaab2e53102b0befd67bdf8fc87f0d768e25595badf121bb06974c2389"
+    },
+    "desk.css": {
+      "sourceSha256": "2272fdc02223a7ba66500f937e2e86f71d7d218e63bd3bb2f795dc722a69a4bd",
+      "imagenSha256": "2272fdc02223a7ba66500f937e2e86f71d7d218e63bd3bb2f795dc722a69a4bd"
+    },
+    "desk.js": {
+      "sourceSha256": "a76ba0ce80bbab39fd6f9ce3fb1d50aafd927fb1146f6198c25bfedb42f390d4",
+      "imagenSha256": "a76ba0ce80bbab39fd6f9ce3fb1d50aafd927fb1146f6198c25bfedb42f390d4"
+    }
+  },
+  "notMoved": [
+    ".state and absolute asset paths",
+    "native app and site-order synchronization",
+    "publication and existing remote Vercel frontend",
+    "launchd/remote adapters and live queue",
+    "R2 single-writer uploader",
+    "judges and downloads already owned by Imagen deployment"
+  ],
+  "entryPoint": {
+    "file": "artwork.py",
+    "sha256": "1bb818065395c1eba7961d6873c3cb24b413f3b385cf5c38f4e805ee0f5643be",
+    "defaultState": ".runtime/artwork-research",
+    "productionStateInherited": false
+  }
+}

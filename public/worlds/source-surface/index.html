@@ -1,0 +1,7 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Imagen · Source surface</title>
+<style>body{margin:0;background:#0e1217;color:#ede9e1;font:14px system-ui}canvas{display:block;width:min(100vw,100vh);height:min(100vw,100vh);position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);touch-action:none}header,footer{position:fixed;left:20px;right:20px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}header{top:18px}footer{bottom:18px}a,button{color:inherit;background:#182125e8;border:1px solid #414c4e;padding:10px 14px;border-radius:8px;text-decoration:none;font:inherit}button{cursor:pointer}span{background:#0e1217dd;padding:8px;border-radius:6px}#status{font-size:12px;max-width:680px}button[aria-pressed=true]{border-color:#e0bb83;color:#e0bb83}</style></head>
+<body><canvas id="surface" tabindex="0" aria-label="Source-colored GLSL surface"></canvas>
+<header><a href="/workbench?experiment=4&amp;method=structure">← Workbench</a><span>Experiment 4 · Source surface</span></header>
+<footer><button id="return">Return to source view</button><button id="depth" role="switch" aria-checked="false">Relief</button><span>WASD to move · drag to look</span><span id="status" role="status">Preparing GLSL geometry…</span></footer>
+<script type="module" src="viewer.js"></script></body></html>

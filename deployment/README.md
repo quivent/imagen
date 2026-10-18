@@ -20,7 +20,9 @@ This is a source bundle, not a backup. It contains no weights, images, queues, j
 | `api/` | Existing authenticated Controls and public R2 gallery API source; Vercel-only API deployment configuration. |
 | `../server/`, `../scripts/`, `../serve.py` | Current local-first studio and its daemons. Corrections/Winners no longer import code from a sibling repository. |
 
-The captured two-card topology uses GPU 0 for native FLUX.1 and the judge services; GPU 1 runs FLUX.2 with its NF4 text encoder. Original model precision, 28 steps, seed policy, 3.5 study guidance and judge GPU allocations are preserved. Jay raised FLUX.2 continuous output to 1024×1024 on 2026-10-17; FLUX.1 remains 512×512. Two cards are independent lanes; their VRAM is not combined.
+The two-card topology uses GPU 0 for native FLUX.1 and the judge services; GPU 1 runs FLUX.2 with a Transformers FP8 text encoder and BF16 diffusion transformer. Jay authorized the encoder upgrade and FLUX.2 continuous output at 1024×1024 on 2026-10-17; FLUX.1 remains 512×512. The study default remains 28 steps and 3.5 guidance with the existing seed policy. Two cards are independent lanes; their VRAM is not combined.
+
+The FP8 encoder uses optimized compressed-tensors modules, disables KV caching, and preserves the 512-token conditioning limit. Text-only pruning retains 31 of 40 decoder layers and removes the unused vision tower, projector and vocabulary head. Startup compares full and pruned conditioning bitwise on an existing queued prompt before accepting work. An ordinary queued 1024×1024 image completed after cutover; no extra validation image was generated. The historical `flux2-dev-nf4` profile ID remains stable for queue compatibility. Setting `ARTWORK_FLUX2_ENCODER=nf4` in the installed wrapper restores the retained NF4 checkpoint when the lane is safely idle.
 
 ```mermaid
 flowchart LR
@@ -83,10 +85,11 @@ Start only the required download programs after private HF access exists:
 
 ```sh
 supervisorctl start artwork-download
+supervisorctl start artwork-encoder-fp8-download
 supervisorctl start artwork-judges-download artwork-gemma4-download
 ```
 
-The latter command is optional when judges are not being deployed. The recipes download the pinned checkpoints and validate their existing size/hash/header rules. The FLUX downloader writes the completion `models/manifest.json`; committed `models/pins.json` is only a source specification and must never be substituted for that completion evidence. Model downloads do not need a copied model volume.
+The judges command is optional when judges are not being deployed. The recipes download the pinned checkpoints and validate their size/hash/header rules. The FLUX downloader writes the completion `models/manifest.json`; committed `models/pins.json` is only a source specification and must never be substituted for that completion evidence. The FP8 downloader separately verifies all six weight shards against pinned sizes and SHA-256 hashes before writing `models/flux2-fp8/.download-complete.json`. Wait for both completion records before starting FLUX.2. Model downloads do not need a copied model volume.
 
 Do not run `artwork-judges-install` after the pinned `dependencies --judges` operation; its captured historical recipe is retained for architectural provenance, while the pinned installer is the redeploy path. Qwen remains a declared alternative in the source catalog; the current configured judge services use Pixtral and Gemma and do not automatically load Qwen.
 

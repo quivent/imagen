@@ -1,0 +1,86 @@
+{
+  "repo": "TensorTemplar/flux2-text-encoder-fp8",
+  "revision": "5f347bad665ef0379e079bdec9f9a28758217c20",
+  "files": [
+    {
+      "path": "chat_template.json",
+      "bytes": 2772,
+      "sha256": null
+    },
+    {
+      "path": "config.json",
+      "bytes": 12965,
+      "sha256": null
+    },
+    {
+      "path": "generation_config.json",
+      "bytes": 116,
+      "sha256": null
+    },
+    {
+      "path": "model-00001-of-00006.safetensors",
+      "bytes": 4999782360,
+      "sha256": "147a6d072cac635752bc9ca6737b0f6eebb4bd7b509ea749b8c74cd135cd54be"
+    },
+    {
+      "path": "model-00002-of-00006.safetensors",
+      "bytes": 4835581712,
+      "sha256": "ea5d5f6f4904f4b9a4c9ca97b05e18745bafe1944f0a3e27cc1138a8cdcd7b7f"
+    },
+    {
+      "path": "model-00003-of-00006.safetensors",
+      "bytes": 4835547216,
+      "sha256": "bddd7cd883a7de6834a659726db9d623db52f00b89507243f6cd781978a1d3ae"
+    },
+    {
+      "path": "model-00004-of-00006.safetensors",
+      "bytes": 4835547224,
+      "sha256": "463e23f9d972d7beb211cca8e8e4c88a93f92c8d2feeb9d557a3cbba3481a148"
+    },
+    {
+      "path": "model-00005-of-00006.safetensors",
+      "bytes": 4950943144,
+      "sha256": "fba3c326bdb3449b90f4750e21be7741da2e1c77f7a1f0e5c81fd29da7dec557"
+    },
+    {
+      "path": "model-00006-of-00006.safetensors",
+      "bytes": 1342177424,
+      "sha256": "0712cb93d3b9d05902f1c99d04294296cdfa37829a5f56d6e9a879b280dc346e"
+    },
+    {
+      "path": "model.safetensors.index.json",
+      "bytes": 86517,
+      "sha256": null
+    },
+    {
+      "path": "preprocessor_config.json",
+      "bytes": 634,
+      "sha256": null
+    },
+    {
+      "path": "processor_config.json",
+      "bytes": 189,
+      "sha256": null
+    },
+    {
+      "path": "special_tokens_map.json",
+      "bytes": 21449,
+      "sha256": null
+    },
+    {
+      "path": "tekken.json",
+      "bytes": 14801330,
+      "sha256": "c604f35d1035f534519622c0ec83fed6184978d4fdee92a5bd2a50bc05438094"
+    },
+    {
+      "path": "tokenizer.json",
+      "bytes": 17078037,
+      "sha256": "b76085f9923309d873994d444989f7eb6ec074b06f25b58f1e8d7b7741070949"
+    },
+    {
+      "path": "tokenizer_config.json",
+      "bytes": 198120,
+      "sha256": null
+    }
+  ]
+}

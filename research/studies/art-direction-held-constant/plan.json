@@ -1,0 +1,71 @@
+{
+  "schema": 1,
+  "id": "ADHC-001",
+  "title": "Art Direction, Held Constant",
+  "status": "planned",
+  "researchNote": "WHERE-THE-IMAGE-QUALITY-COMES-FROM",
+  "design": {
+    "briefs": 3,
+    "promptConditions": [
+      "short",
+      "directed"
+    ],
+    "repetitions": 2,
+    "plannedImages": 36,
+    "unit": "workflow \u00d7 brief \u00d7 condition \u00d7 repetition",
+    "review": "blinded paired human review in Imagen; ties allowed"
+  },
+  "requestedOutput": {
+    "width": 1024,
+    "height": 1024,
+    "transparentBackground": false,
+    "actualDimensionsPolicy": "Validate originals; separate mismatched dimensions, never silently rescale or regenerate."
+  },
+  "workflows": [
+    {
+      "id": "builtin-openai",
+      "backend": "builtin",
+      "model": "builtin",
+      "identityPolicy": "Do not infer an underlying hosted model when not exposed."
+    },
+    {
+      "id": "flux1",
+      "backend": "command",
+      "model": "flux1-dev",
+      "settingsPolicy": "Freeze actual checkpoint, precision, conditioning limit and profile-specific sampling before execution."
+    },
+    {
+      "id": "flux2",
+      "backend": "command",
+      "model": "flux2-dev-nf4",
+      "settingsPolicy": "Historical profile ID; record actual FP8/NF4 encoder and transformer precision rather than infer them from its name."
+    }
+  ],
+  "briefs": [
+    {
+      "id": "oasis",
+      "name": "Draa Valley oasis",
+      "short": "Create a painterly landscape of a Draa Valley oasis in Morocco, with an irrigation channel, date palms, cultivated plots and an earth-built settlement.",
+      "directed": "Use case: landscape artwork for a restrained travel atlas. Show a Draa Valley oasis in southern Morocco: a narrow shallow irrigation channel enters the foreground, date palms frame its banks, irregular cultivated plots occupy the middle distance, and an earth-built settlement meets dry ochre foothills beyond. Keep near, middle and far distance legible. Use tactile earthen surfaces, believable palm silhouettes, warm late-afternoon light and readable cool shadows. Preserve the contrast between scarce water and arid terrain. One coherent painterly scene; no tropical lake, giant moon, captions, lettering, watermark or border."
+    },
+    {
+      "id": "courtyard",
+      "name": "Earthen courtyard",
+      "short": "Create a painterly view of an earthen Moroccan courtyard with an arched doorway, a small tree and a shallow water basin.",
+      "directed": "Use case: architectural artwork for a restrained travel atlas. Depict a quiet earthen Moroccan courtyard at human eye height. Place a recessed arched doorway beyond a shallow central water basin, with a modest tree slightly to one side. Make the wall thickness, doorway proportions, paving joints and contact shadows spatially coherent. Use warm plaster, weathered timber and subdued green leaves under soft directional morning light. Preserve readable shadow detail and tactile material differences. One coherent painterly view; no people, fantasy ornaments, lettering, captions, watermark or border."
+    },
+    {
+      "id": "imagen-icon",
+      "name": "Imagen icon",
+      "short": "Design a distinctive app icon for Imagen, an artist studio that turns images into explorable worlds. Use an opaque background and no text.",
+      "directed": "Use case: application icon for Imagen, an artist studio that turns images into explorable worlds. Center one luminous miniature landscape emerging from an ivory geometric picture frame into shallow three-dimensional terraces. Use a strong silhouette that remains readable at small sizes, restrained ochre and sage terrain, a small warm sun, tactile sculptural surfaces and precise edges. Place it on an opaque midnight-charcoal rounded-square tile with generous safe margin. Show only the icon itself, without a surrounding desktop or mockup. No words, letters, watermark, extra symbols or tiny decorative clutter."
+    }
+  ],
+  "execution": {
+    "state": ".runtime/research/art-direction-held-constant/factory",
+    "enqueueNow": false,
+    "runner": "tools/artwork/builtin_runner.js",
+    "protocol": "PROTOCOL.md",
+    "notes": "No one-command complete-study launcher or automatic Compare import is asserted."
+  }
+}

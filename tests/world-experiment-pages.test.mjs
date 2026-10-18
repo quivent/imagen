@@ -1,0 +1,21 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {worldExperimentPage} from '../server/world-experiment-pages.mjs';
+const metric=value=>({weighted_total:value});
+const image={url:'/image.png'};
+const run={id:'method1-exp2-run1',experimentId:'experiment-2',method:1,objectiveVersion:2,source:{sha256:'flux1'},shaderSha256:'shader',baseline:{components:metric(.8),image},best:{components:metric(.4),image},candidates:Array.from({length:45},(_,i)=>({id:i+1,components:metric(.8-i*.001),image})),views:[]};
+const data={defaultExperiment:'experiment-2',studies:[{id:'experiment-1',source:{sha256:'flux2'}},{id:'experiment-2',source:{sha256:'flux1'}}],experiments:[{...run,id:'old',experimentId:'experiment-1',source:{sha256:'flux2'}},run]};
+test('fixed20 page size, boundary deltas and source separation',()=>{
+ const first=worldExperimentPage(data,new URLSearchParams('page=1&view=page'));
+ assert.equal(first.experiment.candidates.length,20);assert.equal(first.pagination.total,45);assert.equal(first.pagination.totalPages,3);
+ assert.equal(first.experiment.candidates[0].previousComponents.weighted_total,.8);
+ const second=worldExperimentPage(data,new URLSearchParams('page=2'));
+ assert.equal(second.experiment.candidates.length,20);assert.equal(second.experiment.candidates[0].id,21);
+ assert.equal(second.experiment.candidates[0].previousComponents,run.candidates[19].components);
+ const latest=worldExperimentPage(data,new URLSearchParams('page=latest'));
+ assert.equal(latest.pagination.page,3);assert.equal(latest.experiment.candidates.length,5);
+ assert.equal(worldExperimentPage(data,new URLSearchParams('page=999')).pagination.page,3);
+ assert.equal(worldExperimentPage(data,new URLSearchParams('method=5')).experiment,null);
+ assert.equal(worldExperimentPage(data,new URLSearchParams('study=experiment-1')).selectedStudy,'experiment-1');
+ assert.throws(()=>worldExperimentPage(data,new URLSearchParams('page=0')));
+});

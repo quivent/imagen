@@ -7,8 +7,10 @@
   <title>Imagen · Artwork Studio</title>
   <script src="/studio-access.js"></script>
   <link rel="stylesheet" href="/src/worlds.css">
+  <link rel="stylesheet" href="/src/parameters.css">
   <link rel="icon" href="data:,">
   <link rel="stylesheet" href="/src/style.css">
+  <link rel="stylesheet" href="/src/workspace-navigation.css">
   <link rel="stylesheet" href="/src/metrics.css">
   <link rel="stylesheet" href="/src/monitor.css">
   <link rel="stylesheet" href="/src/agents.css">
@@ -25,11 +27,12 @@
 <body class="work-mode">
   <a class="skip" href="#main">Skip to content</a>
   <header class="masthead">
-    <div class="brand"><span class="mark" aria-hidden="true">◒</span><span>Artwork Studio<small>THE WORKING STUDIO</small></span></div>
+    <div class="brand"><span class="mark" aria-hidden="true">◒</span><span>Imagen<small>THE WORKING STUDIO</small></span></div>
     <div class="header-actions"><button id="show-details" type="button" class="quiet" aria-label="Expand details" title="Expand details" aria-expanded="false" aria-controls="gallery-introduction stream-introduction"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button></div>
   </header>
   <main id="main" tabindex="-1">
-    <div class="studio-tabs"><div class="studio-tab-buttons" role="tablist" aria-label="Artwork Studio">
+    <nav id="workspace-navigation" aria-label="Studio workspace"><button type="button" data-workspace="production" aria-pressed="false">Production</button><button type="button" data-workspace="workbench" aria-pressed="true">Workbench</button></nav>
+    <div class="studio-tabs"><div class="studio-tab-buttons" role="tablist" aria-label="Imagen">
       <button id="tab-stream" type="button" role="tab" aria-selected="true" aria-controls="stream-panel">Stream</button>
       <button id="tab-gallery" type="button" role="tab" aria-selected="false" aria-controls="gallery-panel" tabindex="-1">Compare</button>
       <button id="tab-controls" type="button" role="tab" aria-selected="false" aria-controls="controls-panel" tabindex="-1">Controls</button>
@@ -37,6 +40,8 @@
       <button id="tab-performance" type="button" role="tab" aria-selected="false" aria-controls="performance-panel" tabindex="-1">Performance</button>
       <button id="tab-models" type="button" role="tab" aria-selected="false" aria-controls="models-panel" tabindex="-1">Models</button>
       <button id="tab-seers" type="button" role="tab" aria-selected="false" aria-controls="seers-panel" tabindex="-1">Seers</button>
+      <button id="tab-workbench" type="button" role="tab" aria-selected="false" aria-controls="workbench-panel" tabindex="-1">Experiments</button>
+      <button id="tab-research" type="button" role="tab" aria-selected="false" aria-controls="research-panel" tabindex="-1">Research</button>
       <button id="tab-worlds" type="button" role="tab" aria-selected="false" aria-controls="worlds-panel" tabindex="-1">Worlds</button>
       <button id="tab-metrics" type="button" role="tab" aria-selected="false" aria-controls="metrics-panel" tabindex="-1">Metrics</button>
       <button id="tab-winners" type="button" role="tab" aria-selected="false" aria-controls="winners-panel" tabindex="-1">Winners</button>
@@ -47,6 +52,8 @@
       <button id="tab-monitor" type="button" role="tab" aria-selected="false" aria-controls="monitor-panel" tabindex="-1">Monitor</button>
     </div>
     </div>
+    <section id="workbench-panel" role="tabpanel" aria-labelledby="tab-workbench" hidden></section>
+    <section id="research-panel" role="tabpanel" aria-labelledby="tab-research" hidden></section>
     <section id="worlds-panel" role="tabpanel" aria-labelledby="tab-worlds" hidden></section>
     <section id="stream-panel" role="tabpanel" aria-labelledby="tab-stream">
       <section id="stream-introduction" class="introduction"><div><p class="eyebrow">LIVE FROM THE GENERATORS</p><h1>Images as they arrive.</h1><p class="subheading">Recent completed images from each model, gathered across the available space.</p></div></section>
@@ -83,10 +90,6 @@
         <div><p class="eyebrow">THE WORKING STUDIO</p><h1>The working studio.</h1><p class="subheading">A place, a model, a few considered choices.</p></div>
         <p id="control-connection" class="control-connection">Private controls</p>
       </div>
-      <section id="access-panel" class="access-panel" aria-labelledby="access-heading">
-        <div><p class="eyebrow">YOUR STUDIO</p><h2 id="access-heading">Open the controls.</h2><p>Use your access key to work with the generators.<br>The gallery is always here to look through.</p></div>
-        <form id="access-form"><label for="access-key">Access key</label><div class="access-entry"><input id="access-key" type="password" autocomplete="off" required aria-describedby="access-status"><button id="access-submit" type="submit" class="primary">Open controls</button></div><p id="access-status" class="small-note" role="status"></p></form>
-      </section>
       <section class="agent-strip" aria-labelledby="agent-heading"><div class="agent-strip-heading"><h2 id="agent-heading">The team</h2><p id="agent-summary">Assignment snapshot · 3 worker slots + 1 coordinator</p></div><div id="agent-assignments" class="agent-assignments"></div><p id="agent-updated" class="snapshot-time">Loading assignment snapshot.</p></section>
       <div id="control-workspace">
         <form id="generation-form" class="workbench">
@@ -99,28 +102,18 @@
           <div class="model-workbenches">
             <article class="model-workbench worker-lane" id="lane-flux1-dev">
               <div class="model-card-top"><button type="button" class="model-choice" data-model="flux1-dev" aria-pressed="true"><span class="model-number">01</span><span><strong>FLUX.1 <small>dev</small></strong><span class="model-precision">Native · BF16</span></span><span class="model-check" aria-hidden="true">↗</span></button><span class="lane-phase" data-private-control hidden id="phase-flux1-dev">Connecting</span></div>
-              <label class="model-step-control" for="model-steps-flux1">Steps for next FLUX.1 request<input id="model-steps-flux1" data-step-profile="flux1-dev" type="number" min="1" max="60" step="1" value="28" required></label>
-              <div class="preset-row" aria-label="FLUX.1 presets">
-                <button type="button" data-preset="draft" data-profile="flux1-dev" aria-pressed="false"><strong>16 steps</strong><span>512 · 16 steps</span></button>
-                <button type="button" data-preset="study" data-profile="flux1-dev" aria-pressed="true"><strong>28 steps</strong><span>512 · 28 steps</span></button>
-                <button type="button" data-preset="detail" data-profile="flux1-dev" aria-pressed="false"><strong>Large square</strong><span>1024 · 36 steps</span></button>
-              </div>
-              <div data-private-control hidden><p class="lane-current" id="current-flux1-dev">Current work will appear here.</p><dl class="lane-measures" id="measures-flux1-dev"></dl><button type="button" class="quiet lane-pause" id="pause-flux1-dev" disabled>Pause after this image</button></div>
+              <div class="preset-row" role="group" aria-label="FLUX.1 step count"><button type="button" data-step-button-profile="flux1-dev" data-steps="16" aria-pressed="false"><strong>16 steps</strong></button><button type="button" data-step-button-profile="flux1-dev" data-steps="28" aria-pressed="true"><strong>28 steps</strong></button><button type="button" data-step-button-profile="flux1-dev" data-steps="36" aria-pressed="false"><strong>36 steps</strong></button></div>
+              <div data-private-control hidden><p class="lane-current" id="current-flux1-dev">Current work will appear here.</p><dl class="lane-measures" id="measures-flux1-dev"></dl><button type="button" class="quiet lane-pause" id="pause-flux1-dev" disabled>Pause queue</button><p id="pause-note-flux1-dev" class="lane-pause-note">Finishes the current image first.</p></div>
             </article>
             <article class="model-workbench worker-lane" id="lane-flux2-dev-nf4">
-              <div class="model-card-top"><button type="button" class="model-choice" data-model="flux2-dev-nf4" aria-pressed="false"><span class="model-number">02</span><span><strong>FLUX.2 <small>dev</small></strong><span class="model-precision">BF16 · NF4 text encoder</span></span><span class="model-check" aria-hidden="true">↗</span></button><span class="lane-phase" data-private-control hidden id="phase-flux2-dev-nf4">Connecting</span></div>
-              <label class="model-step-control" for="model-steps-flux2">Steps for next FLUX.2 request<input id="model-steps-flux2" data-step-profile="flux2-dev-nf4" type="number" min="1" max="60" step="1" value="28" required></label>
-              <div class="preset-row" aria-label="FLUX.2 presets">
-                <button type="button" data-preset="draft" data-profile="flux2-dev-nf4" aria-pressed="false"><strong>16 steps</strong><span>512 · 16 steps</span></button>
-                <button type="button" data-preset="study" data-profile="flux2-dev-nf4" aria-pressed="false"><strong>28 steps</strong><span>1024 · 28 steps</span></button>
-                <button type="button" data-preset="detail" data-profile="flux2-dev-nf4" aria-pressed="false"><strong>Large square</strong><span>1024 · 36 steps</span></button>
-              </div>
-              <div data-private-control hidden><p class="lane-current" id="current-flux2-dev-nf4">Current work will appear here.</p><dl class="lane-measures" id="measures-flux2-dev-nf4"></dl><button type="button" class="quiet lane-pause" id="pause-flux2-dev-nf4" disabled>Pause after this image</button></div>
+              <div class="model-card-top"><button type="button" class="model-choice" data-model="flux2-dev-nf4" aria-pressed="false"><span class="model-number">02</span><span><strong>FLUX.2 <small>dev</small></strong><span class="model-precision">BF16 · FP8 text encoder</span></span><span class="model-check" aria-hidden="true">↗</span></button><span class="lane-phase" data-private-control hidden id="phase-flux2-dev-nf4">Connecting</span></div>
+              <div class="preset-row" role="group" aria-label="FLUX.2 step count"><button type="button" data-step-button-profile="flux2-dev-nf4" data-steps="28" aria-pressed="true"><strong>28 steps</strong></button><button type="button" data-step-button-profile="flux2-dev-nf4" data-steps="40" aria-pressed="false"><strong>40 steps</strong></button><button type="button" data-step-button-profile="flux2-dev-nf4" data-steps="50" aria-pressed="false"><strong>50 steps</strong></button></div>
+              <div data-private-control hidden><p class="lane-current" id="current-flux2-dev-nf4">Current work will appear here.</p><dl class="lane-measures" id="measures-flux2-dev-nf4"></dl><button type="button" class="quiet lane-pause" id="pause-flux2-dev-nf4" disabled>Pause queue</button><p id="pause-note-flux2-dev-nf4" class="lane-pause-note">Finishes the current image first.</p></div>
             </article>
           </div>
           <div class="workbench-body">
             <section class="scene-library" aria-labelledby="scene-library-heading"><div class="section-heading"><h3 id="scene-library-heading">01 <span>A place to begin</span></h3><button type="button" id="use-gallery-prompt" class="quiet">Current comparison ↗</button></div><div id="scene-choices" class="scene-choices" role="group" aria-label="Scene prompt"></div><details class="selected-prompt"><summary id="selected-scene-title">Choose a scene</summary><p id="selected-prompt-text"></p></details></section>
-            <section class="setting-library" aria-labelledby="setting-heading"><div class="section-heading"><h3 id="setting-heading">02 <span>Make it your own</span></h3><span class="fixed-setting">Square · context 512</span></div><div id="parameter-choices" class="parameter-choices"></div><details class="guidance-overrides"><summary>Per-model guidance overrides <span id="override-summary">Shared setting</span></summary><div id="model-overrides"></div></details><p class="sequence-note">Images run sequentially. Each repeat adds one to the seed.</p></section>
+            <section class="setting-library" aria-labelledby="setting-heading"><div class="section-heading"><h3 id="setting-heading">02 <span>Parameters</span></h3><span class="fixed-setting">Square · context 512</span></div><div class="parameter-model-switch" role="group" aria-label="Model parameters"><button type="button" data-model="flux1-dev" aria-pressed="true">FLUX.1 dev</button><button type="button" data-model="flux2-dev-nf4" aria-pressed="false">FLUX.2 dev</button></div><p id="parameter-profile" class="parameter-profile" aria-live="polite">Editing FLUX.1 dev</p><div id="parameter-choices" class="parameter-choices"></div><p class="sequence-note">Images run sequentially. Each repeat adds one to the seed.</p></section>
           </div>
           <p id="control-step-status" class="small-note" role="status"></p><div class="render-bar"><div><p class="eyebrow">SELECTED FOR NEXT REQUEST</p><p id="selected-settings" class="selected-settings"></p><p id="applied-settings" class="applied-settings">No request submitted from this page.</p></div><div class="render-actions"><button id="generate-both" disabled type="submit" class="primary">Run both models <span aria-hidden="true">↗</span></button><button id="generate-submit" disabled type="submit" class="quiet">Queue selected model <span aria-hidden="true">↗</span></button><p id="queue-status" class="small-note" role="status"></p></div></div>
         </form>

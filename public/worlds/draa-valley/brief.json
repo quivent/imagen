@@ -1,0 +1,37 @@
+{
+  "source": {
+    "id": "1ebd04ec5f1d4eb8bee09bde90c4a206",
+    "profile": "flux2-dev-nf4",
+    "scene": "scene-008",
+    "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. A Draa Valley oasis in southern Morocco: a narrow calm irrigation channel in the foreground bordered by mud banks and date palms, irregular small cultivated plots in the middle distance, dry ochre foothills and earth-built settlement beyond. Emphasize precious shallow water meeting arid earth, dappled evening shade, no tropical lake. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place.",
+    "width": 1024,
+    "height": 1024,
+    "settings": {
+      "seed": 47,
+      "steps": 28,
+      "guidance_scale": 3.5,
+      "max_sequence_length": 512
+    },
+    "seconds": 33.41064109900617,
+    "sha256": "4750bc169d8d8f66e1f19176904c783d458121bfe8929c959180475f70e35218",
+    "imageKey": "artwork-comparison/2026-10-17-flux-study/flux2-dev-nf4/1ebd04ec5f1d4eb8bee09bde90c4a206/result.png",
+    "imageUrl": "/api/gallery/image?key=artwork-comparison%2F2026-10-17-flux-study%2Fflux2-dev-nf4%2F1ebd04ec5f1d4eb8bee09bde90c4a206%2Fresult.png",
+    "created": 1792280853.5324557
+  },
+  "startedAt": 1792281049.7813091,
+  "reviews": {
+    "Pixtral": {
+      "feedback": "```json\n{\n  \"observed\": {\n    \"visible_composition\": \"A narrow calm irrigation channel in the foreground, bordered by mud banks and date palms, with irregular small cultivated plots in the middle distance.\",\n    \"landmarks\": \"A settlement with earth-built structures and a prominent tower in the background.\",\n    \"water_layout\": \"A narrow, calm irrigation channel in the foreground.\",\n    \"architecture\": \"Earth-built structures and a prominent tower in the background.\",\n    \"vegetation\": \"Date palms and other vegetation along the irrigation channel and in the cultivated plots.\",\n    \"palette\": \"Warm colors with earth tones, green from vegetation, and blue from water.\",\n    \"light_direction\": \"Soft, warm light from the setting sun.\",\n    \"camera\": \"A slightly elevated perspective looking towards the settlement.\"\n  },\n  \"inferred\": {\n    \"depth_and_hidden_regions\": \"Uncertain depth of the water channel, hidden regions behind structures, and the extent of the cultivated plots.\"\n  },\n  \"priorities\": {\n    \"recognizable_features\": [\n      \"The narrow irrigation channel with mud banks and date palms.\",\n      \"The earth-built settlement with a prominent tower.\",\n      \"The cultivated plots with green vegetation.\",\n      \"The warm, arid foothills in the background.\",\n      \"The soft, warm light from the setting sun.\"\n    ]\n  },\n  \"parameters\": {\n    \"camera_height\": \"Approximately 1.5 meters above the water level.\",\n    \"water_width\": \"Approximately 1 meter wide.\",\n    \"terrain_scale\": \"Large-scale terrain with foothills and a settlement.\",\n    \"colors\": \"Warm/cool colors with a balance towards warm tones.\"\n  }\n}\n```",
+      "finishReason": "stop",
+      "model": "pixtral-critic",
+      "observedAt": 1792281055.609382
+    },
+    "Gemma": {
+      "feedback": "```json\n{\n  \"observed\": {\n    \"composition\": \"Wide-angle landscape with a foreground irrigation channel leading toward a middle-ground oasis and a background settlement nestled against foothills.\",\n    \"landmarks\": \"Earth-built settlement with a prominent central tower/minaret, dry ochre foothills.\",\n    \"water_layout\": \"Narrow, calm irrigation channel in the foreground with reflective surface and muddy banks.\",\n    \"architecture\": \"Densely clustered mud-brick buildings with flat roofs and a central vertical tower.\",\n    \"vegetation\": \"Tall date palms framing the sides, smaller palm clusters in the oasis, and rectangular cultivated green plots.\",\n    \"palette\": \"Ochre, terracotta, sandy beige, olive green, and muted sky blue.\",\n    \"light_direction\": \"Low-angle evening light from the left, creating long shadows and highlighting the right side of the channel banks.\",\n    \"camera\": \"Eye-level perspective, wide field of view, centered on the channel's path.\"\n  },\n  \"inferred\": {\n    \"depth\": \"Deep perspective; the settlement is several hundred meters behind the oasis.\",\n    \"hidden_regions\": \"The area behind the foothills and the interior of the mud-brick buildings are occluded.\"\n  },\n  \"priorities\": [\n    \"Reflective irrigation channel with muddy banks\",\n    \"Framing date palms in foreground/midground\",\n    \"Rectangular cultivated oasis plots\",\n    \"Mud-brick settlement with central tower\",\n    \"Arid ochre foothills\"\n  ],\n  \"parameters\": {\n    \"camera_height\": \"1.6m\",\n    \"water_width\": \"4.0m\",\n    \"terrain_scale\": \"1:1 (Real-world scale)\",\n    \"color_balance\": \"Warm ochre/terracotta dominant with cool blue sky reflections\"\n  }\n}\n```",
+      "finishReason": "stop",
+      "model": "gemma4-12b-artist",
+      "observedAt": 1792281060.733273
+    }
+  },
+  "finishedAt": 1792281060.7405937
+}

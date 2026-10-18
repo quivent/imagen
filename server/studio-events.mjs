@@ -8,6 +8,9 @@ import { collectLocalGallery, subscribeLocalGallery } from './local-gallery.mjs'
 import { collectStudioMonitor, subscribeMonitor } from './studio-monitor.mjs';
 import { createGalleryPatch, recentGallery } from '../src/gallery-patch.js';
 import { createComparisonsPatch } from '../src/comparisons-patch.js';
+import { pollArchiveGallery } from './archive-gallery.mjs';
+import { collectArchiveGallery } from './r2-gallery.mjs';
+import { withImageNames } from './image-names.mjs';
 
 const read = promisify(readFile);
 const execute = promisify(execFile);
@@ -37,7 +40,7 @@ async function getJSON(path, cookie) {
   });
   if (!response.ok) { const error = new Error('Source unavailable'); error.status = response.status; throw error; }
   const text = await response.text();
-  if (Buffer.byteLength(text) > 2 * 1024 * 1024) throw new Error('Source too large');
+  if (Buffer.byteLength(text) > (path === '/api/gallery' ? 16 : 2) * 1024 * 1024) throw new Error('Source too large');
   return JSON.parse(text);
 }
 
@@ -96,11 +99,18 @@ export function installStudioEvents(server) {
   let remoteGallery = { jobs: [] };
   const mergeGallery = local => {
     const rows = new Map(remoteGallery.jobs.map(row => [row.id, row]));
-    for (const row of local.jobs) rows.set(row.id, row);
+    for (const row of local.jobs) if (!rows.has(row.id)) rows.set(row.id, row);
     return { ...remoteGallery, updatedAt: local.updatedAt || remoteGallery.updatedAt, jobs: [...rows.values()] };
   };
-  void getJSON('/api/gallery').then(data => { remoteGallery = data; if (interested('gallery')) refresh('gallery'); }).catch(() => {});
   const interested = topic => [...clients].some(socket => socket.topics.has(topic));
+  const archive = pollArchiveGallery({
+    load: collectArchiveGallery,
+    onChange(data) {
+      if (closed) return;
+      remoteGallery = data;
+      if (interested('gallery')) return refresh('gallery');
+    },
+  });
   // Drain one message at a time. A valid initial gallery plus the other topics
   // can exceed the socket buffer budget even for a fast client. Keep only the
   // latest unsent observation per topic instead of disconnecting that client
@@ -141,9 +151,10 @@ export function installStudioEvents(server) {
     for (const socket of recipients) if (socket.topics.has(topic)) {
       if (state.error) send(socket, { type: 'unavailable', topic, observedAt: state.observedAt, status: state.status || 503 });
       else if (state.data) {
-        if (topic === 'gallery' && socket.galleryPreview && !socket.patchBaselines.has('gallery')) {
+        if (topic === 'gallery' && socket.galleryPreview && (socket.galleryRecentOnly || !socket.patchBaselines.has('gallery'))) {
           send(socket, { type: 'snapshot', topic: 'gallery-recent', version: state.version, observedAt: state.observedAt, data: recentGallery(state.data) });
         }
+        if (topic === 'gallery' && socket.galleryRecentOnly) continue;
         send(socket, { type: 'snapshot', topic, version: state.version, observedAt: state.observedAt, data: state.data });
       }
     }
@@ -162,7 +173,7 @@ export function installStudioEvents(server) {
     state.pending = true;
     try {
       const data = files[topic] ? JSON.parse(await read(root + files[topic], 'utf8'))
-        : topic === 'gallery' ? mergeGallery(await collectLocalGallery()) : await collectStudioMonitor();
+        : topic === 'gallery' ? await withImageNames(mergeGallery(await collectLocalGallery())) : await collectStudioMonitor();
       publish(topic, await curated(topic, data), state);
     } catch {
       Object.assign(state, { error: true, observedAt: new Date().toISOString() });
@@ -196,6 +207,8 @@ export function installStudioEvents(server) {
     // a public connection. Deliver small cached observations before gallery.
     socket.topics = new Set(requested.filter(topic => topics.has(topic)).sort((a, b) => deliveryPriority.indexOf(a) - deliveryPriority.indexOf(b)));
     if (!socket.topics.has('controls')) detachPrivate(socket);
+    for(const topic of socket.patchBaselines.keys())if(!socket.topics.has(topic)||(topic==='gallery'&&socket.galleryRecentOnly))socket.patchBaselines.delete(topic);
+    for(const topic of socket.outbox.keys())if(topic!=='hello'&&!socket.topics.has(topic)&&!(topic==='gallery-recent'&&socket.topics.has('gallery')))socket.outbox.delete(topic);
     for (const topic of socket.topics) {
       if (topic === 'controls') {
         if (socket.group) { deliver(topic, socket.group, [socket]); refreshControl(socket.group); continue; }
@@ -245,6 +258,8 @@ export function installStudioEvents(server) {
               connection.patchEpochs.set(topic, (connection.patchEpochs.get(topic) || 0) + 1);
             }
           }
+          connection.galleryRecentOnly = features.includes('gallery-recent-only-v1');
+          if (connection.galleryRecentOnly) connection.outbox.delete('gallery');
           connection.galleryPreview = connection.patchTopics.has('gallery') && features.includes('gallery-preview-v1');
           subscribe(connection, message.topics);
         } catch { connection.close(1008); }
@@ -283,7 +298,7 @@ export function installStudioEvents(server) {
   try { watchers.push(watch(root + 'data', (_event, name) => { if (name) changed('data/' + String(name)); })); } catch {}
   for (const watcher of watchers) watcher.on('error', () => {});
   server.httpServer.once('close', () => {
-    closed = true; releaseMonitor(); releaseGallery(); clearInterval(heartbeat);
+    closed = true; archive.stop(); releaseMonitor(); releaseGallery(); clearInterval(heartbeat);
     server.httpServer.off('upgrade', upgrade);
     for (const watcher of watchers) watcher.close();
     for (const socket of clients) socket.terminate();

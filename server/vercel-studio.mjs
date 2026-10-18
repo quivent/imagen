@@ -12,6 +12,14 @@ export function targetPath(raw) {
   if (!pathname.startsWith('/') || pathname.includes('\\') || pathname.includes('%') || pathname.split('/').some(part => part === '..' || part === '.')) return null;
   if (!pathname.startsWith('/api/') && !records.has(pathname) && !/^\/data\/[A-Za-z0-9_/-]+\.(png|jpe?g|webp|avif)$/.test(pathname)) return null;
   if (pathname === '/api/studio') return null;
+  // Platform routing can attach captured route parameters. The local image
+  // endpoint deliberately accepts exactly the immutable job/hash identity.
+  if (pathname === '/api/local-gallery/image') {
+    const job = url.searchParams.get('job');
+    const sha256 = url.searchParams.get('sha256');
+    if (!/^[A-Za-z0-9_-]{1,100}$/.test(job || '') || !/^[a-f0-9]{64}$/.test(sha256 || '')) return null;
+    return pathname + '?' + new URLSearchParams({ job, sha256 });
+  }
   return pathname + url.search;
 }
 
@@ -40,7 +48,7 @@ export function createStudioBridge({ origin = process.env.ARTWORK_STUDIO_ORIGIN 
     const pending = send(new URL(path, upstream), { method: req.method, headers: forwardHeaders(req, upstream) }, response => {
       const headers = Object.fromEntries(Object.entries(response.headers).filter(([key]) => !hopHeaders.has(key)));
       // Operational snapshots and authenticated responses must not become CDN cache entries.
-      if (!/\/(?:image|images)\//.test(path) && !/^\/data\/.*\.(png|jpe?g|webp|avif)(\?|$)/.test(path)) headers['cache-control'] = 'no-store';
+      if (!/\/(?:image|images)(?:\/|\?|$)/.test(path) && !/^\/data\/.*\.(png|jpe?g|webp|avif)(\?|$)/.test(path)) headers['cache-control'] = 'no-store';
       res.writeHead(response.statusCode, headers);
       res.flushHeaders();
       response.pipe(res);

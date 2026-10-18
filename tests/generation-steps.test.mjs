@@ -19,7 +19,7 @@ test('unauthorized changes are never described as applied and retry after unlock
   const counts = { 'flux1-dev': 20, 'flux2-dev-nf4': 50 }; const messages = []; let unlocked = false; let writes = 0;
   const controller = createGenerationSteps({ read: () => counts, apply: values => Object.assign(counts, values), status: message => messages.push(message),
     request: async (_url, options) => { writes++; const values = JSON.parse(options.body).modelSteps; return unlocked ? response(values) : { ok: false, status: 403 }; } });
-  await controller.save(); assert.equal(messages.at(-1), 'Open Controls to apply these steps.');
+  await controller.save(); assert.equal(messages.at(-1), 'The studio connection is unavailable. These steps have not been applied.');
   unlocked = true; await controller.retry(); assert.equal(writes, 2); assert.match(messages.at(-1), /Next images/);
 });
 

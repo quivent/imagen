@@ -2,14 +2,30 @@
 const CACHE = 'kinship-artwork-images-v1';
 function artwork(url) {
   if (url.origin !== self.location.origin) return false;
+  if (/^\/api\/world-experiments\/image\/[a-f0-9]{64}\.png$/.test(url.pathname)) return true;
   if (url.pathname === '/api/gallery/image') return Boolean(url.searchParams.get('key'));
   if (url.pathname === '/api/local-gallery/image') return /^[A-Za-z0-9_-]{1,100}$/.test(url.searchParams.get('job') || '') && /^[a-f0-9]{64}$/i.test(url.searchParams.get('sha256') || '');
   return /^\/data\/[A-Za-z0-9_./-]+\.(png|jpe?g|webp|avif)$/i.test(url.pathname);
 }
-async function remember(cache, request, response) {
-  if (response.ok && (response.headers.get('Content-Type') || '').startsWith('image/')) {
-    try { await cache.put(request, response.clone()); } catch { /* Quota/storage trouble must not hide a usable image. */ }
-  }
+const MAX_ENTRIES=384,MAX_BYTES=128*1024*1024;
+let writes=Promise.resolve();
+function remember(cache,request,response){
+ if(!response.ok||!(response.headers.get('Content-Type')||'').startsWith('image/'))return Promise.resolve();
+ const copy=response.clone();
+ const operation=writes.catch(()=>{}).then(async()=>{
+  try{
+   const bytes=await copy.arrayBuffer();if(bytes.byteLength>MAX_BYTES)return;
+   const headers=new Headers(copy.headers);headers.set('X-Artwork-Cache-Bytes',String(bytes.byteLength));
+   await cache.put(request,new Response(bytes,{status:copy.status,statusText:copy.statusText,headers}));
+   const keys=await cache.keys();let total=0;const sizes=[];
+   for(const key of keys){const entry=await cache.match(key);const recorded=Number(entry?.headers.get('X-Artwork-Cache-Bytes')||entry?.headers.get('Content-Length'));
+    const size=recorded>0?recorded:(entry?(await entry.arrayBuffer()).byteLength:0);sizes.push(size);total+=size;
+   }
+   let remaining=keys.length;
+   for(let i=0;i<keys.length&&(remaining>MAX_ENTRIES||total>MAX_BYTES);i++){await cache.delete(keys[i]);total-=sizes[i];remaining--;}
+  }catch{/* Storage failures must never hide a usable response. */}
+ });
+ writes=operation;return operation;
 }
 async function image(request, lifetime) {
   let cache;
@@ -17,7 +33,7 @@ async function image(request, lifetime) {
   let cached;
   try { cached = await cache.match(request); } catch { return fetch(request); }
   const url = new URL(request.url);
-  const versioned = /^[a-f0-9]{64}$/i.test(url.searchParams.get('sha256') || '');
+  const versioned = /^[a-f0-9]{64}$/i.test(url.searchParams.get('sha256') || '') || /^\/api\/world-experiments\/image\/[a-f0-9]{64}\.png$/.test(url.pathname);
   // Known content hashes are immutable cache identities across reloads/tabs.
   if (cached && versioned) return cached;
   try {

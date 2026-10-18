@@ -1,10 +1,12 @@
+import { modelCategories, modelCategory } from './model-categories.js';
 import { studioLive } from './live-store.js';
 import { freshObservation, observedTime } from './agent-state.js';
 
 const known = [
   { id: 'flux1', aliases: ['flux1-dev', 'flux1'], name: 'FLUX.1 dev' },
-  { id: 'flux2', aliases: ['flux2-dev-nf4', 'flux2-dev', 'flux2'], name: 'FLUX.2 DEV', note: 'DEV base model · NF4 text encoder' },
+  { id: 'flux2', aliases: ['flux2-dev-nf4', 'flux2-dev', 'flux2'], name: 'FLUX.2 DEV', note: 'DEV base model · FP8 text encoder' },
   { id: 'pixtral', aliases: ['pixtral-critic', 'pixtral'], name: 'Pixtral 12B W4A16' },
+  { id: 'gemma', aliases: ['gemma', 'gemma4-12b-artist'], name: 'Gemma 4 12B NVFP4' },
   { id: 'dinov2', aliases: ['dinov2-giant', 'dinov2', 'dino'], name: 'DINOv2 Giant' },
 ];
 const readable = value => typeof value === 'string' && value.trim() ? value : 'Not recorded';
@@ -34,6 +36,7 @@ export function mountModels({ root, isActive = () => true }) {
   let disposed = false;
   let release = null;
   let timer = null;
+  let inventorySignature = null;
   const text = (tag, value, className) => {
     const node = document.createElement(tag); node.textContent = value;
     if (className) node.className = className;
@@ -62,8 +65,8 @@ export function mountModels({ root, isActive = () => true }) {
       ['Observed', stamp(item.observedAt ?? section?.observedAt)]];
     // The encoder is independently pinned and must be visible beside DEV weights.
     if (entry?.id === 'flux2') fields.splice(2, 0,
-      ['Text encoder', 'diffusers/FLUX.2-dev-bnb-4bit · NF4'],
-      ['Encoder revision', 'c30ad107542e63f222f864a8de510204394fb18a', 'models-revision']);
+      ['Text encoder', 'TensorTemplar/flux2-text-encoder-fp8 · FP8'],
+      ['Encoder revision', '5f347bad665ef0379e079bdec9f9a28758217c20', 'models-revision']);
     for (const [label, value, className] of fields) {
       const pair = text('div', ''); pair.append(text('dt', label), text('dd', value, className)); dl.append(pair);
     }
@@ -78,7 +81,14 @@ export function mountModels({ root, isActive = () => true }) {
     const items = Array.isArray(section?.items) ? section.items.filter(item => item && typeof item.id === 'string') : [];
     const rows = [...items];
     for (const model of known) if (!items.some(item => model.aliases.includes(item.id))) rows.push({ id: model.id, name: model.name });
-    $('list').replaceChildren(...rows.map(card));
+    const next=JSON.stringify([rows,rows.map(item=>modelState(item,section,connected)),fresh]);
+    if(next!==inventorySignature){inventorySignature=next;
+    $('list').replaceChildren(...modelCategories.flatMap(([id,label])=>{
+      const entries=rows.filter(item=>modelCategory(item)===id);if(!entries.length)return [];
+      const section=text('section','','models-category'),heading=text('h2',label),grid=text('div','','models-category-grid');
+      grid.append(...entries.map(card));section.append(heading,grid);return [section];
+    }));
+    }
     $('observed').textContent = `Inventory observed ${stamp(section?.observedAt)}. ${fresh ? 'Current state expires after 12 seconds without a fresh observation.' : 'Current download and residency state is unknown until fresh evidence arrives.'}`;
   }
   function sync() {

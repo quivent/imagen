@@ -1,0 +1,40 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Imagen",
+  "version": "0.1.0",
+  "identifier": "vision.influx.imagen",
+  "build": {
+    "beforeDevCommand": "node scripts/check-studio.mjs",
+    "devUrl": "http://127.0.0.1:48624",
+    "frontendDist": "http://127.0.0.1:48624"
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "Imagen",
+        "url": "http://127.0.0.1:48624/workbench",
+        "width": 1440,
+        "height": 940,
+        "minWidth": 1000,
+        "minHeight": 680,
+        "backgroundColor": "#0e1217",
+        "resizable": true,
+        "dragDropEnabled": false
+      }
+    ],
+    "security": {
+      "capabilities": []
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["app"],
+    "category": "GraphicsAndDesign",
+    "icon": ["icons/Imagen.icns"],
+    "macOS": {
+      "minimumSystemVersion": "14.0",
+      "signingIdentity": "-"
+    }
+  }
+}

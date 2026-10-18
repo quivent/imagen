@@ -1,5 +1,3 @@
-const target = new URL(location.href);
-const tab = target.pathname.endsWith('/metrics.html') ? 'metrics' : 'monitor';
-target.pathname = '/';
-target.searchParams.set('tab', tab);
-location.replace(target.href);
+import {studioTabURL} from './studio-route.js';
+const tab=location.pathname.endsWith('/metrics.html')?'metrics':'monitor';
+location.replace(studioTabURL(location.href,tab));

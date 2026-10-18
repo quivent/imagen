@@ -1,0 +1,6 @@
+{
+  "tool": "built-in image_gen",
+  "prompt": "Use case: logo-brand. Asset type: macOS application icon for Imagen, a serious artist's studio that turns generated artwork into explorable pure-GLSL worlds. Create a polished, distinctive square 1024x1024 macOS app icon. A single luminous ochre-and-sage miniature landscape folds out from an ivory geometric picture frame into subtle three-dimensional terraces, with a small warm sun: the idea of an image becoming a world. Strong simple silhouette legible at 32 pixels. Deep midnight charcoal rounded-square tile, warm ivory frame, restrained amber light and muted sage terrain. Tactile sculptural materials, precise edges, gentle dimensionality, sophisticated and quiet. Centered icon with generous safe margin and transparent outside the rounded-square tile. Not a screenshot, no surrounding desktop, no words, no letters, no watermark, no extraneous tiny details. The icon itself fills the canvas appropriately for the macOS Dock.",
+  "master": "imagen-icon.png",
+  "note": "No images visually inspected. Native icon representations packaged by Tauri CLI and macOS iconutil."
+}

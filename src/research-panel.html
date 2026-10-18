@@ -1,0 +1,13 @@
+<div class="research">
+ <header class="research-heading"><p class="eyebrow">IMAGEN · RESEARCH</p><h1>Many ways into a world.</h1><p>Methods, models, representations and renderers we can combine, test and question.</p></header>
+ <nav id="research-sections" aria-label="Research sections"><button type="button" data-section="Methods" aria-pressed="true">Methods</button><button type="button" data-section="Pipelines" aria-pressed="false">Pipelines</button><button type="button" data-section="Documents" aria-pressed="false">Documents</button><button type="button" data-section="Studies" aria-pressed="false">Studies</button></nav>
+ <div class="research-tools" id="research-method-tools"><label>Find an approach<input id="research-search" type="search" placeholder="depth, polygons, fractals, splats…"></label><button id="research-shortlist" type="button" aria-pressed="false">Shortlisted</button><button id="research-add" type="button" aria-expanded="false">Add an idea</button><span id="research-count"></span></div>
+ <nav id="research-families" aria-label="Research families"></nav>
+ <form id="research-idea-form" hidden><label>Idea<input name="title" required maxlength="160"></label><label>What should we try?<textarea name="description" required maxlength="8000" rows="3"></textarea></label><button type="submit">Save idea</button></form>
+ <p id="research-status" role="status">Loading research notebook…</p>
+ <section id="research-pipelines" hidden aria-label="Experiment pipelines"></section>
+ <div id="research-documents" hidden></div>
+ <section id="research-reader" hidden aria-label="Research document"><div class="research-reader-actions"><button id="research-back" type="button">Back to documents</button><button id="research-related" type="button">Related study</button></div><div id="research-document-content"></div></section>
+ <div id="research-grid"></div>
+ <section class="research-protocol"><h2>One common experiment contract</h2><p>Keep the source, source-view match, camera route and budget comparable. Record reconstruction time, frame latency, memory, silhouettes, occlusion, parallax, close-up detail and exact return separately. A perfect source view does not establish correct geometry. Published speed claims remain separate from measurements on our hardware.</p><p>External pipelines are research candidates. Their output still needs an explicit route into our GLSL renderer; none is presented as already integrated.</p></section>
+</div>

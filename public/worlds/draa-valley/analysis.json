@@ -1,0 +1,975 @@
+{
+  "source": {
+    "id": "1ebd04ec5f1d4eb8bee09bde90c4a206",
+    "profile": "flux2-dev-nf4",
+    "scene": "scene-008",
+    "prompt": "Use case: stylized-concept. Create one original landscape illustration for a dignified, beautiful travel atlas, 1536x1024. A Draa Valley oasis in southern Morocco: a narrow calm irrigation channel in the foreground bordered by mud banks and date palms, irregular small cultivated plots in the middle distance, dry ochre foothills and earth-built settlement beyond. Emphasize precious shallow water meeting arid earth, dappled evening shade, no tropical lake. Sophisticated painterly realism with tactile natural materials, convincing depth, delicately softened edges and readable shadow detail. Keep the established gallery's restrained color and warm/cool light balance, while honoring this location's specified time of day and weather. Distinctive geographic and architectural forms are essential; do not replace animals or buildings with generic landscape. Single coherent scene, no collage, captions, UI, lettering, logos, watermark or border. No exaggerated fantasy, giant moon or plastic rendering. The requested religious architecture, where present, must be preserved as part of the place.",
+    "width": 1024,
+    "height": 1024,
+    "settings": {
+      "seed": 47,
+      "steps": 28,
+      "guidance_scale": 3.5,
+      "max_sequence_length": 512
+    },
+    "seconds": 33.41064109900617,
+    "sha256": "4750bc169d8d8f66e1f19176904c783d458121bfe8929c959180475f70e35218",
+    "imageKey": "artwork-comparison/2026-10-17-flux-study/flux2-dev-nf4/1ebd04ec5f1d4eb8bee09bde90c4a206/result.png",
+    "imageUrl": "/api/gallery/image?key=artwork-comparison%2F2026-10-17-flux-study%2Fflux2-dev-nf4%2F1ebd04ec5f1d4eb8bee09bde90c4a206%2Fresult.png",
+    "created": 1792280853.5324557
+  },
+  "startedAt": 1792281318.1377594,
+  "analysisVersion": 2,
+  "reviews": {
+    "Pixtral": {
+      "model": "pixtral-critic",
+      "passes": {
+        "spatial_inventory": {
+          "feedback": "```json\n{\n  \"camera\": {\n    \"horizon_y_0to1\": 0.5,\n    \"vanishing_point_xy_0to1\": null,\n    \"field_of_view_range\": \"wide angle\",\n    \"field_of_view_uncertainty\": 0.1\n  },\n  \"layers\": {\n    \"foreground\": \"River channel with reflections\",\n    \"middle\": \"Palm trees and agricultural fields\",\n    \"background\": \"Village and mountains\"\n  },\n  \"elements\": [\n    {\n      \"id\": 1,\n      \"type\": \"River Channel\",\n      \"bbox\": [0.1, 0.5, 0.9, 0.7],\n      \"silhouette\": \"rectangle\",\n      \"proportions\": \"long and narrow\",\n      \"visible_parts\": \"entire length\",\n      \"depth\": \"shallow\",\n      \"occludes\": [],\n      \"occluded_by\": [],\n      \"confidence\": 1.0,\n      \"observation\": \"Main river channel with reflections\"\n    },\n    {\n      \"id\": 2,\n      \"type\": \"Palm Tree (left)\",\n      \"bbox\": [0.0, 0.1, 0.2, 0.6],\n      \"silhouette\": \"triangle\",\n      \"proportions\": \"tall and thin\",\n      \"visible_parts\": \"full height\",\n      \"depth\": \"foreground\",\n      \"occludes\": [],\n      \"occluded_by\": [],\n      \"confidence\": 0.9,\n      \"observation\": \"Palm tree on the left side\"\n    },\n    {\n      \"id\": 3,\n      \"type\": \"Palm Tree (right)\",\n      \"bbox\": [0.8, 0.1, 1.0, 0.6],\n      \"silhouette\": \"triangle\",\n      \"proportions\": \"tall and thin\",\n      \"visible_parts\": \"full height\",\n      \"depth\": \"foreground\",\n      \"occludes\": [],\n      \"occluded_by\": [],\n      \"confidence\": 0.9,\n      \"observation\": \"Palm tree on the right side\"\n    },\n    {\n      \"id\": 4,\n      \"type\": \"Field\",\n      \"bbox\": [0.2, 0.5, 0.8, 0.6],\n      \"silhouette\": \"rectangle\",\n      \"proportions\": \"broad and short\",\n      \"visible_parts\": \"entire area\",\n      \"depth\": \"middle\",\n      \"occludes\": [],\n      \"occluded_by\": [],\n      \"confidence\": 0.8,\n      \"observation\": \"Agricultural field with green crops\"\n    },\n    {\n      \"id\": 5,\n      \"type\": \"Building (left)\",\n      \"bbox\": [0.3, 0.4, 0.4, 0.5],\n      \"silhouette\": \"rectangle\",\n      \"proportions\": \"square\",\n      \"visible_parts\": \"full height\",\n      \"depth\": \"background\",\n      \"occludes\": [],\n      \"occluded_by\": [],\n      \"confidence\": 0.7,\n      \"observation\": \"Building on the left side of the village\"\n    },\n    {\n      \"id\": 6,\n      \"type\": \"Building (right)\",\n      \"bbox\": [0.6, 0.4, 0.7, 0.5],\n      \"silhouette\": \"rectangle\",\n      \"proportions\": \"square\",\n      \"visible_parts\": \"full height\",\n      \"depth\": \"background\",\n      \"occludes\": [],\n      \"occluded_by\": [],\n      \"confidence\": 0.7,\n      \"observation\": \"Building on the right side of the village\"\n    },\n    {\n      \"id\": 7,\n      \"type\": \"Tower\",\n      \"bbox\": [0.5, 0.4, 0.55, 0.5],\n      \"silhouette\": \"rectangle\",\n      \"proportions\": \"narrow\",\n      \"visible_parts\": \"full height\",\n      \"depth\": \"background\",\n      \"occludes\": [],\n      \"occluded_by\": [],\n      \"confidence\": 0.6,\n      \"observation\": \"Tower in the middle of the village\"\n    },\n    {\n      \"id\": 8,\n      \"type\": \"Mountain Ridge\",\n      \"bbox\": [0.3, 0.2, 0.7, 0.4],\n      \"silhouette\": \"curved line\",\n      \"proportions\": \"broad and undulating\",\n      \"visible_parts\": \"entire ridge\",\n      \"depth\": \"background\",\n      \"occludes\": [],\n      \"occluded_by\": [],\n      \"confidence\": 0.8,\n      \"observation\": \"Mountain ridge in the background\"\n    }\n  ],\n  \"negative_space\": \"Clear sky above the mountains\",\n  \"uncertain_or_absent_features\": [\n    \"Channel bends\",\n    \"Bank profiles\",\n    \"Individual palm crown and trunk shapes\",\n    \"Field boundaries\",\n    \"Individual building masses and rooflines\"\n  ]\n}\n```",
+          "finishReason": "stop",
+          "observedAt": 1792281334.0801322,
+          "structured": {
+            "camera": {
+              "horizon_y_0to1": 0.5,
+              "vanishing_point_xy_0to1": null,
+              "field_of_view_range": "wide angle",
+              "field_of_view_uncertainty": 0.1
+            },
+            "layers": {
+              "foreground": "River channel with reflections",
+              "middle": "Palm trees and agricultural fields",
+              "background": "Village and mountains"
+            },
+            "elements": [
+              {
+                "id": 1,
+                "type": "River Channel",
+                "bbox": [
+                  0.1,
+                  0.5,
+                  0.9,
+                  0.7
+                ],
+                "silhouette": "rectangle",
+                "proportions": "long and narrow",
+                "visible_parts": "entire length",
+                "depth": "shallow",
+                "occludes": [],
+                "occluded_by": [],
+                "confidence": 1.0,
+                "observation": "Main river channel with reflections"
+              },
+              {
+                "id": 2,
+                "type": "Palm Tree (left)",
+                "bbox": [
+                  0.0,
+                  0.1,
+                  0.2,
+                  0.6
+                ],
+                "silhouette": "triangle",
+                "proportions": "tall and thin",
+                "visible_parts": "full height",
+                "depth": "foreground",
+                "occludes": [],
+                "occluded_by": [],
+                "confidence": 0.9,
+                "observation": "Palm tree on the left side"
+              },
+              {
+                "id": 3,
+                "type": "Palm Tree (right)",
+                "bbox": [
+                  0.8,
+                  0.1,
+                  1.0,
+                  0.6
+                ],
+                "silhouette": "triangle",
+                "proportions": "tall and thin",
+                "visible_parts": "full height",
+                "depth": "foreground",
+                "occludes": [],
+                "occluded_by": [],
+                "confidence": 0.9,
+                "observation": "Palm tree on the right side"
+              },
+              {
+                "id": 4,
+                "type": "Field",
+                "bbox": [
+                  0.2,
+                  0.5,
+                  0.8,
+                  0.6
+                ],
+                "silhouette": "rectangle",
+                "proportions": "broad and short",
+                "visible_parts": "entire area",
+                "depth": "middle",
+                "occludes": [],
+                "occluded_by": [],
+                "confidence": 0.8,
+                "observation": "Agricultural field with green crops"
+              },
+              {
+                "id": 5,
+                "type": "Building (left)",
+                "bbox": [
+                  0.3,
+                  0.4,
+                  0.4,
+                  0.5
+                ],
+                "silhouette": "rectangle",
+                "proportions": "square",
+                "visible_parts": "full height",
+                "depth": "background",
+                "occludes": [],
+                "occluded_by": [],
+                "confidence": 0.7,
+                "observation": "Building on the left side of the village"
+              },
+              {
+                "id": 6,
+                "type": "Building (right)",
+                "bbox": [
+                  0.6,
+                  0.4,
+                  0.7,
+                  0.5
+                ],
+                "silhouette": "rectangle",
+                "proportions": "square",
+                "visible_parts": "full height",
+                "depth": "background",
+                "occludes": [],
+                "occluded_by": [],
+                "confidence": 0.7,
+                "observation": "Building on the right side of the village"
+              },
+              {
+                "id": 7,
+                "type": "Tower",
+                "bbox": [
+                  0.5,
+                  0.4,
+                  0.55,
+                  0.5
+                ],
+                "silhouette": "rectangle",
+                "proportions": "narrow",
+                "visible_parts": "full height",
+                "depth": "background",
+                "occludes": [],
+                "occluded_by": [],
+                "confidence": 0.6,
+                "observation": "Tower in the middle of the village"
+              },
+              {
+                "id": 8,
+                "type": "Mountain Ridge",
+                "bbox": [
+                  0.3,
+                  0.2,
+                  0.7,
+                  0.4
+                ],
+                "silhouette": "curved line",
+                "proportions": "broad and undulating",
+                "visible_parts": "entire ridge",
+                "depth": "background",
+                "occludes": [],
+                "occluded_by": [],
+                "confidence": 0.8,
+                "observation": "Mountain ridge in the background"
+              }
+            ],
+            "negative_space": "Clear sky above the mountains",
+            "uncertain_or_absent_features": [
+              "Channel bends",
+              "Bank profiles",
+              "Individual palm crown and trunk shapes",
+              "Field boundaries",
+              "Individual building masses and rooflines"
+            ]
+          }
+        },
+        "surface_and_light": {
+          "feedback": "```json\n{\n  \"image_observations\": {\n    \"palette\": [\n      {\n        \"role\": \"Sky\",\n        \"hex_color\": \"#87A9E6\",\n        \"screen_region\": \"Top\",\n        \"confidence\": 0.9\n      },\n      {\n        \"role\": \"Sand\",\n        \"hex_color\": \"#D2B28B\",\n        \"screen_region\": \"Center\",\n        \"confidence\": 0.9\n      },\n      {\n        \"role\": \"Water\",\n        \"hex_color\": \"#336699\",\n        \"screen_region\": \"Bottom\",\n        \"confidence\": 0.9\n      },\n      {\n        \"role\": \"Mud\",\n        \"hex_color\": \"#756B20\",\n        \"screen_region\": \"Middle\",\n        \"confidence\": 0.8\n      },\n      {\n        \"role\": \"Masonry\",\n        \"hex_color\": \"#B5651D\",\n        \"screen_region\": \"Center\",\n        \"confidence\": 0.9\n      },\n      {\n        \"role\": \"Plants\",\n        \"hex_color\": \"#228B22\",\n        \"screen_region\": \"Middle\",\n        \"confidence\": 0.8\n      },\n      {\n        \"role\": \"Palm Trunks\",\n        \"hex_color\": \"#3D9970\",\n        \"screen_region\": \"Left, Right\",\n        \"confidence\": 0.9\n      },\n      {\n        \"role\": \"Rocky Terrain\",\n        \"hex_color\": \"#654320\",\n        \"screen_region\": \"Bottom\",\n        \"confidence\": 0.8\n      }\n    ],\n    \"materials\": {\n      \"water\": {\n        \"roughness_cues\": \"Smooth\",\n        \"texture_scale\": \"Small\",\n        \"color_variation\": \"Minimal\",\n        \"reflectance_cues\": \"High\",\n        \"edge_quality\": \"Sharp\"\n      },\n      \"wet_dry_mud\": {\n        \"roughness_cues\": \"Moderate\",\n        \"texture_scale\": \"Medium\",\n        \"color_variation\": \"Moderate\",\n        \"reflectance_cues\": \"Moderate\",\n        \"edge_quality\": \"Moderate\"\n      },\n      \"masonry\": {\n        \"roughness_cues\": \"High\",\n        \"texture_scale\": \"Large\",\n        \"color_variation\": \"Low\",\n        \"reflectance_cues\": \"Low\",\n        \"edge_quality\": \"Sharp\"\n      },\n      \"cultivated_plants\": {\n        \"roughness_cues\": \"Low\",\n        \"texture_scale\": \"Small\",\n        \"color_variation\": \"High\",\n        \"reflectance_cues\": \"High\",\n        \"edge_quality\": \"Moderate\"\n      },\n      \"palm_trunks_fronds\": {\n        \"roughness_cues\": \"Low\",\n        \"texture_scale\": \"Small\",\n        \"color_variation\": \"Low\",\n        \"reflectance_cues\": \"Moderate\",\n        \"edge_quality\": \"Moderate\"\n      },\n      \"rocky_terrain\": {\n        \"roughness_cues\": \"High\",\n        \"texture_scale\": \"Large\",\n        \"color_variation\": \"Low\",\n        \"reflectance_cues\": \"Low\",\n        \"edge_quality\": \"Sharp\"\n      },\n      \"sky\": {\n        \"roughness_cues\": \"Smooth\",\n        \"texture_scale\": \"Large\",\n        \"color_variation\": \"Low\",\n        \"reflectance_cues\": \"High\",\n        \"edge_quality\": \"Sharp\"\n      }\n    },\n    \"illumination\": {\n      \"visible_light_direction\": \"From the left\",\n      \"warmth\": \"Warm\",\n      \"diffuse_ambient_balance\": \"High\",\n      \"long_shadow_locations_directions\": \"From the right\",\n      \"penumbra\": \"Visible\",\n      \"atmosphere\": \"Clear\"\n    },\n    \"water\": {\n      \"visible_width_changes\": \"Constant\",\n      \"flow_ripples\": \"Minimal\",\n      \"reflection_color_shape\": \"Sky and surroundings\",\n      \"transparency_evidence\": \"Moderate\",\n      \"bank_interaction\": \"Smooth\"\n    },\n    \"details\": {\n      \"small_visible_features\": \"Minimal\",\n      \"identity_carrying_features\": \"None\"\n    }\n  },\n  \"shader_suggestions\": {\n    \"water\": {\n      \"suggested_shader\": \"Blinn-Phong with Fresnel reflection\"\n    },\n    \"masonry\": {\n      \"suggested_shader\": \"Lambertian with specular highlights\"\n    },\n    \"rocky_terrain\": {\n      \"suggested_shader\": \"Gouraud shading with rough texture\"\n    },\n    \"sky\": {\n      \"suggested_shader\": \"Gradient skybox with ambient occlusion\"\n    }\n  },\n  \"inferred_physical_properties\": {\n    \"water\": {\n      \"transparency\": \"Moderate\",\n      \"flow_direction\": \"Left to right\"\n    },\n    \"masonry\": {\n      \"material_thickness\": \"Thick\",\n      \"age_wear\": \"Moderate\"\n    },\n    \"rocky_terrain\": {\n      \"roughness\": \"High\",\n      \"erosion_level\": \"Moderate\"\n    },\n    \"sky\": {\n      \"atmospheric_haze\": \"Low\",\n      \"cloud_cover\": \"None\"\n    }\n  },\n  \"uncertainty\": {\n    \"materials\": 0.1,\n    \"illumination\": 0.1,\n    \"water\": 0.1,\n    \"details\": 0.1\n  }\n}\n```",
+          "finishReason": "stop",
+          "observedAt": 1792281351.5341954,
+          "structured": {
+            "image_observations": {
+              "palette": [
+                {
+                  "role": "Sky",
+                  "hex_color": "#87A9E6",
+                  "screen_region": "Top",
+                  "confidence": 0.9
+                },
+                {
+                  "role": "Sand",
+                  "hex_color": "#D2B28B",
+                  "screen_region": "Center",
+                  "confidence": 0.9
+                },
+                {
+                  "role": "Water",
+                  "hex_color": "#336699",
+                  "screen_region": "Bottom",
+                  "confidence": 0.9
+                },
+                {
+                  "role": "Mud",
+                  "hex_color": "#756B20",
+                  "screen_region": "Middle",
+                  "confidence": 0.8
+                },
+                {
+                  "role": "Masonry",
+                  "hex_color": "#B5651D",
+                  "screen_region": "Center",
+                  "confidence": 0.9
+                },
+                {
+                  "role": "Plants",
+                  "hex_color": "#228B22",
+                  "screen_region": "Middle",
+                  "confidence": 0.8
+                },
+                {
+                  "role": "Palm Trunks",
+                  "hex_color": "#3D9970",
+                  "screen_region": "Left, Right",
+                  "confidence": 0.9
+                },
+                {
+                  "role": "Rocky Terrain",
+                  "hex_color": "#654320",
+                  "screen_region": "Bottom",
+                  "confidence": 0.8
+                }
+              ],
+              "materials": {
+                "water": {
+                  "roughness_cues": "Smooth",
+                  "texture_scale": "Small",
+                  "color_variation": "Minimal",
+                  "reflectance_cues": "High",
+                  "edge_quality": "Sharp"
+                },
+                "wet_dry_mud": {
+                  "roughness_cues": "Moderate",
+                  "texture_scale": "Medium",
+                  "color_variation": "Moderate",
+                  "reflectance_cues": "Moderate",
+                  "edge_quality": "Moderate"
+                },
+                "masonry": {
+                  "roughness_cues": "High",
+                  "texture_scale": "Large",
+                  "color_variation": "Low",
+                  "reflectance_cues": "Low",
+                  "edge_quality": "Sharp"
+                },
+                "cultivated_plants": {
+                  "roughness_cues": "Low",
+                  "texture_scale": "Small",
+                  "color_variation": "High",
+                  "reflectance_cues": "High",
+                  "edge_quality": "Moderate"
+                },
+                "palm_trunks_fronds": {
+                  "roughness_cues": "Low",
+                  "texture_scale": "Small",
+                  "color_variation": "Low",
+                  "reflectance_cues": "Moderate",
+                  "edge_quality": "Moderate"
+                },
+                "rocky_terrain": {
+                  "roughness_cues": "High",
+                  "texture_scale": "Large",
+                  "color_variation": "Low",
+                  "reflectance_cues": "Low",
+                  "edge_quality": "Sharp"
+                },
+                "sky": {
+                  "roughness_cues": "Smooth",
+                  "texture_scale": "Large",
+                  "color_variation": "Low",
+                  "reflectance_cues": "High",
+                  "edge_quality": "Sharp"
+                }
+              },
+              "illumination": {
+                "visible_light_direction": "From the left",
+                "warmth": "Warm",
+                "diffuse_ambient_balance": "High",
+                "long_shadow_locations_directions": "From the right",
+                "penumbra": "Visible",
+                "atmosphere": "Clear"
+              },
+              "water": {
+                "visible_width_changes": "Constant",
+                "flow_ripples": "Minimal",
+                "reflection_color_shape": "Sky and surroundings",
+                "transparency_evidence": "Moderate",
+                "bank_interaction": "Smooth"
+              },
+              "details": {
+                "small_visible_features": "Minimal",
+                "identity_carrying_features": "None"
+              }
+            },
+            "shader_suggestions": {
+              "water": {
+                "suggested_shader": "Blinn-Phong with Fresnel reflection"
+              },
+              "masonry": {
+                "suggested_shader": "Lambertian with specular highlights"
+              },
+              "rocky_terrain": {
+                "suggested_shader": "Gouraud shading with rough texture"
+              },
+              "sky": {
+                "suggested_shader": "Gradient skybox with ambient occlusion"
+              }
+            },
+            "inferred_physical_properties": {
+              "water": {
+                "transparency": "Moderate",
+                "flow_direction": "Left to right"
+              },
+              "masonry": {
+                "material_thickness": "Thick",
+                "age_wear": "Moderate"
+              },
+              "rocky_terrain": {
+                "roughness": "High",
+                "erosion_level": "Moderate"
+              },
+              "sky": {
+                "atmospheric_haze": "Low",
+                "cloud_cover": "None"
+              }
+            },
+            "uncertainty": {
+              "materials": 0.1,
+              "illumination": 0.1,
+              "water": 0.1,
+              "details": 0.1
+            }
+          }
+        },
+        "glsl_scene_contract": {
+          "feedback": "```json\n{\n  \"recognition_constraints\": [\n    \"Identify the oasis with palm trees and agricultural plots in the foreground.\",\n    \"Locate the fortified settlement with multiple buildings in the mid-ground.\",\n    \"Recognize the arid, reddish-brown mountains in the background.\",\n    \"Identify the narrow water channel running through the oasis.\",\n    \"Identify the reflection of the settlement and mountains in the water channel.\"\n  ],\n  \"geometry\": {\n    \"parts\": [\n      \"Oasis with palm trees and agricultural plots\",\n      \"Fortified settlement with multiple buildings\",\n      \"Arid mountains\",\n      \"Water channel with reflection\"\n    ],\n    \"silhouette_constraints\": [\n      \"The oasis and settlement are enclosed by the mountains.\",\n      \"The water channel runs centrally through the oasis.\"\n    ],\n    \"representation\": {\n      \"sdf\": \"GLSL SDF for the oasis and settlement: \n              float sdfOasis(float3 pos) {\n                float d = length(pos);\n                float h = max(0, d - 1.0);  // Adjust height for the oasis\n                return h;\n              }\",\n      \"heightfield\": \"Heightfield for the terrain: \n                      float heightfield(float2 pos) {\n                        float d = length(pos);\n                        float h = max(0, d - 1.0);  // Adjust height for the terrain\n                        return h;\n                      }\",\n      \"analytic\": \"Analytic representation for the water channel: \n                   float analyticChannel(float3 pos) {\n                     float d = pos.z;  // Depth of the water channel\n                     return d;\n                   }\"\n    },\n    \"controllable_parameters\": [\n      \"Oasis density\",\n      \"Settlement size\",\n      \"Mountain height\",\n      \"Water channel depth\"\n    ],\n    \"visible_versus_inferred\": [\n      \"Visible: Oasis, settlement, mountains, water channel.\",\n      \"Inferred: Agricultural plots layout, building interiors.\"\n    ]\n  },\n  \"spatial_relationships\": [\n    \"The oasis and agricultural plots are in front of the settlement.\",\n    \"The settlement is nestled against the base of the mountains.\",\n    \"The water channel runs parallel to the settlement and oasis.\"\n  ],\n  \"camera_constraints\": [\n    \"Camera should be positioned to view the oasis and settlement from the water channel.\",\n    \"Ensure the reflection in the water channel is visible.\"\n  ],\n  \"safe_parameter_ranges\": {\n    \"oasis_density\": \"0.5 to 1.0\",\n    \"settlement_size\": \"0.3 to 0.5\",\n    \"mountain_height\": \"1.0 to 1.5\",\n    \"water_channel_depth\": \"0.1 to 0.3\"\n  },\n  \"unseen_space_policy\": \"Assume the mountains and settlement extend uniformly beyond the visible area.\",\n  \"exploration_viewpoints\": [\n    \"Arrival: View from the water channel looking towards the settlement.\",\n    \"Approach: Close-up of the oasis and settlement.\",\n    \"Lateral: Panoramic view of the entire scene.\",\n    \"Close view: Detailed view of the agricultural plots.\",\n    \"Return: View from the mountains looking down at the oasis.\"\n  ],\n  \"known_limitations\": \"The image does not provide detailed interior layouts of buildings or precise agricultural plot layouts.\",\n  \"rejection_conditions\": [\n    \"Reject if the oasis and settlement are not visible from the water channel.\",\n    \"Reject if the reflection in the water channel is not visible.\",\n    \"Reject if the mountains and settlement do not align uniformly.\"\n  ]\n}\n```",
+          "finishReason": "stop",
+          "observedAt": 1792281362.505314,
+          "parseError": "Model output was not complete JSON; raw feedback retained."
+        }
+      }
+    },
+    "Gemma": {
+      "model": "gemma4-12b-artist",
+      "passes": {
+        "spatial_inventory": {
+          "feedback": "```json\n{\n  \"camera\": {\n    \"horizon_y_0to1\": 0.45,\n    \"vanishing_point_xy_0to1\": [0.5, 0.45],\n    \"estimated_field_of_view_range\": \"40-60 degrees\",\n    \"uncertainty\": \"low\"\n  },\n  \"layers\": {\n    \"foreground\": \"A dry, eroded riverbed or canal with steep, textured earthen banks and a narrow stream of water reflecting the sky.\",\n    \"middle_ground\": \"A lush oasis featuring green agricultural fields, dense palm groves, and a fortified mud-brick city with a prominent tower.\",\n    \"background\": \"Arid, rolling desert mountains under a hazy, pale sky.\"\n  },\n  \"elements\": [\n    {\n      \"id\": 1,\n      \"type\": \"palm_tree_left_foreground\",\n      \"bbox\": [0, 0, 280, 550],\n      \"silhouette\": \"large, feathered crown\",\n      \"relative_proportions\": \"large\",\n      \"visible_parts\": \"trunk, crown, fronds\",\n      \"estimated_relative_depth\": 0.1,\n      \"occludes_ids\": [2, 3, 4],\n      \"occluded_by_ids\": [],\n      \"confidence\": 0.95,\n      \"observation_or_inference\": \"observation\"\n    },\n    {\n      \"id\": 2,\n      \"type\": \"palm_tree_right_foreground\",\n      \"bbox\": [680, 0, 1000, 550],\n      \"silhouette\": \"large, feathered crown\",\n      \"relative_proportions\": \"large\",\n      \"visible_parts\": \"trunk, crown, fronds\",\n      \"estimated_relative_depth\": 0.1,\n      \"occludes_ids\": [5, 6],\n      \"occluded_by_ids\": [],\n      \"confidence\": 0.95,\n      \"observation_or_inference\": \"observation\"\n    },\n    {\n      \"id\": 3,\n      \"type\": \"river_bank_left\",\n      \"bbox\": [0, 530, 460, 1000],\n      \"silhouette\": \"steep, jagged edge\",\n      \"relative_proportions\": \"medium\",\n      \"visible_parts\": \"exposed earth, erosion lines\",\n      \"estimated_relative_depth\": 0.2,\n      \"occludes_ids\": [7],\n      \"occluded_by_ids\": [],\n      \"confidence\": 0.9,\n      \"observation_or_inference\": \"observation\"\n    },\n    {\n      \"id\": 4,\n      \"type\": \"river_bank_right\",\n      \"bbox\": [550, 530, 1000, 1000],\n      \"silhouette\": \"steep, jagged edge\",\n      \"relative_proportions\": \"medium\",\n      \"visible_parts\": \"exposed earth, erosion lines\",\n      \"estimated_relative_depth\": 0.2,\n      \"occludes_ids\": [8],\n      \"occluded_by_ids\": [],\n      \"confidence\": 0.9,\n      \"observation_or_inference\": \"observation\"\n    },\n    {\n      \"id\": 5,\n      \"type\": \"water_stream\",\n      \"bbox\": [150, 550, 850, 1000],\n      \"silhouette\": \"narrow, reflective surface\",\n      \"relative_proportions\": \"medium\",\n      \"visible_parts\": \"water surface, reflections\",\n      \"estimated_relative_depth\": 0.3,\n      \"occludes_ids\": [],\n      \"occluded_by_ids\": [3, 4],\n      \"confidence\": 0.95,\n      \"observation_or_inference\": \"observation\"\n    },\n    {\n      \"id\": 6,\n      \"type\": \"agricultural_fields\",\n      \"bbox\": [120, 460, 850, 550],\n      \"silhouette\": \"rectangular plots\",\n      \"relative_proportions\": \"medium\",\n      \"visible_parts\": \"green crops, brown soil\",\n      \"estimated_relative_depth\": 0.4,\n      \"occludes_ids\": [9],\n      \"occluded_by_ids\": [1, 2],\n      \"confidence\": 0.9,\n      \"observation_or_inference\": \"observation\"\n    },\n    {\n      \"id\": 7,\n      \"type\": \"city_wall\",\n      \"bbox\": [200, 330, 800, 450],\n      \"silhouette\": \"flat, crenelated top\",\n      \"relative_proportions\": \"medium\",\n      \"visible_parts\": \"mud-brick facade\",\n      \"estimated_relative_depth\": 0.5,\n      \"occludes_ids\": [9],\n      \"occluded_by_ids\": [1, 2],\n      \"confidence\": 0.9,\n      \"observation_or_inference\": \"observation\"\n    },\n    {\n      \"id\": 8,\n      \"type\": \"city_tower\",\n      \"bbox\": [490, 300, 540, 400],\n      \"silhouette\": \"vertical, rectangular\",\n      \"relative_proportions\": \"small\",\n      \"visible_parts\": \"tower body, top\",\n      \"estimated_relative_depth\": 0.5,\n      \"occludes_ids\": [9],\n      \"occluded_by_ids\": [1, 2],\n      \"confidence\": 0.95,\n      \"observation_or_inference\": \"observation\"\n    },\n    {\n      \"id\": 9,\n      \"type\": \"palm_grove_middle\",\n      \"bbox\": [200, 350, 800, 480],\n      \"silhouette\": \"dense cluster\",\n      \"relative_proportions\": \"medium\",\n      \"visible_parts\": \"crowns, trunks\",\n      \"estimated_relative_depth\": 0.6,\n      \"occludes_ids\": [],\n      \"occluded_by_ids\": [7, 8],\n      \"confidence\": 0.85,\n      \"observation_or_inference\": \"observation\"\n    },\n    {\n      \"id\": 10,\n      \"type\": \"mountain_left\",\n      \"bbox\": [0, 150, 450, 350],\n      \"silhouette\": \"sloping ridge\",\n      \"relative_proportions\": \"large\",\n      \"visible_parts\": \"rocky face, shadows\",\n      \"estimated_relative_depth\": 0.8,\n      \"occludes_ids\": [],\n      \"occluded_by_ids\": [],\n      \"confidence\": 0.9,\n      \"observation_or_inference\": \"observation\"\n    },\n    {\n      \"id\": 11,\n      \"type\": \"mountain_right\",\n      \"bbox\": [500, 150, 1000, 350],\n      \"silhouette\": \"sloping ridge\",\n      \"relative_proportions\": \"large\",\n      \"visible_parts\": \"rocky face, shadows\",\n      \"estimated_relative_depth\": 0.8,\n      \"occludes_ids\": [],\n      \"occluded_by_ids\": [],\n      \"confidence\": 0.9,\n      \"observation_or_inference\": \"observation\"\n    },\n    {\n      \"id\": 12,\n      \"type\": \"sky\",\n      \"bbox\": [0, 0, 1000, 300],\n      \"silhouette\": \"gradient\",\n      \"relative_proportions\": \"large\",\n      \"visible_parts\": \"hazy atmosphere\",\n      \"estimated_relative_depth\": 1.0,\n      \"occludes_ids\": [],\n      \"occluded_by_ids\": [],\n      \"confidence\": 0.95,\n      \"observation_or_inference\": \"observation\"\n    }\n  ],\n  \"negative_space\": \"The upper right and upper left corners of the sky are relatively clear of distinct objects, providing a sense of atmospheric depth.\",\n  \"uncertain_or_absent_features\": [\n    \"Human figures\",\n    \"Specific architectural details (windows, doors)\",\n    \"Vegetation types beyond palms and generic green fields\",\n    \"Water source/origin\"\n  ]\n}\n```",
+          "finishReason": "stop",
+          "observedAt": 1792281382.2314317,
+          "structured": {
+            "camera": {
+              "horizon_y_0to1": 0.45,
+              "vanishing_point_xy_0to1": [
+                0.5,
+                0.45
+              ],
+              "estimated_field_of_view_range": "40-60 degrees",
+              "uncertainty": "low"
+            },
+            "layers": {
+              "foreground": "A dry, eroded riverbed or canal with steep, textured earthen banks and a narrow stream of water reflecting the sky.",
+              "middle_ground": "A lush oasis featuring green agricultural fields, dense palm groves, and a fortified mud-brick city with a prominent tower.",
+              "background": "Arid, rolling desert mountains under a hazy, pale sky."
+            },
+            "elements": [
+              {
+                "id": 1,
+                "type": "palm_tree_left_foreground",
+                "bbox": [
+                  0,
+                  0,
+                  280,
+                  550
+                ],
+                "silhouette": "large, feathered crown",
+                "relative_proportions": "large",
+                "visible_parts": "trunk, crown, fronds",
+                "estimated_relative_depth": 0.1,
+                "occludes_ids": [
+                  2,
+                  3,
+                  4
+                ],
+                "occluded_by_ids": [],
+                "confidence": 0.95,
+                "observation_or_inference": "observation"
+              },
+              {
+                "id": 2,
+                "type": "palm_tree_right_foreground",
+                "bbox": [
+                  680,
+                  0,
+                  1000,
+                  550
+                ],
+                "silhouette": "large, feathered crown",
+                "relative_proportions": "large",
+                "visible_parts": "trunk, crown, fronds",
+                "estimated_relative_depth": 0.1,
+                "occludes_ids": [
+                  5,
+                  6
+                ],
+                "occluded_by_ids": [],
+                "confidence": 0.95,
+                "observation_or_inference": "observation"
+              },
+              {
+                "id": 3,
+                "type": "river_bank_left",
+                "bbox": [
+                  0,
+                  530,
+                  460,
+                  1000
+                ],
+                "silhouette": "steep, jagged edge",
+                "relative_proportions": "medium",
+                "visible_parts": "exposed earth, erosion lines",
+                "estimated_relative_depth": 0.2,
+                "occludes_ids": [
+                  7
+                ],
+                "occluded_by_ids": [],
+                "confidence": 0.9,
+                "observation_or_inference": "observation"
+              },
+              {
+                "id": 4,
+                "type": "river_bank_right",
+                "bbox": [
+                  550,
+                  530,
+                  1000,
+                  1000
+                ],
+                "silhouette": "steep, jagged edge",
+                "relative_proportions": "medium",
+                "visible_parts": "exposed earth, erosion lines",
+                "estimated_relative_depth": 0.2,
+                "occludes_ids": [
+                  8
+                ],
+                "occluded_by_ids": [],
+                "confidence": 0.9,
+                "observation_or_inference": "observation"
+              },
+              {
+                "id": 5,
+                "type": "water_stream",
+                "bbox": [
+                  150,
+                  550,
+                  850,
+                  1000
+                ],
+                "silhouette": "narrow, reflective surface",
+                "relative_proportions": "medium",
+                "visible_parts": "water surface, reflections",
+                "estimated_relative_depth": 0.3,
+                "occludes_ids": [],
+                "occluded_by_ids": [
+                  3,
+                  4
+                ],
+                "confidence": 0.95,
+                "observation_or_inference": "observation"
+              },
+              {
+                "id": 6,
+                "type": "agricultural_fields",
+                "bbox": [
+                  120,
+                  460,
+                  850,
+                  550
+                ],
+                "silhouette": "rectangular plots",
+                "relative_proportions": "medium",
+                "visible_parts": "green crops, brown soil",
+                "estimated_relative_depth": 0.4,
+                "occludes_ids": [
+                  9
+                ],
+                "occluded_by_ids": [
+                  1,
+                  2
+                ],
+                "confidence": 0.9,
+                "observation_or_inference": "observation"
+              },
+              {
+                "id": 7,
+                "type": "city_wall",
+                "bbox": [
+                  200,
+                  330,
+                  800,
+                  450
+                ],
+                "silhouette": "flat, crenelated top",
+                "relative_proportions": "medium",
+                "visible_parts": "mud-brick facade",
+                "estimated_relative_depth": 0.5,
+                "occludes_ids": [
+                  9
+                ],
+                "occluded_by_ids": [
+                  1,
+                  2
+                ],
+                "confidence": 0.9,
+                "observation_or_inference": "observation"
+              },
+              {
+                "id": 8,
+                "type": "city_tower",
+                "bbox": [
+                  490,
+                  300,
+                  540,
+                  400
+                ],
+                "silhouette": "vertical, rectangular",
+                "relative_proportions": "small",
+                "visible_parts": "tower body, top",
+                "estimated_relative_depth": 0.5,
+                "occludes_ids": [
+                  9
+                ],
+                "occluded_by_ids": [
+                  1,
+                  2
+                ],
+                "confidence": 0.95,
+                "observation_or_inference": "observation"
+              },
+              {
+                "id": 9,
+                "type": "palm_grove_middle",
+                "bbox": [
+                  200,
+                  350,
+                  800,
+                  480
+                ],
+                "silhouette": "dense cluster",
+                "relative_proportions": "medium",
+                "visible_parts": "crowns, trunks",
+                "estimated_relative_depth": 0.6,
+                "occludes_ids": [],
+                "occluded_by_ids": [
+                  7,
+                  8
+                ],
+                "confidence": 0.85,
+                "observation_or_inference": "observation"
+              },
+              {
+                "id": 10,
+                "type": "mountain_left",
+                "bbox": [
+                  0,
+                  150,
+                  450,
+                  350
+                ],
+                "silhouette": "sloping ridge",
+                "relative_proportions": "large",
+                "visible_parts": "rocky face, shadows",
+                "estimated_relative_depth": 0.8,
+                "occludes_ids": [],
+                "occluded_by_ids": [],
+                "confidence": 0.9,
+                "observation_or_inference": "observation"
+              },
+              {
+                "id": 11,
+                "type": "mountain_right",
+                "bbox": [
+                  500,
+                  150,
+                  1000,
+                  350
+                ],
+                "silhouette": "sloping ridge",
+                "relative_proportions": "large",
+                "visible_parts": "rocky face, shadows",
+                "estimated_relative_depth": 0.8,
+                "occludes_ids": [],
+                "occluded_by_ids": [],
+                "confidence": 0.9,
+                "observation_or_inference": "observation"
+              },
+              {
+                "id": 12,
+                "type": "sky",
+                "bbox": [
+                  0,
+                  0,
+                  1000,
+                  300
+                ],
+                "silhouette": "gradient",
+                "relative_proportions": "large",
+                "visible_parts": "hazy atmosphere",
+                "estimated_relative_depth": 1.0,
+                "occludes_ids": [],
+                "occluded_by_ids": [],
+                "confidence": 0.95,
+                "observation_or_inference": "observation"
+              }
+            ],
+            "negative_space": "The upper right and upper left corners of the sky are relatively clear of distinct objects, providing a sense of atmospheric depth.",
+            "uncertain_or_absent_features": [
+              "Human figures",
+              "Specific architectural details (windows, doors)",
+              "Vegetation types beyond palms and generic green fields",
+              "Water source/origin"
+            ]
+          }
+        },
+        "surface_and_light": {
+          "feedback": "```json\n{\n  \"palette\": [\n    {\"color\": \"#C98B4A\", \"region\": \"Sand dunes/rocky terrain\", \"confidence\": 0.95},\n    {\"color\": \"#8B5E34\", \"region\": \"Shadowed mud/bank edges\", \"confidence\": 0.9},\n    {\"color\": \"#D9A05B\", \"region\": \"Sunlit masonry/buildings\", \"confidence\": 0.85},\n    {\"color\": \"#4A6D32\", \"region\": \"Palm fronds/dense foliage\", \"confidence\": 0.95},\n    {\"color\": \"#7B8C42\", \"region\": \"Cultivated fields\", \"confidence\": 0.8},\n    {\"color\": \"#A8C4D1\", \"region\": \"Sky/Atmosphere\", \"confidence\": 0.9},\n    {\"color\": \"#E6D5B8\", \"region\": \"Water reflections\", \"confidence\": 0.85},\n    {\"color\": \"#3D362D\", \"region\": \"Palm trunks/shadows\", \"confidence\": 0.9},\n    {\"color\": \"#F2E1C1\", \"region\": \"High-key highlights on sand\", \"confidence\": 0.8},\n    {\"color\": \"#6B5B4B\", \"region\": \"Distant mountain shadows\", \"confidence\": 0.75}\n  ],\n  \"materials\": {\n    \"water\": {\n      \"roughness_cues\": \"High specular highlights, smooth surface with slight distortion near banks\",\n      \"texture_scale\": \"Large scale, smooth plane with localized ripples\",\n      \"color_variation\": \"Gradient from deep blue-grey to bright white/sky blue reflections\",\n      \"reflectance_cues\": \"Mirror-like reflection of the sky and distant mountains\",\n      \"edge_quality\": \"Soft transition at the mud bank interface\"\n    },\n    \"wet_dry_mud\": {\n      \"roughness_cues\": \"Matte, crumbly texture on upper banks; smoother, darker appearance in lower crevices\",\n      \"texture_scale\": \"Medium, granular\",\n      \"color_variation\": \"Deep ochre to dark brown\",\n      \"reflectance_cues\": \"Low, mostly diffuse with slight sheen in wet areas\",\n      \"edge_quality\": \"Sharp, eroded vertical faces\"\n    },\n    \"masonry\": {\n      \"roughness_cues\": \"Blocky, matte, porous surface\",\n      \"texture_scale\": \"Small, repetitive geometric units\",\n      \"color_variation\": \"Warm terracotta to dusty tan\",\n      \"reflectance_cues\": \"Very low, high diffuse response\",\n      \"edge_quality\": \"Hard, rectilinear silhouettes\"\n    },\n    \"cultivated_plants\": {\n      \"roughness_cues\": \"Soft, velvety appearance of fields; sharp, needle-like fronds\",\n      \"texture_scale\": \"Fine-grained for fields; coarse for palm fronds\",\n      \"color_variation\": \"Vibrant green to olive\",\n      \"reflectance_cues\": \"Low, mostly absorbent\",\n      \"edge_quality\": \"Soft, painterly edges\"\n    },\n    \"palm_trunks_fronds\": {\n      \"roughness_cues\": \"Rough, fibrous bark; waxy/glossy leaf surfaces\",\n      \"texture_scale\": \"Coarse vertical ribbing on trunks\",\n      \"color_variation\": \"Dark brown to forest green\",\n      \"reflectance_cues\": \"Subtle sheen on fronds\",\n      \"edge_quality\": \"Sharp, distinct silhouettes\"\n    },\n    \"rocky_terrain\": {\n      \"roughness_cues\": \"Dusty, matte, undulating surface\",\n      \"texture_scale\": \"Large, sweeping geological forms\",\n      \"color_variation\": \"Monochromatic warm tones with soft shadows\",\n      \"reflectance_cues\": \"Diffuse\",\n      \"edge_quality\": \"Soft, atmospheric perspective\"\n    },\n    \"sky\": {\n      \"roughness_cues\": \"Smooth, hazy gradient\",\n      \"texture_scale\": \"Infinite/Global\",\n      \"color_variation\": \"Pale blue to warm cream\",\n      \"reflectance_cues\": \"N/A\",\n      \"edge_quality\": \"Soft, blended\"\n    }\n  },\n  \"illumination\": {\n    \"light_direction\": \"From the upper right, casting long shadows toward the lower left\",\n    \"warmth\": \"High; golden hour/late afternoon warmth\",\n    \"diffuse_ambient_balance\": \"Strong directional light with significant ambient occlusion in crevices and under palm canopies\",\n    \"long_shadow_locations\": \"Shadows cast by palm trees onto the left bank; shadows on the left side of the central buildings\",\n    \"penumbra\": \"Soft, painterly transitions between light and shadow\",\n    \"atmosphere\": \"Hazy, dusty air creating a slight desaturation of distant mountains\"\n  },\n  \"water\": {\n    \"width_changes\": \"Narrows significantly as it recedes into the background\",\n    \"flow_ripples\": \"Minimal; surface appears mostly still with slight distortion near the foreground rocks\",\n    \"reflection_color_shape\": \"Reflects the sky's pale blue and the mountain's warm tones\",\n    \"transparency_evidence\": \"Opaque; surface acts as a mirror rather than showing the bottom\",\n    \"bank_interaction\": \"Eroded, vertical mud walls showing 'cut' geometry\"\n  },\n  \"details\": {\n    \"small_features\": [\n      \"Small rocks/pebbles in the foreground water\",\n      \"Distinct rectangular plots in the green fields\",\n      \"Individual windows/archways on the central tower\",\n      \"Varied heights of palm trees creating a layered depth\"\n    ]\n  },\n  \"uncertainty\": {\n    \"description\": \"The image has a painterly, digital-art aesthetic which may simplify complex physical properties like micro-displacement or true subsurface scattering. The 'water' may be a flat texture with a reflection map rather than a dynamic fluid simulation.\"\n  },\n  \"shader_suggestions\": {\n    \"water_shader\": \"Use a high-gloss, low-roughness material with a reflection probe and a slight normal map for surface ripples.\",\n    \"mud_shader\": \"Use a multi-layered material with a 'wetness' mask to transition from dry, high-roughness sand to dark, low-roughness mud.\",\n    \"foliage_shader\": \"Use a subsurface scattering (SSS) shader for the palm fronds to simulate light passing through leaves.\",\n    \"masonry_shader\": \"Use a triplanar mapping or a high-frequency noise texture to simulate the weathered, blocky surface of the mud-brick walls.\"\n  }\n}\n```",
+          "finishReason": "stop",
+          "observedAt": 1792281401.7284667,
+          "structured": {
+            "palette": [
+              {
+                "color": "#C98B4A",
+                "region": "Sand dunes/rocky terrain",
+                "confidence": 0.95
+              },
+              {
+                "color": "#8B5E34",
+                "region": "Shadowed mud/bank edges",
+                "confidence": 0.9
+              },
+              {
+                "color": "#D9A05B",
+                "region": "Sunlit masonry/buildings",
+                "confidence": 0.85
+              },
+              {
+                "color": "#4A6D32",
+                "region": "Palm fronds/dense foliage",
+                "confidence": 0.95
+              },
+              {
+                "color": "#7B8C42",
+                "region": "Cultivated fields",
+                "confidence": 0.8
+              },
+              {
+                "color": "#A8C4D1",
+                "region": "Sky/Atmosphere",
+                "confidence": 0.9
+              },
+              {
+                "color": "#E6D5B8",
+                "region": "Water reflections",
+                "confidence": 0.85
+              },
+              {
+                "color": "#3D362D",
+                "region": "Palm trunks/shadows",
+                "confidence": 0.9
+              },
+              {
+                "color": "#F2E1C1",
+                "region": "High-key highlights on sand",
+                "confidence": 0.8
+              },
+              {
+                "color": "#6B5B4B",
+                "region": "Distant mountain shadows",
+                "confidence": 0.75
+              }
+            ],
+            "materials": {
+              "water": {
+                "roughness_cues": "High specular highlights, smooth surface with slight distortion near banks",
+                "texture_scale": "Large scale, smooth plane with localized ripples",
+                "color_variation": "Gradient from deep blue-grey to bright white/sky blue reflections",
+                "reflectance_cues": "Mirror-like reflection of the sky and distant mountains",
+                "edge_quality": "Soft transition at the mud bank interface"
+              },
+              "wet_dry_mud": {
+                "roughness_cues": "Matte, crumbly texture on upper banks; smoother, darker appearance in lower crevices",
+                "texture_scale": "Medium, granular",
+                "color_variation": "Deep ochre to dark brown",
+                "reflectance_cues": "Low, mostly diffuse with slight sheen in wet areas",
+                "edge_quality": "Sharp, eroded vertical faces"
+              },
+              "masonry": {
+                "roughness_cues": "Blocky, matte, porous surface",
+                "texture_scale": "Small, repetitive geometric units",
+                "color_variation": "Warm terracotta to dusty tan",
+                "reflectance_cues": "Very low, high diffuse response",
+                "edge_quality": "Hard, rectilinear silhouettes"
+              },
+              "cultivated_plants": {
+                "roughness_cues": "Soft, velvety appearance of fields; sharp, needle-like fronds",
+                "texture_scale": "Fine-grained for fields; coarse for palm fronds",
+                "color_variation": "Vibrant green to olive",
+                "reflectance_cues": "Low, mostly absorbent",
+                "edge_quality": "Soft, painterly edges"
+              },
+              "palm_trunks_fronds": {
+                "roughness_cues": "Rough, fibrous bark; waxy/glossy leaf surfaces",
+                "texture_scale": "Coarse vertical ribbing on trunks",
+                "color_variation": "Dark brown to forest green",
+                "reflectance_cues": "Subtle sheen on fronds",
+                "edge_quality": "Sharp, distinct silhouettes"
+              },
+              "rocky_terrain": {
+                "roughness_cues": "Dusty, matte, undulating surface",
+                "texture_scale": "Large, sweeping geological forms",
+                "color_variation": "Monochromatic warm tones with soft shadows",
+                "reflectance_cues": "Diffuse",
+                "edge_quality": "Soft, atmospheric perspective"
+              },
+              "sky": {
+                "roughness_cues": "Smooth, hazy gradient",
+                "texture_scale": "Infinite/Global",
+                "color_variation": "Pale blue to warm cream",
+                "reflectance_cues": "N/A",
+                "edge_quality": "Soft, blended"
+              }
+            },
+            "illumination": {
+              "light_direction": "From the upper right, casting long shadows toward the lower left",
+              "warmth": "High; golden hour/late afternoon warmth",
+              "diffuse_ambient_balance": "Strong directional light with significant ambient occlusion in crevices and under palm canopies",
+              "long_shadow_locations": "Shadows cast by palm trees onto the left bank; shadows on the left side of the central buildings",
+              "penumbra": "Soft, painterly transitions between light and shadow",
+              "atmosphere": "Hazy, dusty air creating a slight desaturation of distant mountains"
+            },
+            "water": {
+              "width_changes": "Narrows significantly as it recedes into the background",
+              "flow_ripples": "Minimal; surface appears mostly still with slight distortion near the foreground rocks",
+              "reflection_color_shape": "Reflects the sky's pale blue and the mountain's warm tones",
+              "transparency_evidence": "Opaque; surface acts as a mirror rather than showing the bottom",
+              "bank_interaction": "Eroded, vertical mud walls showing 'cut' geometry"
+            },
+            "details": {
+              "small_features": [
+                "Small rocks/pebbles in the foreground water",
+                "Distinct rectangular plots in the green fields",
+                "Individual windows/archways on the central tower",
+                "Varied heights of palm trees creating a layered depth"
+              ]
+            },
+            "uncertainty": {
+              "description": "The image has a painterly, digital-art aesthetic which may simplify complex physical properties like micro-displacement or true subsurface scattering. The 'water' may be a flat texture with a reflection map rather than a dynamic fluid simulation."
+            },
+            "shader_suggestions": {
+              "water_shader": "Use a high-gloss, low-roughness material with a reflection probe and a slight normal map for surface ripples.",
+              "mud_shader": "Use a multi-layered material with a 'wetness' mask to transition from dry, high-roughness sand to dark, low-roughness mud.",
+              "foliage_shader": "Use a subsurface scattering (SSS) shader for the palm fronds to simulate light passing through leaves.",
+              "masonry_shader": "Use a triplanar mapping or a high-frequency noise texture to simulate the weathered, blocky surface of the mud-brick walls."
+            }
+          }
+        },
+        "glsl_scene_contract": {
+          "feedback": "```json\n{\n  \"recognition_constraints\": [\n    {\"target\": \"foreground_river_banks\", \"location\": [0.5, 0.8], \"priority\": 1, \"description\": \"Eroded, reddish-brown earthen banks with vertical striations and shadows.\"},\n    {\"target\": \"river_reflection\", \"location\": [0.5, 0.85], \"priority\": 2, \"description\": \"Mirror-like water surface reflecting the sky and surrounding terrain.\"},\n    {\"target\": \"agricultural_plots\", \"location\": [0.5, 0.5], \"priority\": 3, \"description\": \"Rectangular green and yellow fields divided by low earthen ridges.\"},\n    {\"target\": \"fortified_settlement\", \"location\": [0.5, 0.35], \"priority\": 4, \"description\": \"Mud-brick architecture with a prominent central tower and crenelated walls.\"},\n    {\"target\": \"sand_mountains\", \"location\": [0.5, 0.2], \"priority\": 5, \"description\": \"Softly rounded, arid mountains with visible geological folds.\"},\n    {\"target\": \"left_palm_cluster\", \"location\": [0.1, 0.3], \"priority\": 6, \"description\": \"Tall palm trees with textured trunks and radiating fronds.\"},\n    {\"target\": \"right_palm_cluster\", \"location\": [0.85, 0.3], \"priority\": 7, \"description\": \"Symmetrical palm trees framing the right side of the composition.\"},\n    {\"target\": \"midground_palm_grove\", \"location\": [0.5, 0.4], \"priority\": 8, \"description\": \"Denser, smaller palm trees surrounding the settlement.\"},\n    {\"target\": \"sky_gradient\", \"location\": [0.5, 0.1], \"priority\": 9, \"description\": \"Pale, hazy blue-to-tan gradient sky.\"},\n    {\"target\": \"shadow_cast\", \"location\": [0.3, 0.6], \"priority\": 10, \"description\": \"Deep shadows on the left side of the river bank and under the palm fronds.\"}\n  ],\n  \"geometry\": {\n    \"parts\": [\n      \"river_bed_sdf\",\n      \"bank_heightfield\",\n      \"field_grid_system\",\n      \"settlement_block_geometry\",\n      \"mountain_heightfield\",\n      \"palm_tree_fractal_geometry\"\n    ],\n    \"silhouette_constraints\": [\n      \"Sharp verticality of palm trunks\",\n      \"Jagged, stepped edges of the mud-brick settlement\",\n      \"Smooth, undulating curves of the distant mountains\",\n      \"Linear, geometric boundaries of the agricultural plots\"\n    ],\n    \"glsl_proposals\": {\n      \"river_banks\": \"heightfield(x, z) + noise(x, z) * erosion_factor; use step() for vertical cliff faces.\",\n      \"settlement\": \"box_sdf(x, y, z) + tower_sdf(x, y, z) with boolean subtraction for windows/crenelations.\",\n      \"mountains\": \"modified_perlin_noise(x, z) scaled by y-height; smoothstep for soft peaks.\",\n      \"palm_fronds\": \"fractal_branching_function(angle, length) with high-frequency noise for leaf texture.\",\n      \"water_surface\": \"reflection_map(vec3(x, y, z)) with slight ripple_distortion.\"\n    },\n    \"controllable_parameters\": [\n      \"bank_erosion_intensity\",\n      \"field_grid_density\",\n      \"mountain_ruggedness\",\n      \"palm_frond_spread\",\n      \"settlement_tower_height\"\n    ],\n    \"visible_vs_inferred\": {\n      \"visible\": \"Surface colors, silhouettes, primary height variations, reflection patterns.\",\n      \"inferred\": \"Sub-surface soil density, internal settlement structure, root systems of palms.\"\n    }\n  },\n  \"spatial_relationships\": {\n    \"channel_alignment\": \"The river flows from the center-midground toward the bottom-center, widening as it approaches the viewer.\",\n    \"vegetation_distribution\": \"Dense palm clusters frame the foreground/midground; smaller palms cluster around the settlement.\",\n    \"settlement_placement\": \"The settlement is nestled at the base of the mountains, centered horizontally.\",\n    \"terrain_overlap\": \"Mountains form a continuous backdrop; agricultural fields sit in a flat basin between the river and the settlement.\",\n    \"depth_layering\": \"Foreground (River/Banks) -> Midground (Fields/Palms) -> Background (Settlement/Mountains) -> Far Background (Sky).\"\n  },\n  \"camera_constraints\": {\n    \"perspective\": \"Wide-angle, eye-level view from a low vantage point near the river bank.\",\n    \"field_of_view\": \"Approximately 60-75 degrees to capture the breadth of the mountains and palms.\",\n    \"focal_point\": \"The central tower of the settlement and the river's path.\"\n  },\n  \"safe_parameter_ranges\": {\n    \"river_width_ratio\": \"0.2 to 0.4 (relative to frame width)\",\n    \"mountain_height_ratio\": \"0.3 to 0.5 (relative to frame height)\",\n    \"field_count\": \"12 to 20 distinct plots\",\n    \"palm_trunk_diameter\": \"0.05 to 0.15 (dimensionless units)\"\n  },\n  \"unseen_space_policy\": {\n    \"river_source\": \"Assume it originates from a hidden oasis or spring behind the settlement.\",\n    \"mountain_interior\": \"Treat as solid, non-navigable mass.\",\n    \"settlement_interior\": \"Treat as opaque, non-transparent blocks.\"\n  },\n  \"exploration_viewpoints\": {\n    \"arrival\": \"View from the river bank looking toward the settlement.\",\n    \"approach\": \"Moving forward along the river, narrowing the perspective on the fields.\",\n    \"lateral\": \"Panning left/right to see the full extent of the palm groves.\",\n    \"close_view\": \"Focus on the mud-brick texture of the settlement walls.\",\n    \"return\": \"Retracing the path back to the river bank, maintaining the framing of the palms.\"\n  },\n  \"known_limitations\": [\n    \"GLSL cannot perfectly replicate the complex organic texture of palm fronds without high-frequency noise.\",\n    \"True-to-life reflection requires high-resolution environment mapping.\",\n    \"Mud-brick texture is best approximated by procedural noise rather than high-poly geometry.\"\n  ],\n  \"rejection_conditions\": [\n    \"Any use of external textures or image maps.\",\n    \"Creation of 3D meshes or splats.\",\n    \"Claiming the reconstruction of hidden interior geometry.\",\n    \"Deviation from the desert/oasis color palette (ochre, tan, olive, dusty blue).\"\n  ]\n}\n```",
+          "finishReason": "stop",
+          "observedAt": 1792281420.6791809,
+          "structured": {
+            "recognition_constraints": [
+              {
+                "target": "foreground_river_banks",
+                "location": [
+                  0.5,
+                  0.8
+                ],
+                "priority": 1,
+                "description": "Eroded, reddish-brown earthen banks with vertical striations and shadows."
+              },
+              {
+                "target": "river_reflection",
+                "location": [
+                  0.5,
+                  0.85
+                ],
+                "priority": 2,
+                "description": "Mirror-like water surface reflecting the sky and surrounding terrain."
+              },
+              {
+                "target": "agricultural_plots",
+                "location": [
+                  0.5,
+                  0.5
+                ],
+                "priority": 3,
+                "description": "Rectangular green and yellow fields divided by low earthen ridges."
+              },
+              {
+                "target": "fortified_settlement",
+                "location": [
+                  0.5,
+                  0.35
+                ],
+                "priority": 4,
+                "description": "Mud-brick architecture with a prominent central tower and crenelated walls."
+              },
+              {
+                "target": "sand_mountains",
+                "location": [
+                  0.5,
+                  0.2
+                ],
+                "priority": 5,
+                "description": "Softly rounded, arid mountains with visible geological folds."
+              },
+              {
+                "target": "left_palm_cluster",
+                "location": [
+                  0.1,
+                  0.3
+                ],
+                "priority": 6,
+                "description": "Tall palm trees with textured trunks and radiating fronds."
+              },
+              {
+                "target": "right_palm_cluster",
+                "location": [
+                  0.85,
+                  0.3
+                ],
+                "priority": 7,
+                "description": "Symmetrical palm trees framing the right side of the composition."
+              },
+              {
+                "target": "midground_palm_grove",
+                "location": [
+                  0.5,
+                  0.4
+                ],
+                "priority": 8,
+                "description": "Denser, smaller palm trees surrounding the settlement."
+              },
+              {
+                "target": "sky_gradient",
+                "location": [
+                  0.5,
+                  0.1
+                ],
+                "priority": 9,
+                "description": "Pale, hazy blue-to-tan gradient sky."
+              },
+              {
+                "target": "shadow_cast",
+                "location": [
+                  0.3,
+                  0.6
+                ],
+                "priority": 10,
+                "description": "Deep shadows on the left side of the river bank and under the palm fronds."
+              }
+            ],
+            "geometry": {
+              "parts": [
+                "river_bed_sdf",
+                "bank_heightfield",
+                "field_grid_system",
+                "settlement_block_geometry",
+                "mountain_heightfield",
+                "palm_tree_fractal_geometry"
+              ],
+              "silhouette_constraints": [
+                "Sharp verticality of palm trunks",
+                "Jagged, stepped edges of the mud-brick settlement",
+                "Smooth, undulating curves of the distant mountains",
+                "Linear, geometric boundaries of the agricultural plots"
+              ],
+              "glsl_proposals": {
+                "river_banks": "heightfield(x, z) + noise(x, z) * erosion_factor; use step() for vertical cliff faces.",
+                "settlement": "box_sdf(x, y, z) + tower_sdf(x, y, z) with boolean subtraction for windows/crenelations.",
+                "mountains": "modified_perlin_noise(x, z) scaled by y-height; smoothstep for soft peaks.",
+                "palm_fronds": "fractal_branching_function(angle, length) with high-frequency noise for leaf texture.",
+                "water_surface": "reflection_map(vec3(x, y, z)) with slight ripple_distortion."
+              },
+              "controllable_parameters": [
+                "bank_erosion_intensity",
+                "field_grid_density",
+                "mountain_ruggedness",
+                "palm_frond_spread",
+                "settlement_tower_height"
+              ],
+              "visible_vs_inferred": {
+                "visible": "Surface colors, silhouettes, primary height variations, reflection patterns.",
+                "inferred": "Sub-surface soil density, internal settlement structure, root systems of palms."
+              }
+            },
+            "spatial_relationships": {
+              "channel_alignment": "The river flows from the center-midground toward the bottom-center, widening as it approaches the viewer.",
+              "vegetation_distribution": "Dense palm clusters frame the foreground/midground; smaller palms cluster around the settlement.",
+              "settlement_placement": "The settlement is nestled at the base of the mountains, centered horizontally.",
+              "terrain_overlap": "Mountains form a continuous backdrop; agricultural fields sit in a flat basin between the river and the settlement.",
+              "depth_layering": "Foreground (River/Banks) -> Midground (Fields/Palms) -> Background (Settlement/Mountains) -> Far Background (Sky)."
+            },
+            "camera_constraints": {
+              "perspective": "Wide-angle, eye-level view from a low vantage point near the river bank.",
+              "field_of_view": "Approximately 60-75 degrees to capture the breadth of the mountains and palms.",
+              "focal_point": "The central tower of the settlement and the river's path."
+            },
+            "safe_parameter_ranges": {
+              "river_width_ratio": "0.2 to 0.4 (relative to frame width)",
+              "mountain_height_ratio": "0.3 to 0.5 (relative to frame height)",
+              "field_count": "12 to 20 distinct plots",
+              "palm_trunk_diameter": "0.05 to 0.15 (dimensionless units)"
+            },
+            "unseen_space_policy": {
+              "river_source": "Assume it originates from a hidden oasis or spring behind the settlement.",
+              "mountain_interior": "Treat as solid, non-navigable mass.",
+              "settlement_interior": "Treat as opaque, non-transparent blocks."
+            },
+            "exploration_viewpoints": {
+              "arrival": "View from the river bank looking toward the settlement.",
+              "approach": "Moving forward along the river, narrowing the perspective on the fields.",
+              "lateral": "Panning left/right to see the full extent of the palm groves.",
+              "close_view": "Focus on the mud-brick texture of the settlement walls.",
+              "return": "Retracing the path back to the river bank, maintaining the framing of the palms."
+            },
+            "known_limitations": [
+              "GLSL cannot perfectly replicate the complex organic texture of palm fronds without high-frequency noise.",
+              "True-to-life reflection requires high-resolution environment mapping.",
+              "Mud-brick texture is best approximated by procedural noise rather than high-poly geometry."
+            ],
+            "rejection_conditions": [
+              "Any use of external textures or image maps.",
+              "Creation of 3D meshes or splats.",
+              "Claiming the reconstruction of hidden interior geometry.",
+              "Deviation from the desert/oasis color palette (ochre, tan, olive, dusty blue)."
+            ]
+          }
+        }
+      }
+    }
+  },
+  "finishedAt": 1792281420.679946
+}

@@ -20,7 +20,7 @@ export function mountWinners({ root, isActive }) {
         const image = document.createElement('img'); image.src = artworkImageURL(row.selection.image, row.selection.imageSha256); image.alt = row.title; image.loading = 'lazy';
         const caption = document.createElement('figcaption'); const heading = document.createElement('h2'); heading.textContent = row.title;
         const model = document.createElement('p'); model.textContent = row.selection.model || 'Selected artwork';
-        const link = document.createElement('a'); link.href = '/?tab=gallery&comparison=' + encodeURIComponent(row.comparisonId); link.textContent = 'See the comparison';
+        const link = document.createElement('a'); link.href = '/compare?comparison=' + encodeURIComponent(row.comparisonId); link.textContent = 'See the comparison';
         caption.append(heading, model, link); next.append(image, caption);
         card?.replaceWith(next); card = next; cards.set(row.comparisonId, card);
       }

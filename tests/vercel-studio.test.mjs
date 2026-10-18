@@ -9,6 +9,8 @@ import { createStudioBridge, targetPath } from '../server/vercel-studio.mjs';
 
 test('bridge routes only studio APIs and public runtime records', () => {
   assert.equal(targetPath('/api/studio?__studio_path=/api/gallery&key=one'), '/api/gallery?key=one');
+  const identity = 'job=existing&sha256=' + 'a'.repeat(64);
+  assert.equal(targetPath('/api/studio?__studio_path=/api/local-gallery/image&path=local-gallery/image&' + identity), '/api/local-gallery/image?' + identity);
   for (const path of ['/.runtime/service-env.json', '/scripts/file.py', '/api/studio', '/api/studio?__studio_path=//evil.test/api/test', '/api/studio?__studio_path=/api/../secret', '/api/studio?__studio_path=/api/%2e%2e/secret']) assert.equal(targetPath(path), null, path);
 });
 
@@ -50,15 +52,25 @@ test('HTTP, streaming and WebSocket bridge preserve existing sessions and reject
   const [error] = await once(foreign, 'error'); assert.match(error.message, /403/);
 });
 
-test('all entrypoints retain full studio navigation regardless of legacy preferences', () => {
+test('working studio retains all tools; Vercel remembers explicit active studio mode', () => {
   const source = readFileSync(new URL('../public/studio-access.js', import.meta.url), 'utf8');
-  for (const saved of [undefined, '0', '1']) {
-    for (const search of ['', '?tab=gallery', '?comparison=existing', '?tab=controls', '?studio=0', '?studio=1']) {
-      const document = { documentElement: { dataset: {} } };
-      vm.runInNewContext(source, { document, URLSearchParams, location: { search }, sessionStorage: { getItem: () => saved } });
-      assert.equal(document.documentElement.dataset.studioMode, 'studio', `${search}, saved=${saved}`);
-    }
+  const values = new Map();
+  const run = (hostname, search = '') => {
+    const document = { documentElement: { dataset: {} } };
+    vm.runInNewContext(source, { document, URLSearchParams, location: { hostname, search, hash: '' }, sessionStorage: { getItem: key => values.get(key), setItem: (key, value) => values.set(key, value) } });
+    return document.documentElement.dataset.studioMode;
+  };
+  for (const hostname of ['localhost', '127.0.0.1', 'artwork.influx.vision']) {
+    assert.equal(run(hostname), 'studio');
+    assert.equal(run(hostname, '?studio=0'), 'studio');
   }
+  const hosted = 'imagen-studio-hazel.vercel.app';
+  assert.equal(run(hosted), 'public');
+  assert.equal(run(hosted, '?studio=1'), 'studio');
+  assert.equal(run(hosted, '?tab=controls'), 'studio');
+  assert.equal(run(hosted, '?studio=0'), 'public');
   const css = readFileSync(new URL('../src/worlds.css', import.meta.url), 'utf8');
-  assert.doesNotMatch(css, /studio-tab-buttons|data-studio-mode/, 'Worlds styling must not hide shared navigation');
+  const rule = css.split('\n')[0];
+  for (const name of ['controls', 'tasks', 'performance', 'metrics', 'agents', 'daemons', 'monitor', 'seers', 'rules', 'protocol']) assert.ok(rule.includes('#tab-' + name));
+  for (const name of ['stream', 'gallery', 'models', 'worlds', 'winners']) assert.ok(!rule.includes('#tab-' + name));
 });

@@ -10,7 +10,7 @@ test('step presets update only the selected model and survive selection synchron
   assert.ok(start > 0 && end > start);
   const fields = { profile: { value: 'flux1-dev' }, steps: { value: '28' } };
   const modelSteps = { 'flux1-dev': 28, 'flux2-dev-nf4': 50 };
-  const context = vm.createContext({ key: 'steps', value: 16, modelSteps, generationField: key => fields[key], syncSelection: () => { fields.steps.value = String(modelSteps[fields.profile.value]); } });
+  const context = vm.createContext({ key: 'steps', value: 16, modelSteps, modelParameters: { 'flux1-dev': {}, 'flux2-dev-nf4': {} }, generationField: key => fields[key], syncSelection: () => { fields.steps.value = String(modelSteps[fields.profile.value]); } });
   vm.runInContext(source.slice(start, end), context);
   assert.equal(modelSteps['flux1-dev'], 16);
   assert.equal(modelSteps['flux2-dev-nf4'], 50);

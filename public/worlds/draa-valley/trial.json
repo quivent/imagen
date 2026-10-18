@@ -1,0 +1,73 @@
+{
+  "schema": 1,
+  "world": "draa-valley",
+  "source": {
+    "id": "1ebd04ec5f1d4eb8bee09bde90c4a206",
+    "profile": "flux2-dev-nf4",
+    "sha256": "4750bc169d8d8f66e1f19176904c783d458121bfe8929c959180475f70e35218"
+  },
+  "scene": {
+    "scene.vert": "44ce1912f5dfcacea8f995fa1aa2b6d1a6ab923dbfd610c1c97cc02e7b5951ac",
+    "scene.frag": "698b06d871d341cfaf690aa0f40c6495533e17f06fea597c97eb467fc91f938d"
+  },
+  "arrival": {
+    "position": [
+      2.3,
+      20
+    ],
+    "look": [
+      -0.06,
+      -0.06
+    ],
+    "sun": 0.18,
+    "water": 1,
+    "time": 0,
+    "viewport": [
+      480,
+      300
+    ]
+  },
+  "validation": {
+    "glslES300Compiler": "passed",
+    "offscreenRoute": "macOS CGL OpenGL core; shader version directive changed from 300 es to 410 and ES precision qualifier removed for validation only",
+    "programLinked": true,
+    "glError": 0,
+    "views": [
+      {
+        "view": "arrival",
+        "sha256": "add03fb8d8372beb2e968cf1c4f6dd89817376153b1227c95163c1febe988492",
+        "bytes": 146848
+      },
+      {
+        "view": "forward",
+        "sha256": "4ee3919793b136db81147cd15127b74ec890ca992418380c3344069f0da3e91b",
+        "bytes": 127841
+      },
+      {
+        "view": "return",
+        "sha256": "add03fb8d8372beb2e968cf1c4f6dd89817376153b1227c95163c1febe988492",
+        "bytes": 146848
+      }
+    ],
+    "translatedPosition": [
+      2.3,
+      -5
+    ],
+    "returnMatchesArrival": true,
+    "browserExecutionVerified": false,
+    "visualInspectionByAgent": false,
+    "collision": "terrain-following only; no building collision"
+  },
+  "acceptance": "pending Jay visual and traversal acceptance",
+  "orchestration": "manual trial; no automatic conversion/fitting controller",
+  "parameters": {
+    "scalarCount": 848,
+    "sha256": "bf0f1b1a7587f381000f8861e63d04e20d44fc28c57970dacf9a08ad8c5b9bb0",
+    "origin": "authored guesses constrained by model brief; not measured reconstruction"
+  },
+  "feedback": {
+    "firstDraft": "evaluation.json",
+    "firstDraftShader": "Separate earlier scene revision; feedback does not validate the current 848-parameter shader",
+    "currentCandidateReview": "evaluation-848.json"
+  }
+}

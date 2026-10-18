@@ -1,10 +1,17 @@
 (() => {
-  const tabs = ['stream', 'gallery', 'controls', 'tasks', 'performance', 'models', 'seers', 'worlds', 'metrics', 'winners', 'agents', 'daemons', 'rules', 'protocol', 'monitor'];
+  const tabs = ['stream', 'gallery', 'controls', 'tasks', 'performance', 'models', 'seers', 'worlds', 'workbench', 'research', 'metrics', 'winners', 'agents', 'daemons', 'rules', 'protocol', 'monitor'];
   const query = new URLSearchParams(location.search);
-  const requested = query.get('tab');
+  const path = (location.pathname || '').replace(/^\/|\/$/g, '');
+  const requested = ({ compare: 'gallery', gallery: 'gallery', collections: 'winners', active: 'stream' })[path] || (tabs.includes(path) ? path : query.get('tab'));
   const tab = new URLSearchParams(location.hash.slice(1)).has('control') ? 'controls'
     : tabs.includes(requested) ? requested : query.has('comparison') ? 'gallery' : 'stream';
   document.documentElement.dataset.bootTab = tab;
+  let workspace = 'production';
+  try { workspace = localStorage.getItem('imagen:workspace') || workspace; } catch {}
+  const production = ['stream','gallery','controls','models','winners','worlds'];
+  if (!production.includes(tab)) workspace = 'workbench';
+  else if (tab === 'controls') workspace = 'production';
+  document.documentElement.dataset.workspace = workspace === 'workbench' ? 'workbench' : 'production';
   let workMode = true;
   let detailsVisible = false;
   try {

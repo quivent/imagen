@@ -26,7 +26,7 @@ export function createGenerationSteps({ read, apply, status, request = fetch }) 
         try {
           const response = await request('/api/generation-steps', { method: 'POST', credentials: 'same-origin',
             headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ modelSteps }) });
-          if (!response.ok) { status(response.status === 403 ? 'Open Controls to apply these steps.' : 'Steps were not applied. Try again.'); return; }
+          if (!response.ok) { status(response.status === 403 ? 'The studio connection is unavailable. These steps have not been applied.' : 'Steps were not applied. Try again.'); return; }
           const value = await response.json();
           if (value.ok !== true || !valid(value.modelSteps)) throw new Error('Unconfirmed steps');
           if (sent === revision) {

@@ -1,0 +1,29 @@
+{
+  "source": "Trinity/cartography/src-tauri",
+  "copiedFiles": {
+    "build.rs": "487059eaf8a947b80f20a9aacac038a5047b2ad69d2401b827376c67d6fe847f",
+    "src/main.rs": "502e769414ffa26b6bca8d6a62b6a2eb41ea2f14e836c9ff038641e51c95a8c3"
+  },
+  "adaptedFiles": [
+    "Cargo.toml",
+    "tauri.conf.json",
+    "src/lib.rs"
+  ],
+  "removed": [
+    "Trinity commands",
+    "filesystem watchers",
+    "shell plugin",
+    "project dependencies",
+    "broad IPC capabilities"
+  ],
+  "originalArtworkStudio": "kinship-of-cancer/tools/artwork/macos",
+  "icon": {
+    "source": "Applications/Artwork Studio.app/Contents/Resources/Studio.icns",
+    "sha256": "b3bc17519be7f4e07260f30761f9ee1eb0cbc52685f6ba64661ffe1f5391fb91"
+  },
+  "currentIcon": {
+    "master": "assets/imagen-icon.png",
+    "bundle": "src-tauri/icons/Imagen.icns",
+    "provenance": "assets/imagen-icon.provenance.json"
+  }
+}

@@ -126,10 +126,17 @@ class Engine:
                 if self.profile == 'flux1-dev':
                     self.pipe = FluxPipeline.from_pretrained(path, torch_dtype=torch.bfloat16, local_files_only=True).to('cuda')
                 else:
-                    from transformers import Mistral3ForConditionalGeneration
-                    encoder = Mistral3ForConditionalGeneration.from_pretrained(
-                        self.root / 'models' / 'flux2-nf4', subfolder='text_encoder',
-                        torch_dtype=torch.bfloat16, device_map={'': 'cuda:0'}, local_files_only=True)
+                    self.encoder_details = None
+                    if os.environ.get('ARTWORK_FLUX2_ENCODER', 'nf4') == 'fp8':
+                        from encoder_fp8 import load_encoder
+                        prompt = next((record['spec']['prompt'] for record in reversed(list(self.jobs.values()))
+                                       if record.get('spec', {}).get('prompt')), None)
+                        encoder, self.encoder_details = load_encoder(self.root, verify_prompt=prompt)
+                    else:
+                        from transformers import Mistral3ForConditionalGeneration
+                        encoder = Mistral3ForConditionalGeneration.from_pretrained(
+                            self.root / 'models' / 'flux2-nf4', subfolder='text_encoder',
+                            torch_dtype=torch.bfloat16, device_map={'': 'cuda:0'}, local_files_only=True)
                     self.pipe = Flux2Pipeline.from_pretrained(path, text_encoder=encoder,
                         torch_dtype=torch.bfloat16, local_files_only=True).to('cuda')
                 self.precision = {'transformer_dtype': str(self.pipe.transformer.dtype),
@@ -138,7 +145,10 @@ class Engine:
                     quant = self.pipe.text_encoder.config.quantization_config
                     quant = quant.to_dict() if hasattr(quant, 'to_dict') else quant
                     self.precision['text_encoder_quantization'] = quant
-                    assert self.precision['text_encoder_4bit'] and quant['bnb_4bit_quant_type'] == 'nf4'
+                    if self.encoder_details:
+                        self.precision['text_encoder_fp8'] = self.encoder_details
+                    else:
+                        assert self.precision['text_encoder_4bit'] and quant['bnb_4bit_quant_type'] == 'nf4'
                 assert self.pipe.transformer.dtype == torch.bfloat16
                 self.pipe.vae.enable_tiling()
                 self.instrument('prompt_encoding', self.pipe, 'encode_prompt')
@@ -150,11 +160,8 @@ class Engine:
         except Exception as exc:
             self.phase = 'failed'
             self.problem = type(exc).__name__ + ': ' + str(exc)[:600]
-            with self.condition:
-                for ident in self.pending:
-                    self.jobs[ident].update(status='failed', problem='Model load failed before generation')
-                    atomic_json(self.directory / ident / 'job.json', self.jobs[ident])
-                self.pending.clear()
+            # Loading did not attempt any queued render. Retain its original
+            # journaled state so a corrected startup can resume the same IDs.
             print(json.dumps({'event': 'load_failed', 'problem': self.problem}), flush=True)
             return
         while True:

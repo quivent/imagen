@@ -105,6 +105,12 @@ export function mountSeers({ root, isActive = () => true }) {
     }
   }
   render();
+  for(const [label,ids] of [['Vision critics',['pixtral','gemma']],['Visual similarity',['dinov2']]]){
+    const section=node('section','','seers-category'),heading=node('h2',label),grid=node('div','','seers-grid');
+    for(const id of ids){const item=cards.get(id);if(item)grid.append(item.element);}
+    section.append(heading,grid);list.append(section);
+  }
+  render();
   document.addEventListener('visibilitychange', sync);
   return {
     setActive(value) { enabled = value; sync(); },

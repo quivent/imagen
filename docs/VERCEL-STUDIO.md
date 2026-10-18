@@ -4,9 +4,11 @@ Deploy this repository as a **new** Vercel project. The root `vercel.json` build
 
 ## Public and studio navigation
 
-Every entrypoint shows all studio tabs, including Compare, Controls, Tasks, Performance, Models, Seers and Worlds. Worlds presents the agreed image-to-world pipeline and marks the fitting integration as planned.
+Click the Imagen mark in the header, or press **⌘K / Ctrl K**, to open the studio switcher. Choose **Working studio** for every workflow tab, or **Public view** for the presentation. Vercel remembers that choice for the browser tab's session; no URL parameter is required. The local working studio and `artwork.influx.vision` start with every workflow tab visible.
 
-Use `?tab=gallery` to open Compare or `?tab=controls` to open Controls directly. Legacy `?studio=0` URLs and saved compact-navigation preferences no longer hide tabs. Existing server authentication still protects actions and private Controls state.
+The Vercel public view hides Controls, Tasks, Performance, Metrics, Agents, Daemons and Monitor. The other tabs remain visible. Compare also hides generation settings, run buttons and authenticated rating actions in public view, so it never directs visitors to the hidden Controls tab. These tools remain available in the working studio. Explicit `?studio=1` and `?studio=0` links remain compatible, and are cleaned from the URL when the switcher is used. Existing authentication continues to protect actions and private Controls state.
+
+On the Mac, a same-origin localhost request can establish the existing signed Controls session from the private local token file. The token stays server-side. This route requires a loopback client, a loopback Host and an exactly matching Origin; public gateway and Vercel requests cannot use it.
 
 ## Hosting boundary
 
@@ -24,13 +26,15 @@ The frontend uses same-origin URLs. The bridge forwards original cookies and str
 
 Vercel currently documents Node HTTP server exports with `ws` in its [WebSocket beta](https://vercel.com/docs/functions/websockets). This bridge uses that supported server shape. Connections must reconnect across function lifetimes and deployments; the studio's existing reconnect behavior remains in place. HTTP streaming uses the same bridge. The configured function duration is 300 seconds. Platform routing and actual deployed reconnection still require deployment verification.
 
+The studio polls the authenticated gallery API for the R2 index every 10 seconds, retaining its last verified collection on failure and pushing changed records over the shared WebSocket. New archive objects appear once the single uploader has added them to that index. The API has its own short index cache, so visibility follows the next successful refresh rather than a fixed delivery deadline. Local worker arrivals continue to appear independently.
+
 The backend must remain running and reachable. This package moves frontend hosting; it does not make the Mac daemons, local archive or Vast services independent of their existing hosts.
 
 ## Deploy
 
 1. In Vercel, import `quivent/imagen` into a new project, such as `imagen-studio`. Use the repository root and Node 24.x. The root configuration selects Vite, `npm run build` and `dist`.
 2. Set `ARTWORK_STUDIO_ORIGIN` if needed. No model, SSH or storage secrets belong in this frontend project.
-3. Deploy a Preview first. Check Stream/Compare, actual Seer state, live task delivery, reconnects, and an existing authenticated Controls session through `?tab=controls`. Do not generate test artwork.
+3. Deploy a Preview first. Check Stream/Compare, actual Seer state, live task delivery, reconnects, and an existing authenticated Controls session through `/controls`. Do not generate test artwork.
 4. Promote that project when satisfied. Leave the existing `artwork-comparison` project and its required API unchanged.
 
 For CLI deployment from a separately linked new project:
@@ -54,3 +58,10 @@ Studio navigation: **https://imagen-studio-hazel.vercel.app/?studio=1**
 Deployed on 2026-10-17 as the new `imagen-studio` project. The existing `artwork-comparison` project and domain routing were preserved. Public HTML, Seer JSON and event streaming, runtime task records, live WebSocket delivery and unauthenticated Controls rejection were checked through the deployed origin. No images were viewed and no artwork was generated. Browser visual verification remains unavailable in this environment.
 
 See [the image-to-world protocol](IMAGE-TO-WORLD-PROTOCOL.md) and [backend redeployment source](../deployment/README.md) for their separate scopes.
+
+
+### Main studio routes
+
+Every main tab has a native app route: `/stream`, `/compare`, `/controls`, `/tasks`, `/performance`, `/models`, `/seers`, `/worlds`, `/workbench`, `/metrics`, `/winners`, `/agents`, `/daemons`, `/rules`, `/protocol` and `/monitor`. The route map and URL helpers live in `src/studio-route.js`. Early boot recognizes these paths before the app mounts. Existing visibility and authentication still govern access to each panel.
+
+Legacy `?tab=` links, `/metrics.html` and `/monitor.html` canonicalize to the corresponding route locally. Comparison IDs remain query state on `/compare`; Workbench uses readable experiment/method/page parameters. Local middleware explicitly serves the main Vite index for canonical paths, preventing HTML extension fallback from treating `/metrics` or `/monitor` as legacy redirect files. Asset/API routes and `/worlds/draa-valley/` continue using their own handlers. Vercel's configuration includes equivalent index rewrites for a future deployment; these changes have only been run locally.

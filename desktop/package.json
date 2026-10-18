@@ -1,0 +1,16 @@
+{
+  "name": "imagen-desktop",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tauri dev",
+    "build": "tauri build --bundles app",
+    "check": "cargo check --manifest-path src-tauri/Cargo.toml",
+    "icon": "node scripts/build-icon.mjs",
+    "tauri": "tauri"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "2.12.3"
+  }
+}

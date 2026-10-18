@@ -54,7 +54,7 @@ export function mountMonitor({ root, isActive = () => true }) {
       const response = await fetch('/api/studio-corrections', { method: 'POST', credentials: 'same-origin', cache: 'no-store', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ rule, requestId: record.requestId }), signal: request.signal });
       const result = await response.json().catch(() => ({}));
       if ([401, 403].includes(response.status)) {
-        Object.assign(record, { status: 'unconfirmed', authNeeded: true, detail: 'Open Controls to authorize corrections, then return and retry this same request.' });
+        Object.assign(record, { status: 'unconfirmed', authNeeded: true, detail: 'The studio connection is unavailable. This correction has not been applied.' });
       } else if (response.ok && result.ok === true && result.status === 'pending') {
         Object.assign(record, { status: result.handoff === 'accepted' ? 'pending' : 'unconfirmed', detail: result.handoff === 'accepted' ? 'Correction accepted and pending. Only a later live source observation can verify the rule.' : 'The request is recorded but coordinator handoff is unconfirmed. Retry the same request; it will not create a duplicate.' });
       } else {

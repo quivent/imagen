@@ -26,7 +26,8 @@ function unavailable() {
 }
 function sendSubscriptions() {
   if (socket?.readyState !== WebSocket.OPEN) return;
-  const value = JSON.stringify({ type: 'subscribe', features: ['gallery-patch-v1', 'gallery-preview-v1', 'comparisons-patch-v1'], topics: [...topics].filter(topic => topic !== 'gallery-recent' && (topic !== 'controls' || listeners.has('controls'))) });
+  const requested=new Set([...listeners.keys()].map(topic=>topic==='gallery-recent'?'gallery':topic));
+  const value = JSON.stringify({ type: 'subscribe', features: ['gallery-patch-v1', 'gallery-preview-v1', 'comparisons-patch-v1', ...(!listeners.has('gallery') ? ['gallery-recent-only-v1'] : [])], topics: [...requested] });
   if (value !== subscriptionJSON) { subscriptionJSON = value; socket.send(value); }
 }
 function connect() {
@@ -43,6 +44,11 @@ function connect() {
     try { value = JSON.parse(event.data); } catch { return; }
     if (value.type === 'hello') { snapshots.clear(); resyncPending.clear(); return; }
     if (!topics.has(value.topic)) return;
+    if(value.topic==='gallery'&&!listeners.has('gallery')){
+      if(value.type==='snapshot'&&listeners.has('gallery-recent'))emit('gallery-recent',{...value,topic:'gallery-recent',data:recentGallery(value.data),available:true});
+      return;
+    }
+    if(!listeners.has(value.topic))return;
     if (value.type === 'snapshot') {
       const previous = snapshots.get(value.topic);
       if (previous?.available && value.version <= previous.version) return;
@@ -97,11 +103,9 @@ function subscribe(topic, listener) {
     listeners.get(topic)?.delete(listener);
     if (listeners.get(topic)?.size === 0) {
       listeners.delete(topic);
-      // Public topics stay subscribed on the wire, including while their tab is
-      // hidden. Retain their latest observation so reopening an unchanged topic
-      // does not wait for a publication that may never arrive. Controls alone
-      // leave the wire when their final listener leaves.
-      if (topic === 'controls') snapshots.delete(topic);
+      // Public snapshots remain available without retaining unwanted wire topics.
+      // Full archives and private state are released when their final reader leaves.
+      if (topic === 'controls' || topic === 'gallery') snapshots.delete(topic);
     }
     sync();
   };

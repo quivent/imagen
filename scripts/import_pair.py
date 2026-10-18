@@ -88,6 +88,8 @@ def side(db, factory, data, job_id):
     if precision.get('text_encoder_4bit'):
         encoder_type = quantization.get('bnb_4bit_quant_type', '4 bit').upper()
         precision_label = f'{dtype} / {encoder_type} encoder'.strip(' /')
+    if precision.get('text_encoder_fp8'):
+        precision_label = f'{dtype} / FP8 encoder'.strip(' /')
     models = receipt.get('model_manifest', {}).get('models', {})
     model_key = 'flux1' if receipt.get('profile') == 'flux1-dev' else 'flux2'
     settings = {key: value for key, value in parameters.items() if key not in {'width', 'height', 'num_inference_steps'}}
@@ -96,6 +98,9 @@ def side(db, factory, data, job_id):
             settings[key] = receipt[key]
     if models.get('flux2-nf4') and receipt.get('profile') == 'flux2-dev-nf4':
         settings['encoder_revision'] = models['flux2-nf4']['revision']
+    if precision.get('text_encoder_fp8'):
+        settings['encoder_revision'] = precision['text_encoder_fp8']['checkpoint']
+        settings['text_encoder_fp8'] = precision['text_encoder_fp8']
     settings['factory_version'] = version['id']
     result.update({
         'image': 'data/' + name, 'imageSha256': record['sha256'],

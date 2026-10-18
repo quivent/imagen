@@ -1,0 +1,20 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+import vm from 'node:vm';
+test('inactive panels load only on selection, respect navigation during loading, and dispose pending/HMR mounts',async()=>{
+ const source=await readFile(new URL('../src/app.js',import.meta.url),'utf8');
+ const code=source.slice(source.indexOf('function lazyPanel('),source.indexOf('for(const [name,loader] of Object.entries(panelLoaders))'));
+ const roots=new Map(),rootFor=id=>{if(!roots.has(id))roots.set(id,{dataset:{},insertions:0,setAttribute(){},removeAttribute(){},insertAdjacentHTML(){this.insertions++;}});return roots.get(id);};
+ const context={$:rootFor,document:{hidden:false},publicNavigation:{update(){}}};vm.runInNewContext(code+'\nglobalThis.create=lazyPanel;',context);
+ let resolve,loads=0,mounts=0,destroys=0;const states=[];
+ const mount=()=>{mounts++;return {setActive:value=>states.push(value),destroy:()=>destroys++};};
+ const panel=context.create('test',()=>{loads++;return new Promise(done=>{resolve=done;});});
+ panel.setActive(false);assert.equal(loads,0);panel.setActive(true);panel.setActive(true);assert.equal(loads,1);
+ panel.setActive(false);resolve([mount,'markup']);await new Promise(done=>setImmediate(done));
+ assert.equal(mounts,1);assert.equal(states.at(-1),false,'late import does not activate the panel after navigation');
+ panel.setActive(true);assert.equal(states.at(-1),true);assert.equal(loads,1);
+ panel.remount(mount,'new markup');assert.equal(mounts,2);assert.equal(destroys,1);panel.destroy();assert.equal(destroys,2);
+ let resolveLate;const late=context.create('late',()=>new Promise(done=>resolveLate=done));late.setActive(true);late.destroy();resolveLate([mount,'markup']);await new Promise(done=>setImmediate(done));
+ assert.equal(mounts,2,'disposed pending imports never mount');assert.equal(rootFor('late-panel').insertions,0);
+});

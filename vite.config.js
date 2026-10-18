@@ -1,5 +1,13 @@
+import { installResearchNotes } from './server/research-notes.mjs';
+import { researchDocumentsPlugin } from './server/research-documents.mjs';
+import { installSourceSurface } from './server/source-surface.mjs';
+import { installWorldPages } from './server/world-pages.mjs';
+import { installWorldAlgorithms } from './server/world-algorithms.mjs';
 import { installGenerationSteps } from './server/generation-steps.mjs';
 import { installLocalGallery } from './server/local-gallery.mjs';
+import { installGallery } from './server/r2-gallery.mjs';
+import { installWorldExperiments } from './server/world-experiments.mjs';
+import { installWorkstationSession } from './server/workstation-session.mjs';
 import { installSeers } from './server/seers.mjs';
 import { installNativeLive } from './server/native-live.mjs';
 import { defineConfig } from 'vite';
@@ -81,14 +89,8 @@ const proxy = {
 export default defineConfig({
   root,
   publicDir: 'public',
-  plugins: [{ name: 'generation-steps', configureServer: installGenerationSteps, configurePreviewServer: installGenerationSteps }, { name: 'seers', configureServer: installSeers, configurePreviewServer: installSeers }, { name: 'native-live', configureServer: installNativeLive, configurePreviewServer: installNativeLive }, { name: 'local-gallery', configureServer: installLocalGallery, configurePreviewServer: installLocalGallery }, { name: 'studio-winners', configureServer: installWinners, configurePreviewServer: installWinners }, { name: 'studio-events', configureServer: installStudioEvents, configurePreviewServer: installStudioEvents }, { name: 'studio-corrections', configureServer: installCorrections, configurePreviewServer: installCorrections }, { name: 'initial-panel-markup', transformIndexHtml(html) {
-    for (const name of ['metrics', 'monitor', 'winners', 'agents', 'rules', 'daemons', 'performance', 'protocol', 'models', 'seers', 'worlds']) {
-      const markup = readFileSync(path.join(root, 'src', name + '-panel.html'), 'utf8');
-      html = html.replace(new RegExp('(<section id="' + name + '-panel"[^>]*>)</section>'), (_match, opening) => opening + markup + '</section>');
-    }
-    return html;
-  } }, { name: 'studio-live-monitor', configureServer: installStudioMonitor, configurePreviewServer: installStudioMonitor }, { name: 'artwork-runtime-files', configureServer: runtimeFiles, configurePreviewServer: runtimeFiles }],
-  server: { host: '127.0.0.1', port: 48624, strictPort: true, allowedHosts: ['artwork.influx.vision'], fs: { allow: [root] }, proxy },
+  plugins: [researchDocumentsPlugin(), { name: 'research-notes', configureServer: installResearchNotes, configurePreviewServer: installResearchNotes }, { name: 'source-surface', configureServer: installSourceSurface, configurePreviewServer: installSourceSurface }, { name: 'world-pages', configureServer: installWorldPages, configurePreviewServer: installWorldPages }, { name: 'world-algorithms', configureServer: installWorldAlgorithms, configurePreviewServer: installWorldAlgorithms }, { name: 'world-experiments', configureServer: installWorldExperiments, configurePreviewServer: installWorldExperiments }, { name: 'workstation-session', configureServer: installWorkstationSession, configurePreviewServer: installWorkstationSession }, { name: 'generation-steps', configureServer: installGenerationSteps, configurePreviewServer: installGenerationSteps }, { name: 'seers', configureServer: installSeers, configurePreviewServer: installSeers }, { name: 'native-live', configureServer: installNativeLive, configurePreviewServer: installNativeLive }, { name: 'local-gallery', configureServer: installLocalGallery, configurePreviewServer: installLocalGallery }, { name: 'archive-gallery', configureServer: installGallery, configurePreviewServer: installGallery }, { name: 'studio-winners', configureServer: installWinners, configurePreviewServer: installWinners }, { name: 'studio-events', configureServer: installStudioEvents, configurePreviewServer: installStudioEvents }, { name: 'studio-corrections', configureServer: installCorrections, configurePreviewServer: installCorrections }, { name: 'studio-live-monitor', configureServer: installStudioMonitor, configurePreviewServer: installStudioMonitor }, { name: 'artwork-runtime-files', configureServer: runtimeFiles, configurePreviewServer: runtimeFiles }],
+  server: { watch: { ignored: ['**/.runtime/**', '**/deployment/**', '**/.venv/**', '**/.download-venv/**', '**/src-tauri/target/**', '**/src-tauri/gen/**'] }, host: '127.0.0.1', port: 48624, strictPort: true, allowedHosts: ['artwork.influx.vision'], fs: { allow: [root] }, proxy },
   preview: { host: '127.0.0.1', port: 48625, strictPort: true, allowedHosts: ['artwork.influx.vision'], proxy },
   build: { outDir: 'dist', emptyOutDir: true, rollupOptions: { input: { studio: path.join(root, 'index.html'), metrics: path.join(root, 'metrics.html'), monitor: path.join(root, 'monitor.html') } } },
 });
