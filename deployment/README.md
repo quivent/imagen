@@ -91,21 +91,26 @@ supervisorctl start artwork-judges-download artwork-gemma4-download
 
 The judges command is optional when judges are not being deployed. The recipes download the pinned checkpoints and validate their size/hash/header rules. The FLUX downloader writes the completion `models/manifest.json`; committed `models/pins.json` is only a source specification and must never be substituted for that completion evidence. The FP8 downloader separately verifies all six weight shards against pinned sizes and SHA-256 hashes before writing `models/flux2-fp8/.download-complete.json`. Wait for both completion records before starting FLUX.2. Model downloads do not need a copied model volume.
 
-Do not run `artwork-judges-install` after the pinned `dependencies --judges` operation; its captured historical recipe is retained for architectural provenance, while the pinned installer is the redeploy path. Qwen remains a declared alternative in the source catalog; the current configured judge services use Pixtral and Gemma and do not automatically load Qwen.
+Do not run `artwork-judges-install` after the pinned `dependencies --judges` operation; its captured historical recipe is retained for architectural provenance, while the pinned installer is the redeploy path. Qwen has a separate explicitly requested TP2 prompt-drafting service; it is not automatically enabled by judge installation. Its integrated MTP checkpoint is restored from private R2 as described below.
 
 ## Start workers, archive and judges
 
 After downloads and private state reconciliation:
 
 ```sh
-supervisorctl start artwork-piper artwork-native-flux1
+python3 /workspace/artwork/second-flux1-gpu1/prepare.py
+supervisorctl start artwork-piper artwork-native-flux1 artwork-native-flux1-gpu1
 # Wait for /workspace/artwork/native/flux1.sock and the native model-ready message.
-supervisorctl start artwork-flux1 artwork-flux2
+supervisorctl start artwork-flux1 artwork-flux1-gpu1
+# Keep artwork-flux2 stopped while the second FLUX1 lane occupies GPU1.
 curl --fail http://127.0.0.1:18761/health
 curl --fail http://127.0.0.1:18762/health
 supervisorctl start artwork-r2
 # Optional, after all judge snapshots and runtime-ready marker exist:
 supervisorctl start artwork-dino artwork-pixtral artwork-gemma
+# After the separately verified R2 restore and a memory check:
+# /workspace/artwork/r2/.venv/bin/python /workspace/artwork/judges/download_qwen_r2.py
+# supervisorctl start artwork-qwen
 ```
 
 Check actual readiness, GPU assignment, private loopback binding, and ordinary generation through the existing authorized queue. Verify a real original locally and in R2 against its receipt SHA-256; no synthetic/proof image is needed. Keep exactly one uploader for the existing study prefix and retain its historical index. Do not restart healthy resident workers to validate frontend changes.

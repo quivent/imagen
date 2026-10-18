@@ -3,7 +3,7 @@ export const modelCategories = [
 ];
 export function modelCategory(item) {
  const identity=[item.id,item.name,item.repo].filter(Boolean).join(' ').toLowerCase();
- if(/assistant|drafter/.test(identity))return 'drafters';
+ if(/assistant|drafter|qwen/.test(identity))return 'drafters';
  if(/encoder|flux2-nf4|flux2-fp8/.test(identity))return 'encoders';
  if(/pixtral|gemma/.test(identity))return 'critics';
  if(/dino/.test(identity))return 'features';

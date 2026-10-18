@@ -7,6 +7,7 @@ const known = [
   { id: 'flux2', aliases: ['flux2-dev-nf4', 'flux2-dev', 'flux2'], name: 'FLUX.2 DEV', note: 'DEV base model · FP8 text encoder' },
   { id: 'pixtral', aliases: ['pixtral-critic', 'pixtral'], name: 'Pixtral 12B W4A16' },
   { id: 'gemma', aliases: ['gemma', 'gemma4-12b-artist'], name: 'Gemma 4 12B NVFP4' },
+  { id: 'qwen', aliases: ['qwen', 'qwen-precision'], name: 'Qwen 3.8 27B NVFP4', note: 'Prompt revisions · integrated MTP' },
   { id: 'dinov2', aliases: ['dinov2-giant', 'dinov2', 'dino'], name: 'DINOv2 Giant' },
 ];
 const readable = value => typeof value === 'string' && value.trim() ? value : 'Not recorded';
@@ -57,7 +58,7 @@ export function mountModels({ root, isActive = () => true }) {
       ? Object.entries(item.precision).map(([component, value]) => `${component}: ${readable(value)}`).join('\n') : readable(item.precision);
     const bytes = typeof item.bytes === 'number' && Number.isFinite(item.bytes) && item.bytes >= 0
       ? `${(item.bytes / 1e9).toLocaleString(undefined, { maximumFractionDigits: 2 })} GB · ${item.bytes.toLocaleString()} bytes` : 'Not recorded';
-    const gpu = state.fresh && Number.isInteger(item.gpuIndex) && item.gpuIndex >= 0 ? `GPU ${item.gpuIndex}` : 'Unknown';
+    const gpu = state.fresh && Array.isArray(item.gpuIndices)&&item.gpuIndices.length ? item.gpuIndices.map(index=>'GPU '+index).join(' + ') : state.fresh && Number.isInteger(item.gpuIndex) && item.gpuIndex >= 0 ? `GPU ${item.gpuIndex}` : 'Unknown';
     const fields = [['Repository', readable(item.repo)], ['Pinned revision', readable(item.revision), 'models-revision'],
       ['Precision', precision, 'models-components'], ['Disk size', bytes + (state.fresh ? '' : ' · last recorded')],
       ['Download', state.downloaded], ['GPU residency', state.loaded], ['GPU / lane', gpu],

@@ -39,6 +39,14 @@ def lane_indices(config,pass_number,total=150):
     if pass_number==1 and lane.get('initialRange') is not None:return list(range(*lane['initialRange']))
     return list(range(lane['laneIndex'],total,lane['laneCount']))
 
+def revision_cursor(state,config,approved):
+    """Keep both lanes useful on audited revisions as the draft pool grows."""
+    eligible=[i for i in lane_indices(config,state['pass']) if i in approved]
+    if not eligible:return None
+    forward=[i for i in eligible if i>=state['sceneIndex']]
+    if forward:return {'sceneIndex':forward[0]}
+    return {'sceneIndex':eligible[0],'pass':state['pass']+1,'seed':state['seed']+1}
+
 class ParityDaemon:
     def __init__(self,root=DEFAULT_ROOT,study_root=study.DEFAULT_ROOT,controller=Controller,prepare=study.prepare_corpus,preflight=remote_preflight,adapter=native_adapter):
         self.root=Path(root).resolve();self.root.mkdir(parents=True,exist_ok=True)
@@ -102,7 +110,15 @@ class ParityDaemon:
     def tick(self):
         state=self.read()
         if not state['enabled']:return state
-        indices=lane_indices(self.config(),state['pass'])
+        config=self.config()
+        if config.get('promptRevisionMode')=='approved-first' and not state.get('currentPackage'):
+            from prompt_revisions import approved_indices
+            selected=revision_cursor(state,config,approved_indices(json.loads(study.CORPUS.read_text())))
+            if selected:
+                if selected.get('seed',state['seed'])>=2**32:return self.attention('Paired seed range exhausted')
+                state=self.update(**selected,promptSelection='approved-revision')
+            else:state=self.update(promptSelection='historical-fallback-no-approved-prompts')
+        indices=lane_indices(config,state['pass'])
         if state['sceneIndex'] not in indices:
             if state.get('currentPackage'):return self.attention('The active pair is outside this lane assignment; retain its original lane')
             eligible=[index for index in indices if index>=state['sceneIndex']]
@@ -194,7 +210,9 @@ class ParityDaemon:
         if not re.fullmatch(r'(?:[A-Za-z0-9_.-]+@)?[A-Za-z0-9.-]+',host) or not port.isdigit() or not 1<=int(port)<=65535:
             raise ValueError('Configure the worker SSH endpoint')
         previous=self.config() if (self.root/'config.json').exists() else {}
-        config={'settings':settings,'sshHost':host,'sshPort':port,'studyRoot':str(self.study_root),**lane_config({**previous,**payload})}
+        mode=payload.get('promptRevisionMode',previous.get('promptRevisionMode','approved-first'))
+        if mode not in ('approved-first','historical'):raise ValueError('Unknown prompt revision selection mode')
+        config={'settings':settings,'sshHost':host,'sshPort':port,'studyRoot':str(self.study_root),'promptRevisionMode':mode,**lane_config({**previous,**payload})}
         if (self.root/'config.json').exists() and self.read().get('currentPackage'):
             old=self.config()
             if any(old.get(key)!=config.get(key) for key in ('settings','sshHost','sshPort')) or lane_config(old)['workerPort']!=config['workerPort']:

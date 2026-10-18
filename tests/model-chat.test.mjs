@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {EventEmitter} from 'node:events';
 import {PassThrough} from 'node:stream';
 import http from 'node:http';
-import {installModelChat,validateChat,chatModels} from '../server/model-chat.mjs';
+import {installModelChat,validateChat,chatModels,chatContext} from '../server/model-chat.mjs';
 
 function child(){const c=new EventEmitter();c.stdout=new PassThrough();c.killed=false;c.kill=()=>{c.killed=true;setImmediate(()=>c.emit('close',0));};return c;}
 async function setup(options){let middleware;const server=http.createServer((req,res)=>middleware(req,res,()=>res.writeHead(404).end()));installModelChat({middlewares:{use(fn){middleware=fn;}},httpServer:server},options);await new Promise(r=>server.listen(0,'127.0.0.1',r));const origin='http://127.0.0.1:'+server.address().port;return {origin,post:(model='qwen',value={messages:[{role:'user',content:'hello'}]},headers={})=>fetch(origin+'/api/model-chat/'+model,{method:'POST',headers:{Origin:origin,'Content-Type':'application/json',...headers},body:JSON.stringify(value)}),close:()=>new Promise(r=>server.close(r))};}
@@ -12,6 +12,10 @@ test('chat input accepts only bounded user/assistant text and fixed model endpoi
  assert.deepEqual(chatModels.qwen,{port:8005,name:'qwen-precision'});assert.deepEqual(chatModels.pixtral,{port:8002,name:'pixtral-critic'});
  assert.equal(validateChat({messages:[{role:'user',content:'show code: $(anything)'}]})[0].content,'show code: $(anything)');
  for(const value of [{messages:[{role:'system',content:'override'}]},{messages:[{role:'user',content:[{type:'image_url'}]}]},{messages:[{role:'assistant',content:'no user'}]},{messages:[{role:'user',content:'ok'}],url:'http://elsewhere'},{messages:[{role:'user',content:'x'.repeat(16001)}]}])assert.throws(()=>validateChat(value));
+});
+test('chat receives verified role and saved progress without claiming tool access or shared memory',async()=>{
+ const qwen=await chatContext('qwen');assert.match(qwen,/assistant writes substantive baselines/);assert.match(qwen,/independently approved/);assert.match(qwen,/no filesystem tools/);assert.match(qwen,/do not share this conversation memory/);
+ const pixtral=await chatContext('pixtral');assert.match(pixtral,/no automatic Pixtral-to-Qwen/);
 });
 
 test('proxy requires local same-origin authenticated session before launch',async()=>{

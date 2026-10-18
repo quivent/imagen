@@ -44,7 +44,8 @@ export function installPromptStudy(server,{root=defaultRoot,launch,archive=colle
    if(url.pathname==='/api/production-hud'){
     if(req.method!=='GET'){send(405,{ok:false});return;}
     let monitor={};try{monitor=JSON.parse(await readFile(new URL('../.runtime/monitor/status.json',import.meta.url),'utf8'));}catch{}
-    send(200,productionHUD({flow:await flowCall(1),monitor}));return;
+    let revisions=null;try{const rows=JSON.parse(await readFile(new URL('../research/studies/art-direction-held-constant/baselines-40.json',import.meta.url),'utf8')).scenes;revisions={total:rows.length,drafted:rows.filter(s=>s.precisionPrompt).length,approved:rows.filter(s=>s.semanticReviewStatus==='approved').length,rejected:rows.filter(s=>s.semanticReviewStatus==='rejected').length};}catch{}
+    send(200,productionHUD({flow:await flowCall(1),monitor,revisions}));return;
    }
    if(url.pathname.startsWith('/api/prompt-study/image/')){
     if(req.method!=='GET'){send(405,{ok:false});return;}

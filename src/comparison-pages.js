@@ -23,4 +23,3 @@ export function createComparisonPages(size = 20) {
     get position() { return { start, end: Math.min(start + size, rows.length), total: rows.length }; },
   };
 }
-

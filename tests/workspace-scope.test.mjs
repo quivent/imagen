@@ -24,3 +24,8 @@ test('studies share rendering helpers without sharing records or assignments',()
  assert.deepEqual(scopeAgentView(view,'production','flux1-prompt-clarity').agents.map(row=>row.id),['adhc']);
  assert.equal(scopeAgentView(view,'workbench','glsl-worlds').running,1);
 });
+test('one observed worker can match its explicitly recorded drafting and audit tasks in the correct study',()=>{
+ const snapshot={agents:{ok:true,live:true,observedAt:new Date().toISOString(),agents:[{id:'/root/reviewer',workspace:'production',studyId:'active',status:'running',currentTaskId:'draft',currentTaskIds:['draft','audit']}]}};
+ const view=scopeAgentView(agentView(snapshot),'production','active');assert.equal(taskAssignment(view,{id:'audit',status:'working',owner:'/root/reviewer'}).id,'/root/reviewer');
+ snapshot.agents.agents[0].status='done';assert.equal(taskAssignment(agentView(snapshot),{id:'audit',status:'working'}),null);
+});

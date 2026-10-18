@@ -1,6 +1,16 @@
 import {spawn} from 'node:child_process';
 import {authorized} from './native-live.mjs';
 import {localWorkstationRequest} from './workstation-session.mjs';
+import {readFile} from 'node:fs/promises';
+
+export async function chatContext(model){
+ let context='You are connected to the native Imagen studio as '+(model==='qwen'?'Qwen, a text/code assistant and prompt revision model.':'Pixtral, an observer and artwork feedback model.')+' This chat can return text and code; it has no filesystem tools, cannot execute code, and cannot change runtime settings or start/stop production. Do not claim to have viewed artwork: this chat sends text only. Separate background requests do not share this conversation memory.';
+ if(model==='qwen'){
+  context+=' The Imagen assistant writes substantive baselines targeting roughly40 CLIP tokens. Your separate drafting runner revises those exact baselines with source-grounded spatial and lighting direction, targeting at most77 CLIP tokens. FLUX also uses T5 up to512 tokens. An independent text reviewer checks actual changes and preservation before production applies a revision. Do not confuse loaded/available with actually drafting.';
+  try{const data=JSON.parse(await readFile(new URL('../research/studies/art-direction-held-constant/baselines-40.json',import.meta.url),'utf8')),rows=data.scenes||[];context+=' Current saved background progress: '+rows.length+' assistant baselines, '+rows.filter(s=>s.precisionPrompt).length+' saved Qwen revision candidates, '+rows.filter(s=>s.semanticReviewStatus==='approved').length+' independently approved. These counts describe separate background work, not work performed in this chat.';}catch{context+=' Current background progress is unavailable; do not invent counts.';}
+ }else context+=' Pixtral provides observations and feedback; no automatic Pixtral-to-Qwen or Pixtral-to-generation crosstalk is enabled.';
+ return context;
+}
 
 export const chatModels=Object.freeze({qwen:{port:8005,name:'qwen-precision'},pixtral:{port:8002,name:'pixtral-critic'}});
 const quote=value=>"'"+value.replaceAll("'","'\\''")+"'";
@@ -12,7 +22,7 @@ try:
  data=json.load(sys.stdin)
  models={'qwen':(8005,'qwen-precision'),'pixtral':(8002,'pixtral-critic')}
  port,name=models[data['model']]
- payload={'model':name,'messages':data['messages'],'stream':True,'max_tokens':1024,'temperature':0.35}
+ payload={'model':name,'messages':[{'role':'system','content':data['system']}]+data['messages'],'stream':True,'max_tokens':1024,'temperature':0.35}
  if data['model']=='qwen': payload['chat_template_kwargs']={'enable_thinking':False}
  request=urllib.request.Request('http://127.0.0.1:'+str(port)+'/v1/chat/completions',data=json.dumps(payload).encode(),headers={'Content-Type':'application/json'})
  with urllib.request.urlopen(request,timeout=180) as response:
@@ -45,14 +55,14 @@ export function validateChat(value){
  return messages;
 }
 
-function remote(model,messages){
+function remote(model,messages,system){
  const host=process.env.ARTWORK_SSH_HOST||'root@184.186.104.194',port=process.env.ARTWORK_SSH_PORT||'11012';
  if(!/^(?:root@)?[A-Za-z0-9.-]+$/.test(host)||!/^\d{1,5}$/.test(port)||Number(port)>65535||Number(port)<1)throw Error('Invalid worker endpoint');
  const child=spawn('ssh',['-T','-o','BatchMode=yes','-o','StrictHostKeyChecking=yes','-o','ConnectTimeout=5','-o','ServerAliveInterval=5','-o','ServerAliveCountMax=2','-p',port,host.includes('@')?host:'root@'+host,'python3 -u -c '+quote(program)],{stdio:['pipe','pipe','ignore']});
- child.stdin.on('error',()=>{});child.stdin.end(JSON.stringify({model,messages}));return child;
+ child.stdin.on('error',()=>{});child.stdin.end(JSON.stringify({model,messages,system}));return child;
 }
 
-export function installModelChat(server,{authorize=authorized,launch=remote}={}){
+export function installModelChat(server,{authorize=authorized,launch=remote,context=chatContext}={}){
  const children=new Set(),busy=new Map();
  server.middlewares.use((req,res,next)=>{
   const url=new URL(req.url,'http://localhost');if(!url.pathname.startsWith('/api/model-chat/'))return next();
@@ -68,7 +78,7 @@ export function installModelChat(server,{authorize=authorized,launch=remote}={})
    if(busy.has(model)){fail(409,'This model is already answering. Stop or wait for that reply.');return;}
    if(res.destroyed)return;
    busy.set(model,null);let child;
-   try{child=launch(model,messages);}catch{busy.delete(model);fail(503,'The model connection is unavailable.');return;}
+   try{const system=await context(model);if(res.destroyed){busy.delete(model);return;}child=launch(model,messages,system);}catch{busy.delete(model);fail(503,'The model connection is unavailable.');return;}
    busy.set(model,child);children.add(child);res.writeHead(200,{'Content-Type':'application/x-ndjson; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff','X-Accel-Buffering':'no'});res.flushHeaders?.();
    let buffer='',bytes=0,finished=false;
    const send=value=>{if(!res.destroyed&&!res.writableEnded)res.write(JSON.stringify(value)+'\n');};

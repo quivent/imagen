@@ -105,7 +105,7 @@ def record_assignment(path, task, claim, state):
         assignments = json.loads(path.read_text()) if path.exists() else {}
         old = assignments.get(claim['agent_path'], {})
         assignments[claim['agent_path']] = {**old, 'taskId': task['id'], 'task': task.get('title', task['id']),
-            'workspace': task.get('workspace', 'production'), 'dispatchId': claim['id'],
+            'workspace': task.get('workspace', 'production'), 'studyId':task.get('studyId','glsl-worlds' if task.get('workspace')=='workbench' else 'production'), 'taskIds':[task['id']], 'dispatchId': claim['id'],
             'dispatchState': state, 'updatedAt': now()}
         temporary = path.with_name(path.name + '.dispatch.tmp')
         temporary.write_text(json.dumps(assignments, indent=2) + '\n')

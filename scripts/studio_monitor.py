@@ -122,12 +122,13 @@ def agents():
                 result['coordinatorTask'] = assignments.get('/root', {}).get('task', 'Coordinate current work')
                 result['coordinatorCurrentTaskId'] = assignments.get('/root', {}).get('taskId')
                 result['coordinatorWorkspace'] = assignments.get('/root', {}).get('workspace', 'production')
+                result['coordinatorStudyId'] = assignments.get('/root', {}).get('studyId')
             else:
                 # Publish only team paths, states and event timestamps. No task text.
                 path = row['agent_path']
                 if not isinstance(path, str) or not path.startswith('/root/') or len(path) > 100:
                     path = 'Studio worker'
-                output.append({'id': path, 'workspace': assignments.get(path, {}).get('workspace', 'production'), 'task': assignments.get(path, {}).get('task', 'Studio team worker'), 'name': assignments.get(path, {}).get('name'), 'currentTaskId': assignments.get(path, {}).get('taskId'), 'startedAt': state.get('lastTransitionAt') if state['status'] == 'running' else None, 'status': state['status'], 'lastTransitionAt': state.get('lastTransitionAt'), 'lastEventAt': state.get('lastEventAt')})
+                output.append({'id': path, 'workspace': assignments.get(path, {}).get('workspace', 'production'), 'studyId':assignments.get(path, {}).get('studyId'), 'task': assignments.get(path, {}).get('task', 'Studio team worker'), 'name': assignments.get(path, {}).get('name'), 'currentTaskId': assignments.get(path, {}).get('taskId'), 'currentTaskIds':assignments.get(path, {}).get('taskIds',[]), 'startedAt': state.get('lastTransitionAt') if state['status'] == 'running' else None, 'status': state['status'], 'lastTransitionAt': state.get('lastTransitionAt'), 'lastEventAt': state.get('lastEventAt')})
         CACHE.parent.mkdir(parents=True, exist_ok=True)
         with tempfile.NamedTemporaryFile(mode='w', dir=CACHE.parent, delete=False) as cache_file:
             json.dump(current, cache_file)
@@ -172,16 +173,36 @@ try:
  archive['observedAt']=datetime.datetime.fromtimestamp(archive.get('heartbeatAt') or archive.get('sweptAt') or 0,datetime.timezone.utc).isoformat()
 except Exception:pass
 items=[]
+from concurrent.futures import ThreadPoolExecutor
+def resident(spec):
+ ident,port,model,program=spec
+ result={'id':ident,'loaded':False,'gpuIndices':[]}
+ try:
+  with urlopen('http://127.0.0.1:'+str(port)+'/health',timeout=.6) as response:healthy=response.status==200
+  if model:
+   with urlopen('http://127.0.0.1:'+str(port)+'/v1/models',timeout=.6) as response:catalog=json.load(response)
+   healthy=healthy and any(row.get('id')==model for row in catalog.get('data',[]))
+  result['loaded']=healthy
+  process=subprocess.run(['supervisorctl','pid',program],text=True,capture_output=True,timeout=1)
+  if process.stdout.strip().isdigit():
+   env=Path('/proc/'+process.stdout.strip()+'/environ').read_bytes().split(bytes([0]))
+   devices=next((v.split(b'=',1)[1].decode() for v in env if v.startswith(b'CUDA_VISIBLE_DEVICES=')), '')
+   result['gpuIndices']=[int(v) for v in devices.split(',') if v.strip().isdigit()]
+ except Exception:pass
+ return result
+with ThreadPoolExecutor(max_workers=4) as pool:
+ health={row['id']:row for row in pool.map(resident,[('pixtral',8002,'pixtral-critic','artwork-pixtral'),('gemma',8004,'gemma4-12b-artist','artwork-gemma'),('dinov2',8003,None,'artwork-dino'),('qwen',8005,'qwen-precision','artwork-qwen')])}
 judge_ready=None
 try:
  with urlopen('http://127.0.0.1:8002/health',timeout=0.5) as response:judge_healthy=response.status==200
  with urlopen('http://127.0.0.1:8002/v1/models',timeout=0.5) as response:judge_models=json.load(response)
  if judge_healthy and any(model.get('id')=='pixtral-critic' for model in judge_models.get('data',[])):judge_ready=True
 except Exception:pass
-for filename,kind in [('/workspace/artwork/models/manifest.json','generation'),('/workspace/artwork/judges/download-receipt.json','judge')]:
+for filename,kind in [('/workspace/artwork/models/manifest.json','generation'),('/workspace/artwork/judges/download-receipt.json','judge'),('/workspace/artwork/judges/gemma4-download/download-receipt.json','judge')]:
  try:
   receipt=json.loads(Path(filename).read_text())
   for ident,entry in receipt.get('models',{}).items():
+   if ident=='gemma4-12b-it-nvfp4':ident='gemma'
    target=Path(entry['path'])
    verified=target.is_dir() and (kind=='generation' and (target/'.download-complete.json').is_file() or kind=='judge' and receipt.get('complete') is True)
    lane=0 if ident=='flux1' else 1 if ident.startswith('flux2') else None
@@ -189,9 +210,14 @@ for filename,kind in [('/workspace/artwork/models/manifest.json','generation'),(
    loaded=worker.get('phase')=='ready' if worker.get('phase') else None
    phase=worker.get('phase')
    if ident=='pixtral' and judge_ready is True:loaded,phase=True,'ready'
-   precision={'flux1':'BF16','flux2':'BF16','flux2-nf4':'NF4 text encoder','pixtral':'W4A16','dinov2':'BF16'}.get(ident)
-   items.append({'id':ident,'name':{'flux1':'FLUX.1 DEV','flux2':'FLUX.2 DEV','flux2-nf4':'FLUX.2 text encoder','pixtral':'Pixtral 12B','dinov2':'DINOv2 Giant'}.get(ident,ident),'repo':entry.get('repo'),'revision':entry.get('revision'),'precision':precision,'bytes':entry.get('bytes'),'downloaded':verified,'loaded':loaded,'phase':phase,'gpuIndex':lane,'problem':None})
+   live=health.get('gemma' if 'assistant' in ident else ident)
+   if live:loaded,phase=live['loaded'],'ready' if live['loaded'] else 'unavailable'
+   indices=live['gpuIndices'] if live else [w['gpuIndex'] for w in workers if ident=='flux1' and w['profile']=='flux1-dev' and w.get('phase')=='ready']
+   precision={'flux1':'BF16','flux2':'BF16','flux2-nf4':'NF4 text encoder','pixtral':'W4A16','dinov2':'BF16','gemma':'NVFP4','gemma4-12b-it-assistant':'BF16 MTP assistant'}.get(ident)
+   items.append({'id':ident,'name':{'flux1':'FLUX.1 DEV','flux2':'FLUX.2 DEV','flux2-nf4':'FLUX.2 text encoder','pixtral':'Pixtral 12B','dinov2':'DINOv2 Giant','gemma':'Gemma 4 12B'}.get(ident,ident),'repo':entry.get('repo'),'revision':entry.get('revision'),'precision':precision,'bytes':entry.get('bytes'),'downloaded':verified,'loaded':loaded,'phase':phase,'gpuIndex':indices[0] if len(indices)==1 else lane,'gpuIndices':indices,'problem':None})
  except Exception:pass
+qwen=health['qwen'];qwen_path=Path('/workspace/artwork/judges/models/qwen3.8-27b-nvfp4')
+items.append({'id':'qwen','name':'Qwen 3.8 27B NVFP4','repo':'RadixArk/Qwen3.8-27B-NVFP4','revision':'319f741cce68d7914884900c138a1fbb70a42f30','precision':'NVFP4 / FP8 with integrated MTP','bytes':sum(p.stat().st_size for p in qwen_path.glob('*') if p.is_file()),'downloaded':qwen['loaded'] and (qwen_path/'model.safetensors.index.json').is_file(),'loaded':qwen['loaded'],'phase':'ready' if qwen['loaded'] else 'unavailable','gpuIndices':qwen['gpuIndices'],'problem':None})
 print(json.dumps({'workers':workers,'gpus':gpus,'models':{'observedAt':observed,'items':items},'archive':archive,'observedAt':observed}))
 """
     try:

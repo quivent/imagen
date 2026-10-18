@@ -5,9 +5,10 @@ from pathlib import Path
 
 DEFAULT=Path(__file__).resolve().parents[2]/'research/studies/art-direction-held-constant/baselines-40.json'
 
-def ready_revision(scene,path=DEFAULT):
-    try:data=json.loads(Path(path).read_text())
-    except (OSError,ValueError):return None
+def ready_revision(scene,path=DEFAULT,data=None):
+    if data is None:
+        try:data=json.loads(Path(path).read_text())
+        except (OSError,ValueError):return None
     if not isinstance(data,dict) or not isinstance(data.get('scenes'),list) or not isinstance(data.get('id'),str):return None
     row=next((r for r in data['scenes'] if isinstance(r,dict) and r.get('id')==scene['id']),None)
     if not row or row.get('semanticReviewStatus')!='approved':return None
@@ -24,3 +25,8 @@ def ready_revision(scene,path=DEFAULT):
         if type(counts.get('clip')) is not int or not 20<=counts['clip']<=limit:return None
         if type(counts.get('t5')) is not int or not 1<=counts['t5']<=512:return None
     return {**row,'promptRevision':data['id']}
+
+def approved_indices(corpus,path=DEFAULT):
+    try:data=json.loads(Path(path).read_text())
+    except (OSError,ValueError):return []
+    return [i for i,scene in enumerate(corpus['scenes']) if ready_revision(scene,data=data)]
