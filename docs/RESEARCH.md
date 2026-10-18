@@ -102,3 +102,11 @@ Research → Pipelines contains ten selectable recipes grouped as a tree:
 Recipes live in `src/research-pipelines.js`; the isolated UI component is `src/research-pipeline-picker.js`. They describe stages, proposed hardware, artifacts, first controlled tests and missing integration work. Primary model repositories are available through Copy model source. This is a recipe registry, not an inference scheduler: all exported plans disable execution, downloads, GPU startup and Seers contact. Model installation and live GPU occupancy are unverified. GPU placement is proposed; neither 96 GB card is assumed empty.
 
 Add to planned experiments persists a `pipeline-<id>` shortlist entry through the existing same-origin workstation notebook API. Export pipeline plan produces a JSON manifest with the recipe, hardware assumptions, provenance requirements and common evaluation contract. Exported plans are reviewable inputs for implementing adapters, not commands that can silently start workloads. Existing experiments and source assets are unchanged.
+
+### Controlled experiment designer
+
+Choose **Design experiment** on a pipeline to open Research → Plans. The designer keeps the pipeline context and asks for a registered source/baseline, a hypothesis, one change, controlled variables and a success criterion. Source choices use buttons, with dimensions, profile and exact SHA-256 shown as text; no image previews or automatic model calls are needed.
+
+Saving writes a new immutable plan into the existing ignored workstation notebook (`.runtime/research/notes.json`). The server resolves the source from the registered experiment catalog rather than accepting client-supplied source metadata. It snapshots the source, baseline identity and pipeline recipe so future catalog edits do not rewrite the design. Export experiment includes those snapshots. There are no fabricated results: new plans are marked Planned, with empty evidence and no conclusion. A source-surface match remains distinct from evidence of correct 3D geometry.
+
+Older notebooks migrate on read with an empty plans collection. Same-origin loopback authorization, atomic serialized writes and field bounds apply. The notebook holds at most 100 plans. Existing saved experiments, fit loops and archives are separate; saving a plan does not launch a run or change their data.

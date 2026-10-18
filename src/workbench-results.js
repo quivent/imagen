@@ -78,7 +78,7 @@ function show(){
  overviewCards.push(source,baseline);
  if(experiment.best){const best=card('Best saved result',{...experiment.best,finalBest:true,deltaReference:'previous saved best (batch baseline)'},true,experiment.baseline.components);best.classList.add('comparison-best');overviewCards.push(best);}
  summary.className='summary';summary.textContent=(experiment.objectiveVersion===2?'Literal fit v2':'Legacy fit v1')+' · '+experiment.candidates.length+' of '+experiment.totalCandidates+' iterations · '+experiment.status+' · fixed shader '+experiment.shaderSha256.slice(0,12)+'. '+(experiment.note||'');reconcile(overview,overviewCards);reconcile($('overview'),[overview,summary]);
- reconcile($('candidates'),experiment.candidates.map(candidate=>card('Iteration '+candidate.id,candidate,candidate.image.url===experiment.best?.image.url,candidate.previousComponents))); 
+ reconcile($('candidates'),experiment.candidates.map(candidate=>card('Iteration '+candidate.id,candidate,candidate.image.url===experiment.best?.image.url,candidate.previousComponents)));
  reconcile($('views'),(experiment.views||[]).map(view=>card(view.label,view)));
  for(const [key,entry] of cardCache)if(!root.contains(entry.figure))cardCache.delete(key);
 }

@@ -1,10 +1,12 @@
 import './research.css';
+import {mountExperimentPlanner} from './research-experiment-planner.js';
 import {mountPipelinePicker} from './research-pipeline-picker.js';
 import {researchCatalog} from './research-catalog.js';
 import {researchDocuments} from './research-documents.js';
 import {researchDocumentBody} from './research-document-reader.js';
 export function mountResearch({root,isActive=()=>true}){
  const $=id=>root.querySelector('#research-'+id);
+ let stateVersion=0;
  let active=isActive(),disposed=false,loaded=false,loading=false,family='All',shortlist=false,state={notes:{},ideas:[]};
  let documentId=new URL(location.href).searchParams.get('document');
  let section=researchDocuments.find(item=>item.id===documentId)?.section||'Methods';
@@ -29,17 +31,21 @@ export function mountResearch({root,isActive=()=>true}){
   }));
  }
  async function change(value){
+  stateVersion++;
   const response=await fetch('/api/research-notes',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(value)});
   if(!response.ok)throw new Error('Could not save this research note.');
   state=await response.json();return state;
  }
- const pipelines=mountPipelinePicker($('pipelines'),{save:change,message});
+ const planner=mountExperimentPlanner($('plans'),{save:change,message,choosePipeline:()=>{section='Pipelines';render();}});
+ const pipelines=mountPipelinePicker($('pipelines'),{save:change,message,design:id=>{section='Plans';planner.design(id);render();}});
  function render(){
   if(disposed||!active)return;
   for(const button of $('sections').children)button.setAttribute('aria-pressed',String(button.dataset.section===section));
   const methods=section==='Methods';$('method-tools').hidden=!methods;$('families').hidden=!methods;$('grid').hidden=!methods;
   root.querySelector('.research-protocol').hidden=!methods;
+  $('plans').hidden=section!=='Plans';
   $('pipelines').hidden=section!=='Pipelines';
+  if(section==='Plans'){$('documents').hidden=true;$('reader').hidden=true;planner.render(state);return;}
   if(section==='Pipelines'){$('documents').hidden=true;$('reader').hidden=true;pipelines.render(state);return;}
   if(!methods){documents();return;}$('documents').hidden=true;$('reader').hidden=true;
   const families=['All',...new Set(entries().map(item=>item.family))];
@@ -63,8 +69,8 @@ export function mountResearch({root,isActive=()=>true}){
   }));
  }
  async function load(){
-  if(loaded||loading||!active||disposed)return;loading=true;
-  try{const response=await fetch('/api/research-notes',{cache:'no-store'});if(!response.ok)throw new Error();state=await response.json();loaded=true;message('Notes and ideas are saved on this workstation. Model and pipeline candidates have not been benchmarked here.');}
+  if(loaded||loading||!active||disposed)return;loading=true;const version=stateVersion;
+  try{const response=await fetch('/api/research-notes',{cache:'no-store'});if(!response.ok)throw new Error();const fetched=await response.json();if(version===stateVersion)state=fetched;loaded=true;message('Notes and ideas are saved on this workstation. Model and pipeline candidates have not been benchmarked here.');}
   catch{message('Showing the research catalog; the local notebook is unavailable.');}
   finally{loading=false;render();}
  }
@@ -75,5 +81,5 @@ export function mountResearch({root,isActive=()=>true}){
  $('add').onclick=()=>{const open=$('idea-form').hidden;$('idea-form').hidden=!open;$('add').setAttribute('aria-expanded',String(open));if(open)$('idea-form').elements.title.focus();};
  $('idea-form').onsubmit=async event=>{event.preventDefault();const form=event.currentTarget,button=form.querySelector('button');button.disabled=true;try{await change({type:'idea',title:form.elements.title.value,description:form.elements.description.value});form.reset();form.hidden=true;$('add').setAttribute('aria-expanded','false');family='Open ideas';shortlist=false;$('shortlist').setAttribute('aria-pressed','false');$('search').value='';render();message('Research idea saved.');}catch(error){message(error.message);}finally{button.disabled=false;}};
  render();void load();
- return {setActive(value){active=value;if(active){render();void load();}},destroy(){disposed=true;active=false;drafts.clear();}};
+ return {setActive(value){active=value;if(active){render();void load();}},destroy(){disposed=true;active=false;drafts.clear();planner.destroy();}};
 }
