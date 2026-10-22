@@ -58,6 +58,15 @@ export function reviewPairs({workflow,post,el,disabled=false,stream=false,drafts
    grid.children[i].children[1].textContent=caption;
   }
   card.append(grid);
+  if(!stream&&pair.slotPrompts&&Object.keys(pair.slotPrompts).length){
+   const prompts=el('div',null,'prompt-arms prompt-pair-texts');
+   for(const slot of ['left','right']){
+    const frozen=pair.slotPrompts[slot],column=el('section');
+    const label=frozen?.author==='Qwen'?'Qwen revision':frozen?.author==='Imagen assistant'?'Assistant baseline':frozen?.arm==='A'?'Production prompt':'Precision prompt';
+    column.append(el('h3',label),el('p',frozen?.text||'Saved prompt unavailable.','prompt-frozen-text'));prompts.append(column);
+   }
+   card.append(prompts);
+  }
   if(!pair.review&&!stream){
    const draft=(drafts.reviews||={})[pair.id]||((drafts.reviews||={})[pair.id]={choice:null,note:''});let choice=draft.choice;
    const options=el('div',null,'prompt-actions');for(const [value,label] of [['left','Left'],['right','Right'],['tie','Tie'],['neither','Neither']]){const button=el('button',label);button.type='button';button.disabled=disabled;button.setAttribute('aria-pressed',String(choice===value));button.onclick=()=>{choice=value;draft.choice=value;for(const sibling of options.children)sibling.setAttribute('aria-pressed',String(sibling===button));};options.append(button);}card.append(options);

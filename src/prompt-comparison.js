@@ -15,7 +15,7 @@ export function promptWordDiff(before,after){
 
 export function mountPromptComparison({root,isActive=()=>true,endpoint='/api/prompt-comparison',fetch:request=globalThis.fetch,document=globalThis.document}){
  const el=(tag,text,cls)=>{const n=document.createElement(tag);if(text)n.textContent=text;if(cls)n.className=cls;return n;};
- let active=false,disposed=false,controller=null,scenes=[],selected=null,page=0,last='',bodySignature='';
+ let active=false,disposed=false,controller=null,scenes=[],selected=null,page=0,last='',bodySignature='',navSignature='';
  const box=el('section',null,'prompt-comparison'),heading=el('h1','Prompts'),progress=el('p',null,'prompt-comparison-meta'),nav=el('nav',null,'prompt-comparison-scenes'),pager=el('div',null,'prompt-comparison-pager'),previous=el('button','Previous scenes'),next=el('button','Next scenes'),pageLabel=el('span'),body=el('div'),status=el('p',null,'prompt-comparison-meta'),retry=el('button','Retry');
  nav.setAttribute('aria-label','Choose scene');status.setAttribute('role','status');for(const button of [previous,next,retry])button.type='button';retry.hidden=true;
  pager.append(previous,pageLabel,next);box.append(heading,progress,nav,pager,body,status,retry);root.replaceChildren(box);
@@ -26,7 +26,9 @@ export function mountPromptComparison({root,isActive=()=>true,endpoint='/api/pro
   const approved=scenes.filter(s=>s.semanticReviewStatus==='approved').length;
   progress.textContent=scenes.length+' assistant baselines · '+revised+' Qwen revisions · '+approved+' independently approved · CLIP and T5 both receive text; counts include special tokens.';
   if(!selected&&scenes.length)selected=scenes[0].id;
-  const buttons=scenes.slice(page*10,page*10+10).map(scene=>{const b=el('button',scene.name);b.type='button';b.setAttribute('aria-pressed',String(scene.id===selected));b.onclick=()=>{selected=scene.id;render();};return b;});nav.replaceChildren(...buttons);
+  const visible=scenes.slice(page*10,page*10+10),navigation=JSON.stringify(visible.map(scene=>[scene.id,scene.name]));
+  if(navigation!==navSignature){navSignature=navigation;nav.replaceChildren(...visible.map(scene=>{const b=el('button',scene.name);b.type='button';b.onclick=()=>{selected=scene.id;render();};return b;}));}
+  visible.forEach((scene,index)=>nav.children[index].setAttribute('aria-pressed',String(scene.id===selected)));
   const scene=scenes.find(s=>s.id===selected)||scenes[0];if(!scene){bodySignature='';body.replaceChildren(el('p','Writing substantive baselines and preparing Qwen revisions.'));return;}selected=scene.id;
   const signature=JSON.stringify(scene);if(signature===bodySignature)return;bodySignature=signature;
   const current=el('section'),title=el('h2',scene.name),columns=el('div',null,'prompt-comparison-columns');current.append(title);

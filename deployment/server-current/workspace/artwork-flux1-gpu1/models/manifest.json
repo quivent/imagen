@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "completed_at": 1792339908.1019988,
+  "models": {
+    "flux1": {
+      "repo": "black-forest-labs/FLUX.1-dev",
+      "revision": "3de623fc3c33e44ffbe2bad470d0f45bccf2eb21",
+      "allow_patterns": [
+        "model_index.json",
+        "scheduler/*",
+        "text_encoder/*",
+        "text_encoder_2/*",
+        "tokenizer/*",
+        "tokenizer_2/*",
+        "transformer/*",
+        "vae/*"
+      ],
+      "bytes": 33746383552,
+      "path": "/workspace/artwork/models/flux1"
+    },
+    "flux2": {
+      "repo": "black-forest-labs/FLUX.2-dev",
+      "revision": "26afe3a78bb242c0a8bb181dcc8937bb16e5c66c",
+      "allow_patterns": [
+        "model_index.json",
+        "scheduler/*",
+        "tokenizer/*",
+        "transformer/*",
+        "vae/*"
+      ],
+      "bytes": 64800155761,
+      "path": "/workspace/artwork/models/flux2"
+    },
+    "flux2-nf4": {
+      "repo": "diffusers/FLUX.2-dev-bnb-4bit",
+      "revision": "c30ad107542e63f222f864a8de510204394fb18a",
+      "allow_patterns": [
+        "text_encoder/*"
+      ],
+      "bytes": 15437854403,
+      "path": "/workspace/artwork/models/flux2-nf4"
+    }
+  }
+}

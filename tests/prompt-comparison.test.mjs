@@ -25,6 +25,18 @@ test('all 150 saved baselines preserve full source provenance and actual budget 
  assert.equal(data.scenes.length,150);const lookup=new Map(original.scenes.map(s=>[s.id,s]));
  for(const scene of data.scenes){assert.equal(scene.sourcePrompt,lookup.get(scene.id).prompt);assert.equal(scene.baselineAuthor,'Imagen assistant');assert.ok(scene.baselinePrompt.split(/\s+/).length>=20);assert.ok(scene.baselinePrompt.toLowerCase().includes('painterly realism'));assert.ok(scene.baselineTokens.clip<=data.baselineClipBudget);assert.ok(scene.baselineTokens.clip>=20);assert.ok(scene.baselineTokens.t5<512);assert.equal(scene.baselineSha256,createHash('sha256').update(scene.baselinePrompt).digest('hex'));}
 });
+
+test('all 150 revisions have actual Qwen receipts, exact baseline hashes and native token limits',async()=>{
+ const data=JSON.parse(await readFile(new URL('../research/studies/art-direction-held-constant/baselines-40.json',import.meta.url),'utf8'));
+ assert.equal(data.scenes.length,150);assert.equal(data.tokenizerProvenance.addSpecialTokens,true);assert.equal(data.tokenizerProvenance.truncation,false);
+ for(const scene of data.scenes){
+  assert.equal(scene.precisionAuthor,'Qwen',scene.id);assert.ok(scene.precisionPrompt.trim());assert.ok(scene.precisionTokens.clip<=77);assert.ok(scene.precisionTokens.t5<=512);
+  assert.equal(scene.semanticReviewStatus,'approved',scene.id);assert.equal(scene.revisionStatus,'qwen-revised-token-verified');assert.deepEqual(scene.semanticReview.lostBaselineContent,[]);assert.deepEqual(scene.semanticReview.inventedSubjects,[]);
+  assert.equal(scene.revisionBaselineSha256,scene.baselineSha256);assert.equal(scene.revisionReceipt.baselineSha256,scene.baselineSha256);
+  assert.equal(scene.precisionSha256,createHash('sha256').update(scene.precisionPrompt).digest('hex'));assert.equal(scene.sourcePromptSha256,createHash('sha256').update(scene.sourcePrompt).digest('hex'));
+  assert.equal(scene.revisionReceipt.requestedModel,'qwen-precision');assert.ok(scene.revisionReceipt.responseId);assert.ok(scene.revisionReceipt.usage.completion_tokens>0);
+ }
+});
 test('comparison shows full baseline and real Qwen revision counts, bounded scene buttons and source text',async()=>{
  const context=makeContext(),root=new Node(),scenes=Array.from({length:12},(_,i)=>({id:'scene-'+i,name:'Place '+i,baselinePrompt:'Blue water beneath a pale sky.',precisionPrompt:'Pale sky above clear blue water.',precisionAuthor:'Qwen',baselineTokens:{clip:12,t5:10},precisionTokens:{clip:14,t5:11},sourcePrompt:'Preserved full source '+i}));
  const mounted=context.exports.mountPromptComparison({root,fetch:async()=>({ok:true,json:async()=>({scenes})})});mounted.setActive(true);await new Promise(resolve=>setImmediate(resolve));
@@ -36,9 +48,9 @@ test('comparison shows full baseline and real Qwen revision counts, bounded scen
 test('new revisions elsewhere retain the selected prompt nodes and open source disclosure',async()=>{
  const context=makeContext(),root=new Node(),selected={id:'first',name:'First',baselinePrompt:'A quiet shore.',historicalPrecisionPrompt:'Quiet shore with rocks.',sourcePrompt:'Full shore source.'};let scenes=[selected,{id:'second',name:'Second',baselinePrompt:'A hill.'}];
  const mounted=context.exports.mountPromptComparison({root,fetch:async()=>({ok:true,json:async()=>({scenes})})});mounted.setActive(true);await new Promise(resolve=>setImmediate(resolve));
- const disclosure=root.all('DETAILS').find(n=>n.textContent.includes('Preserved original source'));disclosure.open=true;const prompt=root.all('DEL')[0];
+ const disclosure=root.all('DETAILS').find(n=>n.textContent.includes('Preserved original source'));disclosure.open=true;const prompt=root.all('DEL')[0],sceneButton=root.all('BUTTON').find(n=>n.textContent==='First');
  scenes=[selected,{...scenes[1],precisionPrompt:'A grassy hill.',precisionAuthor:'Qwen'}];context.tick();await new Promise(resolve=>setImmediate(resolve));
- assert.equal(root.all('DETAILS').find(n=>n.textContent.includes('Preserved original source')),disclosure);assert.equal(disclosure.open,true);assert.equal(root.all('DEL')[0],prompt);assert.ok(root.textContent.includes('1 Qwen revisions'));mounted.destroy();
+ assert.equal(root.all('DETAILS').find(n=>n.textContent.includes('Preserved original source')),disclosure);assert.equal(disclosure.open,true);assert.equal(root.all('DEL')[0],prompt);assert.equal(root.all('BUTTON').find(n=>n.textContent==='First'),sceneButton);assert.ok(root.textContent.includes('1 Qwen revisions'));mounted.destroy();
 });
 
 test('hidden and inactive comparisons abort pending reads',async()=>{

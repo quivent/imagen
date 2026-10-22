@@ -1,0 +1,28 @@
+artwork-dino                     RUNNING   pid 435, uptime 3:36:32
+artwork-download                 EXITED    Oct 18 04:11 PM
+artwork-encoder-fp8-download     STOPPED   Not started
+artwork-flux1                    RUNNING   pid 697, uptime 3:36:31
+artwork-flux1-gpu1               RUNNING   pid 33189, uptime 2:35:16
+artwork-flux2                    STOPPED   Oct 18 05:12 PM
+artwork-gemma                    RUNNING   pid 437, uptime 3:36:32
+artwork-gemma4-download          EXITED    Oct 18 04:11 PM
+artwork-judges-download          EXITED    Oct 18 04:12 PM
+artwork-judges-install           EXITED    Oct 18 04:11 PM
+artwork-migration-proof          STOPPED   Not started
+artwork-native-flux1             RUNNING   pid 533, uptime 3:36:32
+artwork-native-flux1-gpu1        RUNNING   pid 33190, uptime 2:35:16
+artwork-piper                    RUNNING   pid 443, uptime 3:36:32
+artwork-pixtral                  RUNNING   pid 1703, uptime 3:35:34
+artwork-qwen                     RUNNING   pid 141543, uptime 1:08:52
+artwork-r2                       RUNNING   pid 34233, uptime 2:34:09
+artwork-readiness                EXITED    Oct 18 04:11 PM
+artwork-runtime-install          STOPPED   Not started
+artwork-runtime-wheels           STOPPED   Not started
+caddy                            RUNNING   pid 451, uptime 3:36:32
+cron                             RUNNING   pid 452, uptime 3:36:32
+instance_portal                  RUNNING   pid 453, uptime 3:36:32
+jupyter                          EXITED    Oct 18 04:11 PM
+pyworker                         EXITED    Oct 18 04:11 PM
+syncthing                        RUNNING   pid 458, uptime 3:36:32
+tensorboard                      RUNNING   pid 461, uptime 3:36:32
+tunnel_manager                   RUNNING   pid 464, uptime 3:36:32

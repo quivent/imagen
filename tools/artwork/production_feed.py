@@ -156,11 +156,20 @@ class ProductionFeed:
             if pair is None:
                 continue
             scene = package.get('sourceCorpus', {}).get('scene', {})
+            frozen_pair = next((row for row in package.get('pairs', []) if row.get('id') == pair_id), {})
+            slot_prompts = {}
+            for slot, arm in frozen_pair.get('reviewSlots', {}).items():
+                text = package.get('prompts', {}).get(arm)
+                if slot in ('left', 'right') and isinstance(text, str):
+                    slot_prompts[slot] = {'text': text, 'arm': arm,
+                                          'author': package.get('promptAuthors', {}).get(arm),
+                                          'sha256': package.get('promptHashes', {}).get(arm)}
             pairs.append({**pair, 'id': identity+':'+pair_id.replace('-', ''),
                           'requestPair': pair_id, 'package': identity,
                           'sceneName': scene.get('name') or scene.get('id') or 'Scene',
                           'sceneId': scene.get('id'), 'seed': pair.get('seed'),
-                          'completedAt': completed_at,'promptRevision':package.get('promptRevision','historical-production')})
+                          'completedAt': completed_at,'promptRevision':package.get('promptRevision','historical-production'),
+                          'slotPrompts': slot_prompts})
             if current is None:
                 current = public
         completed = max(0, int(daemon.get('completedPairs', 0)))
